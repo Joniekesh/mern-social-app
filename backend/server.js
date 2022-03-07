@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 
 const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/users");
 
 dotenv.config();
 connectDB();
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // API
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 const PORT = process.env.PORT || PORT;
 

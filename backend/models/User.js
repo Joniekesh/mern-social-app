@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			default: "",
 		},
-		backgroundPic: {
+		coverPhoto: {
 			type: String,
 			default: "",
 		},
