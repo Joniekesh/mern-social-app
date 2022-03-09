@@ -5,6 +5,14 @@ const ProfileSchema = new mongoose.Schema(
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
 		},
+		name: {
+			type: String,
+			required: true,
+		},
+		profilePic: {
+			type: String,
+			default: "",
+		},
 		company: {
 			type: String,
 		},
@@ -20,6 +28,7 @@ const ProfileSchema = new mongoose.Schema(
 		},
 		status: {
 			type: String,
+			required: true,
 		},
 		bio: {
 			type: String,
@@ -35,6 +44,7 @@ const ProfileSchema = new mongoose.Schema(
 				},
 				company: {
 					type: String,
+					required: true,
 				},
 				location: {
 					type: String,

@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema(
 		email: {
 			type: String,
 			required: true,
+			unique: true,
 		},
 		password: {
 			type: String,
@@ -32,6 +33,14 @@ const UserSchema = new mongoose.Schema(
 		},
 		followings: {
 			type: Array,
+		},
+		city: {
+			type: String,
+			max: 50,
+		},
+		from: {
+			type: String,
+			max: 50,
 		},
 	},
 	{
