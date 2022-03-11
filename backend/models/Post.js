@@ -7,14 +7,9 @@ const PostSchema = new mongoose.Schema(
 		},
 		name: {
 			type: String,
-			required: true,
 		},
 		profilePic: {
 			type: String,
-		},
-		title: {
-			type: String,
-			required: true,
 		},
 		desc: {
 			type: String,
@@ -62,6 +57,40 @@ const PostSchema = new mongoose.Schema(
 						},
 						profilePic: {
 							type: String,
+						},
+					},
+				],
+				replies: [
+					{
+						user: {
+							type: mongoose.Schema.Types.ObjectId,
+						},
+						name: {
+							type: String,
+						},
+						profilePic: {
+							type: String,
+						},
+						desc: {
+							type: String,
+						},
+						likes: [
+							{
+								user: {
+									type: mongoose.Schema.Types.ObjectId,
+								},
+								name: {
+									type: String,
+								},
+								profilePic: {
+									type: String,
+									defualt: "",
+								},
+							},
+						],
+						date: {
+							type: Date,
+							default: Date.now,
 						},
 					},
 				],

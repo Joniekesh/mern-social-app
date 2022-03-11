@@ -68,11 +68,11 @@ router.get("/:id", async (req, res) => {
 	}
 });
 
-// @desc   Follow a user
+// @desc   Follow/Unfollow a user
 // @route  PUT /api/users/:id/follow
 // @access Private
 router.put("/:id/follow", protect, async (req, res) => {
-	if (req.user.id !== req.params.id) {
+	if (req.user.id.toString() !== req.params.id) {
 		try {
 			const user = await User.findById(req.params.id);
 			const currentUser = await User.findById(req.user.id);
@@ -82,28 +82,9 @@ router.put("/:id/follow", protect, async (req, res) => {
 				await currentUser.updateOne({ $push: { followings: req.params.id } });
 
 				res.status(200).json({ msg: "User has been followed" });
-			}
-		} catch (err) {
-			console.error(err.message);
-			res.status(500).send("Server Error");
-		}
-	} else {
-		res.status(400).json({ msg: "You cannot follow yourself" });
-	}
-});
-
-// @desc   Unfollow a user
-// @route  PUT /api/users/:id/unfollow
-// @access Private
-router.put("/:id/unfollow", protect, async (req, res) => {
-	if (req.user.id !== req.params.id) {
-		try {
-			const user = await User.findById(req.params.id);
-			const currentUser = await User.findById(req.user.id);
-
-			if (user.followers.includes(req.user.id)) {
-				await user.updateOne({ $push: { followers: req.user.id } });
-				await currentUser.updateOne({ $push: { followings: req.params.id } });
+			} else {
+				await user.updateOne({ $pull: { followers: req.user.id } });
+				await currentUser.updateOne({ $pull: { followings: req.params.id } });
 
 				res.status(200).json({ msg: "User has been unfollowed" });
 			}
@@ -112,7 +93,7 @@ router.put("/:id/unfollow", protect, async (req, res) => {
 			res.status(500).send("Server Error");
 		}
 	} else {
-		res.status(400).json({ msg: "You cannot unfollow yourself" });
+		res.status(400).json({ msg: "You cannot follow/unfollow yourself" });
 	}
 });
 
@@ -122,11 +103,11 @@ router.put("/:id/unfollow", protect, async (req, res) => {
 router.get("/friends/all", protect, async (req, res) => {
 	try {
 		const user = await User.findById(req.user.id);
-		const friends = await Promise.all([
+		const friends = await Promise.all(
 			user.followings.map((friendId) => {
 				return User.findById(friendId);
-			}),
-		]);
+			})
+		);
 
 		let friendList = [];
 
@@ -137,7 +118,10 @@ router.get("/friends/all", protect, async (req, res) => {
 		});
 
 		res.status(200).json(friendList);
-	} catch (error) {}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send("Server Error");
+	}
 });
 
 // @desc   Delete user

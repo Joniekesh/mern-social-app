@@ -203,6 +203,16 @@ router.put("/education/:eduId", protect, async (req, res) => {
 	try {
 		const profile = await Profile.findOne({ user: req.user.id });
 
+		if (!profile) {
+			return res.status(404).json({ msg: "Profile not found" });
+		}
+
+		if (profile.user.toString() !== req.user.id) {
+			return res.status(401).json({
+				msg: "You are not authorized to update this Profile Education",
+			});
+		}
+
 		const edu = profile.education.find(
 			(edu) => edu._id.toString() === req.params.eduId
 		);
@@ -235,7 +245,13 @@ router.delete("/education/:eduId", protect, async (req, res) => {
 		const profile = await Profile.findOne({ user: req.user.id });
 
 		if (!profile) {
-			res.status(400).json({ msg: "Profile not found" });
+			return res.status(400).json({ msg: "Profile not found" });
+		}
+
+		if (profile.user.toString() !== req.user.id) {
+			return res.status(401).json({
+				msg: "You are not authorized to delete this Profile Education",
+			});
 		}
 
 		profile.education = profile.education.filter(
@@ -300,6 +316,12 @@ router.put("/experience/:expId", protect, async (req, res) => {
 			return res.status(404).json({ msg: "Profile not found" });
 		}
 
+		if (profile.user.toString() !== req.user.id) {
+			return res.status(401).json({
+				msg: "You are not authorized to update this Profile Experience",
+			});
+		}
+
 		const experience = profile.experience.find(
 			(exp) => exp._id.toString() === req.params.expId
 		);
@@ -334,6 +356,14 @@ router.delete("/experience/:expId", protect, async (req, res) => {
 
 		if (!profile) {
 			return res.status(404).json({ msg: "Profile not found" });
+		}
+
+		if (profile.user.toString() !== req.user.id) {
+			return res
+				.status(401)
+				.json({
+					msg: "You are not authorized to delete this Profile Experience",
+				});
 		}
 
 		profile.experience = profile.experience.filter(
