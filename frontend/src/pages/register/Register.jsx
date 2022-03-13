@@ -1,6 +1,27 @@
 import "./register.css";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { register } from "../../redux/actions/authActions";
+import { setAlert } from "../../redux/actions/alertActions";
 
 const Register = () => {
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+
+	const dispatch = useDispatch();
+
+	const submitHandler = async (e) => {
+		e.preventDefault();
+
+		if (password !== confirmPassword) {
+			dispatch(setAlert("Passwords do not match", "danger"));
+		} else {
+			dispatch(register({ name, email, password }));
+		}
+	};
+
 	return (
 		<div className="register">
 			<div className="container">
@@ -17,22 +38,42 @@ const Register = () => {
 							<i className="fa-solid fa-code"></i>
 							<h2>DEVDOMAIN</h2>
 						</div>
-						<form>
+						<form onSubmit={submitHandler}>
 							<div className="inputGroup">
 								<label>Name</label>
-								<input type="text" placeholder="Full name"></input>
+								<input
+									type="text"
+									placeholder="Full name"
+									value={name}
+									onChange={(e) => setName(e.target.value)}
+								></input>
 							</div>
 							<div className="inputGroup">
 								<label>Email</label>
-								<input type="email" placeholder="Email"></input>
+								<input
+									type="email"
+									placeholder="Email"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+								></input>
 							</div>
 							<div className="inputGroup">
 								<label>Password</label>
-								<input type="password" placeholder="Password"></input>
+								<input
+									type="password"
+									placeholder="Password"
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
+								></input>
 							</div>
 							<div className="inputGroup">
 								<label>Confirm Password</label>
-								<input type="password" placeholder="Confirm Password"></input>
+								<input
+									type="password"
+									placeholder="Confirm Password"
+									value={confirmPassword}
+									onChange={(e) => setConfirmPassword(e.target.value)}
+								></input>
 							</div>
 							<button className="regBtn" type="submit">
 								Register

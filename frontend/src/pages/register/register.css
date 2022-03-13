@@ -55,6 +55,7 @@ label {
 	width: 100%;
 	padding: 6px 0px;
 	font-size: 1rem;
+	font-weight: bold;
 	border: none;
 	border-bottom: 1px solid gray;
 	color: purple;

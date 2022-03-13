@@ -1,6 +1,23 @@
 import "./login.css";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/actions/authActions";
+import { setAlert } from "../../redux/actions/alertActions";
 
 const Login = () => {
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const submitHandler = (e) => {
+		e.preventDefault();
+
+		dispatch(login({ email, password }));
+		dispatch(setAlert("Login Successful", "success"));
+	};
 	return (
 		<div className="login">
 			<div className="container">
@@ -17,14 +34,26 @@ const Login = () => {
 							<i className="fa-solid fa-code"></i>
 							<h2>DEVDOMAIN</h2>
 						</div>
-						<form>
+						<form onSubmit={submitHandler}>
 							<div className="inputGroup">
 								<label>Email</label>
-								<input type="email" placeholder="Email"></input>
+								<input
+									type="email"
+									placeholder="Email"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+									autoComplete="true"
+								></input>
 							</div>
 							<div className="inputGroup">
 								<label>Password</label>
-								<input type="password" placeholder="Password"></input>
+								<input
+									type="password"
+									placeholder="Password"
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
+									autoComplete="true"
+								></input>
 							</div>
 							<button className="regBtn" type="submit">
 								Login

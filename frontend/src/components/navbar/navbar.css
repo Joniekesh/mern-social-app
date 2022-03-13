@@ -58,14 +58,6 @@
 	text-align: center;
 }
 
-.navImg {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	object-fit: cover;
-	cursor: pointer;
-}
-
 .navbarRightList {
 	display: flex;
 	align-items: center;
@@ -76,4 +68,27 @@
 	cursor: pointer;
 	font-weight: 500;
 	color: #fff;
+	font-size: 14px;
+}
+.navImg {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	object-fit: cover;
+	cursor: pointer;
+}
+
+.badgeContainer {
+	position: relative;
+}
+
+.imgBadge {
+	position: absolute;
+	height: 12px;
+	width: 12px;
+	right: -4px;
+	top: 16px;
+	border-radius: 50%;
+	border: 2px solid white;
+	background-color: teal;
 }
