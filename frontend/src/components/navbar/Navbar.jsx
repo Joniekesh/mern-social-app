@@ -1,9 +1,12 @@
 import "./navbar.css";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/actions/authActions";
 
 const Navbar = () => {
+	const [toggle, setToggle] = useState(false);
+
 	const userLogin = useSelector((state) => state.userLogin);
 	const { isAuthenticated } = userLogin;
 
@@ -13,6 +16,7 @@ const Navbar = () => {
 	const handleLogout = () => {
 		dispatch(logout());
 
+		window.location.reload();
 		navigate("/login");
 	};
 
@@ -28,19 +32,35 @@ const Navbar = () => {
 				</Link>
 			</div>
 			{isAuthenticated && (
-				<div className="navbarCenter">
-					<div className="navbarCenterWrapper">
-						<div className="icon">
-							<i className="fa-solid fa-envelope"></i>
-							<span className="count">5</span>
-						</div>
-						<div className="icon">
-							<i className="fa-solid fa-bell"></i>
-							<span className="count">3</span>
+				<>
+					<div className="navbarSearch">
+						<i className="fa-solid fa-magnifying-glass"></i>
+						<input
+							type="text"
+							placeholder="Search for posts, users or developers..."
+						/>
+					</div>
+
+					<div className="navbarCenter">
+						<div className="navbarCenterWrapper">
+							<div className="icon">
+								<i className="fa-solid fa-user"></i>
+								<span className="count">2</span>
+							</div>
+							<div className="icon">
+								<i className="fa-solid fa-envelope"></i>
+								<span className="count">5</span>
+							</div>
+							<div className="icon">
+								<i className="fa-solid fa-bell"></i>
+								<span className="count">3</span>
+							</div>
 						</div>
 					</div>
-				</div>
+					<div className="timeline">Timeline</div>
+				</>
 			)}
+
 			<div className="navbarRight">
 				<div className="navbarRightWrapper">
 					<ul className="navbarRightList">
@@ -49,7 +69,7 @@ const Navbar = () => {
 								<Link to="/profiles">
 									<li className="navbarRightListItem">DEVELOPERS</li>
 								</Link>
-								<Link to="/posts">
+								<Link to="/">
 									<li className="navbarRightListItem">POSTS</li>
 								</Link>
 								<Link to="/logot">
@@ -59,10 +79,33 @@ const Navbar = () => {
 								</Link>
 								<Link to="/settings">
 									<div className="navbarRightListItem badgeContainer">
-										<img className="navImg " src="/assets/avatar.jpeg" alt="" />
+										<img
+											className="navImg "
+											src="/assets/profile.jpeg"
+											alt=""
+										/>
 										<span className="imgBadge"></span>
 									</div>
 								</Link>
+								<i
+									className="fa-solid fa-caret-down caret"
+									onClick={() => setToggle(!toggle)}
+								></i>
+								{toggle && (
+									<div className="userSettings">
+										<ul className="settingsList">
+											<Link to="/profiles/111">
+												<li className="settingsItem">Profile</li>
+											</Link>
+											<Link to="/settings">
+												<li className="settingsItem">Settings</li>
+											</Link>
+											<li className="settingsItem" onClick={handleLogout}>
+												Logout
+											</li>
+										</ul>
+									</div>
+								)}
 							</>
 						)}
 						{!isAuthenticated && (

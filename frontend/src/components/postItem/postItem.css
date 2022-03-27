@@ -1,0 +1,194 @@
+.homeCenterPostItem {
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: white;
+	padding: 10px;
+	border-radius: 8px;
+	display: flex;
+	flex-direction: column;
+	margin: 20px 0px;
+}
+
+.homeCenterTop {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.topLeft {
+	display: flex;
+	cursor: pointer;
+	width: 100%;
+}
+
+.topLeftImg {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	margin: 0px 10px 10px 0px;
+}
+
+.topLeftUserInfo {
+	display: flex;
+	flex-direction: column;
+}
+
+.skillsList,
+.followersCount,
+.time {
+	font-size: small;
+}
+
+.followersCount {
+	margin: 5px 0px;
+}
+
+.topRight {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: teal;
+	cursor: pointer;
+	font-size: 15px;
+	font-weight: bold;
+	transition: all 0.5s ease;
+	padding: 16px;
+	width: 80px;
+	height: 32px;
+	margin-left: 5px;
+	background-color: rgb(228, 231, 231);
+}
+
+.topRight i {
+	margin-right: 5px;
+	font-size: 16px;
+}
+.topRight:hover {
+	transform: scale(1.08);
+	border-radius: 5px;
+}
+
+.line {
+	color: 0.1x solid #ddd;
+	margin: 5px 0px;
+	opacity: 0.3;
+}
+
+.homeCenterPostImg {
+	margin: 10px 0px;
+	border-radius: 8px;
+	width: 100%;
+	height: 300px;
+	cursor: pointer;
+}
+
+.reactionsDiv {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 5px 0px;
+}
+
+.reactions {
+	display: flex;
+	align-items: center;
+	font-size: 15px;
+}
+
+.reactions span {
+	cursor: pointer;
+}
+
+.reactions i {
+	border-radius: 50%;
+	height: 17px;
+	width: 17px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	font-size: 10px;
+	cursor: pointer;
+}
+
+.thumb {
+	background-color: purple;
+	color: white;
+}
+
+.heart {
+	color: white;
+	background-color: orange;
+}
+
+.laugh {
+	color: white;
+	background-color: teal;
+}
+
+.commentCount {
+	font-size: 14px;
+	border-bottom: 1px dotted teal;
+	cursor: pointer;
+}
+
+.reactioncontainer {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	margin: 8px 0px;
+}
+
+.likes {
+	cursor: pointer;
+}
+
+.likes:hover {
+	background-color: rgb(197, 195, 195);
+	padding: 6px 12px;
+	border-radius: 5px;
+}
+.likes i {
+	margin-right: 8px;
+}
+
+.commentInputContainer {
+	display: flex;
+	align-items: center;
+	margin: 10px 0px;
+}
+
+.commentImg {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-right: 8px;
+	cursor: pointer;
+}
+
+.commentInput {
+	width: 90%;
+	display: flex;
+	align-items: center;
+	border: 1px solid #ddd;
+	padding: 10px 20px;
+	border-radius: 20px;
+}
+
+.commentInputText {
+	width: 100%;
+	border: none;
+}
+
+.commentInputText:focus {
+	outline: none;
+}
+
+.commentInput i {
+	cursor: pointer;
+}
+
+.commentInputIcon {
+	margin-right: 12px;
+}

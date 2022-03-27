@@ -1,0 +1,22 @@
+.reply {
+	width: 100%;
+	height: 100%;
+	background-color: white;
+}
+
+.replyWrapper {
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+	width: 90%;
+	border-color: white;
+}
+
+.replyLists {
+	display: flex;
+	flex-direction: column;
+	background-color: white;
+	width: 81%;
+	margin-left: 8%;
+	margin-bottom: 130px;
+}

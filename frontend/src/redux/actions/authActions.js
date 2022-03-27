@@ -18,7 +18,7 @@ export const loadUser = () => async (dispatch) => {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
 		};
-		const res = await axios.get("/api/auth/me", config);
+		const res = await axios.get("/auth/me", config);
 
 		dispatch({
 			type: USER_LOADED_SUCCESS,
@@ -39,7 +39,7 @@ export const register = (formData) => async (dispatch) => {
 			},
 		};
 
-		const res = await axios.post("/api/auth", formData, config);
+		const res = await axios.post("/auth", formData, config);
 
 		dispatch({
 			type: USER_REGISTER_SUCCESS,
@@ -68,7 +68,7 @@ export const login = (formData) => async (dispatch) => {
 			},
 		};
 
-		const res = await axios.post("/api/auth/login", formData, config);
+		const res = await axios.post("/auth/login", formData, config);
 
 		dispatch({
 			type: USER_LOGIN_SUCCESS,

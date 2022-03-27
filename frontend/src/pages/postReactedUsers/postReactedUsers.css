@@ -1,0 +1,11 @@
+.postReactedUserItemWrapper {
+	max-width: 600px;
+	background-color: white;
+	padding: 16px;
+	border-radius: 5px;
+}
+
+.totalReactions i {
+	margin: 0px 0px 0px 8px;
+	color: teal;
+}
