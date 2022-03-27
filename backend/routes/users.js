@@ -29,9 +29,6 @@ router.put("/me", protect, async (req, res) => {
 		res.json(updatedUser);
 	} catch (err) {
 		console.error(err.message);
-		if (err.kind == "ObjectId") {
-			return res.status(404).json({ msg: "User not found" });
-		}
 		res.status(500).send("Server Error");
 	}
 });
@@ -64,6 +61,9 @@ router.get("/:id", async (req, res) => {
 		res.json(user);
 	} catch (err) {
 		console.error(err.message);
+		if (err.kind == "ObjectId") {
+			res.status(404).json({ msg: "User not found" });
+		}
 		res.status(500).send("Server Error");
 	}
 });
@@ -90,6 +90,9 @@ router.put("/:id/follow", protect, async (req, res) => {
 			}
 		} catch (err) {
 			console.error(err.message);
+			if (err.kind == "ObjectId") {
+				res.status(400).json({ msg: "Error with follow/unfollow user" });
+			}
 			res.status(500).send("Server Error");
 		}
 	} else {
@@ -139,9 +142,6 @@ router.delete("/", protect, async (req, res) => {
 		res.json({ msg: "User Removed" });
 	} catch (err) {
 		console.error(err.message);
-		if (err.kind == "ObjectId") {
-			res.status(400).json({ msg: "User was not removed" });
-		}
 		res.status(500).send("Server Error");
 	}
 });

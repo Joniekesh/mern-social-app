@@ -20,9 +20,6 @@ router.get("/me", protect, async (req, res) => {
 		res.json(user);
 	} catch (err) {
 		console.error(err.message);
-		if (err.kind == "ObjectId") {
-			return res.status(404).json({ msg: "User not found" });
-		}
 		res.status(500).send("Server Error");
 	}
 });
@@ -51,13 +48,11 @@ router.post(
 		try {
 			let user = await User.findOne({ email });
 			if (user) {
-				return res
-					.status(400)
-					.json({
-						errors: [
-							{ msg: `A user with the email address: ${email} already exist` },
-						],
-					});
+				return res.status(400).json({
+					errors: [
+						{ msg: `A user with the email address: ${email} already exist` },
+					],
+				});
 			}
 
 			user = new User({

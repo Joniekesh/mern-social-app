@@ -22,9 +22,6 @@ router.get("/me", protect, async (req, res) => {
 		res.status(200).json(profile);
 	} catch (err) {
 		console.error(err.message);
-		if (err.kind == "ObjectId") {
-			return res.status(404).json({ msg: "Profile not found" });
-		}
 		res.status(500).send("Server Error");
 	}
 });
@@ -233,6 +230,9 @@ router.put("/education/:eduId", protect, async (req, res) => {
 		}
 	} catch (err) {
 		console.error(err.message);
+		if (err.kind == "ObjectId") {
+			res.status(400).json({ msg: "Error with profile education update" });
+		}
 		res.status(500).send("Server Error");
 	}
 });
@@ -263,12 +263,15 @@ router.delete("/education/:eduId", protect, async (req, res) => {
 		res.status(200).json({ msg: "Profile education removed" });
 	} catch (error) {
 		console.error(err.message);
+		if (err.kind == "ObjectId") {
+			res.status(400).json({ msg: "Error with profile education deletion" });
+		}
 		res.status(500).send("Server Error");
 	}
 });
 
 // @desc   Add Profile Experience
-// @route  POST /api/profiles/experience/:expId
+// @route  POST /api/profiles/experience
 // @access Private
 router.post(
 	"/experience",
@@ -343,6 +346,9 @@ router.put("/experience/:expId", protect, async (req, res) => {
 		}
 	} catch (err) {
 		console.error(err.message);
+		if (err.kind == "ObjectId") {
+			res.status(400).json({ msg: "Error with profile experience update" });
+		}
 		res.status(500).send("Server Error");
 	}
 });
@@ -359,11 +365,9 @@ router.delete("/experience/:expId", protect, async (req, res) => {
 		}
 
 		if (profile.user.toString() !== req.user.id) {
-			return res
-				.status(401)
-				.json({
-					msg: "You are not authorized to delete this Profile Experience",
-				});
+			return res.status(401).json({
+				msg: "You are not authorized to delete this Profile Experience",
+			});
 		}
 
 		profile.experience = profile.experience.filter(
@@ -375,6 +379,9 @@ router.delete("/experience/:expId", protect, async (req, res) => {
 		res.json("Profile experience removed");
 	} catch (err) {
 		console.error(err.message);
+		if (err.kind == "ObjectId") {
+			res.status(400).json({ msg: "Error with profile experience deletion" });
+		}
 		res.status(500).send("Server Error");
 	}
 });

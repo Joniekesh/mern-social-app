@@ -50,7 +50,10 @@ router.get("/:postId", protect, async (req, res) => {
 
 		res.json(post);
 	} catch (err) {
-		console.log(err.message);
+		console.error(err.message);
+		if (err.kind == "ObjectId") {
+			res.status(404).json({ msg: "Post not found" });
+		}
 		res.status(500).send("Server Error");
 	}
 });
@@ -68,7 +71,7 @@ router.get("/", protect, async (req, res) => {
 
 		res.json(posts);
 	} catch (err) {
-		console.log(err.message);
+		console.error(err.message);
 		res.status(500).send("Server Error");
 	}
 });
@@ -97,6 +100,9 @@ router.put("/:postId", protect, async (req, res) => {
 		res.json(updatedPost);
 	} catch (err) {
 		console.error(err.message);
+		if (err.kind == "ObjectId") {
+			res.status(404).json({ msg: "Post not found" });
+		}
 		res.status(500).send("Server Error");
 	}
 });
@@ -130,6 +136,9 @@ router.put("/likes/:postId", protect, async (req, res) => {
 		}
 	} catch (err) {
 		console.error(err.message);
+		if (err.kind == "ObjectId") {
+			res.status(404).json({ msg: "Post not found" });
+		}
 		res.status(500).send("Server Error");
 	}
 });
@@ -156,6 +165,9 @@ router.delete("/:postId", protect, async (req, res) => {
 		res.json("Post Deleted");
 	} catch (err) {
 		console.error(err.message);
+		if (err.kind == "ObjectId") {
+			res.status(404).json({ msg: "Post not found" });
+		}
 		res.status(500).send("Server Error");
 	}
 });
@@ -233,6 +245,9 @@ router.post(
 			res.json(post);
 		} catch (err) {
 			console.error(err.message);
+			if (err.kind == "ObjectId") {
+				res.status(404).json({ msg: "Post not found" });
+			}
 			res.status(500).send("Server Error");
 		}
 	}
@@ -271,7 +286,10 @@ router.put("/comments/:postId/:commentId", protect, async (req, res) => {
 
 		res.json(post);
 	} catch (err) {
-		console.log(err.message);
+		console.lerror(err.message);
+		if (err.kind == "ObjectId") {
+			res.status(400).json({ msg: "Error with comment update" });
+		}
 		res.status(500).send("Server Error");
 	}
 });
@@ -314,6 +332,9 @@ router.put("/comments/likes/:postId/:commentId", protect, async (req, res) => {
 		}
 	} catch (err) {
 		console.error(err.message);
+		if (err.kind == "ObjectId") {
+			res.status(400).json({ msg: "Error with comment like/unlike" });
+		}
 		res.status(500).send("Server Error");
 	}
 });
@@ -349,6 +370,9 @@ router.delete("/comments/:postId/:commentId", protect, async (req, res) => {
 		res.json("Comment Removed");
 	} catch (err) {
 		console.error(err.message);
+		if (err.kind == "ObjectId") {
+			res.status(400).json({ msg: "Error with comment deletion" });
+		}
 		res.status(500).send("Server Error");
 	}
 });
@@ -397,6 +421,9 @@ router.post(
 			res.json(post);
 		} catch (err) {
 			console.error(err.message);
+			if (err.kind == "ObjectId") {
+				res.status(400).json({ msg: "Error with comment reply" });
+			}
 			res.status(500).send("Server Error");
 		}
 	}
@@ -442,6 +469,9 @@ router.put(
 			res.json(post);
 		} catch (err) {
 			console.error(err.message);
+			if (err.kind == "ObjectId") {
+				res.status(400).json({ msg: "Error with comment reply update" });
+			}
 			res.status(500).send("Server Error");
 		}
 	}
@@ -495,6 +525,9 @@ router.put(
 			}
 		} catch (err) {
 			console.error(err.message);
+			if (err.kind == "ObjectId") {
+				res.status(400).json({ msg: "Error with reply like/unlike" });
+			}
 			res.status(500).send("Server Error");
 		}
 	}
@@ -543,6 +576,9 @@ router.delete(
 			res.json("Reply Removed");
 		} catch (err) {
 			console.error(err.message);
+			if (err.kind == "ObjectId") {
+				res.status(400).json({ msg: "Error with reply deletion" });
+			}
 			res.status(500).send("Server Error");
 		}
 	}
