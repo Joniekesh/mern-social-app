@@ -5,24 +5,27 @@
 .profileWrapper {
 	width: 100%;
 	display: flex;
+	flex-direction: column;
 	gap: 16px;
 }
 
 .profileLeft {
-	flex: 4.5;
-	height: 100%;
+	display: flex;
+	gap: 16px;
 }
 
-.profileLeftWrapper {
+.experienceEduDiv {
 	display: flex;
-	flex-direction: column;
-	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
-	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
-	background-color: white;
-	padding: 10px;
-	height: 100%;
 	width: 100%;
-	margin: 16px 0px;
+	gap: 16px;
+}
+
+.expContainer {
+	flex: 1;
+}
+
+.eduContainer {
+	flex: 1;
 }
 
 .expreienceDiv {
@@ -58,6 +61,7 @@
 .experienceTopDiv i {
 	margin-right: 13px;
 	color: #0e76a8;
+	font-size: 24px;
 }
 
 .experienceAdd {
@@ -75,10 +79,22 @@
 
 /*PROFILE RIGHT*/
 .profileRight {
-	flex: 1.5;
+	display: flex;
+	flex-direction: column;
 	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
 	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
 	background-color: white;
 	padding: 10px;
+	margin-top: 16px;
 	height: fit-content;
+}
+
+.profileRight h4 {
+	margin-bottom: 8px;
+}
+
+.profileFollowersViewMore {
+	text-align: center;
+	cursor: pointer;
+	font-weight: 500;
 }

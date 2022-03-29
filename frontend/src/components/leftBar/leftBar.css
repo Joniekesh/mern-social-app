@@ -1,3 +1,62 @@
 .homeLeft {
 	flex: 2.5;
+	width: 100%;
+}
+
+.homeLeftSearchDiv {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	background-color: rgb(228, 231, 231);
+	padding: 5px;
+	margin-bottom: 16px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+
+.homeLeftSearchDiv i {
+	opacity: 0.7;
+}
+
+.homeLeftSearchDiv input {
+	border: none;
+	width: 100%;
+	font-size: 14px;
+	padding: 3px;
+	background-color: rgb(228, 231, 231);
+}
+
+.homeLeftSearchDiv input:focus {
+	outline: none;
+}
+
+.leftBarUserInfoDiv {
+	display: flex;
+	flex-direction: column;
+	height: fit-content;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: white;
+	padding: 10px;
+	border-radius: 8px;
+}
+
+.lefBarUserInfo {
+	display: flex;
+}
+
+.lefBarUserInfo img {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-right: 8px;
+}
+
+.lefBarUserInfo h4 {
+	font-weight: 500;
+}
+
+.lefBarUserInfo p {
+	font-size: 13.5px;
 }

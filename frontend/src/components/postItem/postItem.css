@@ -55,7 +55,7 @@
 	padding: 16px;
 	width: 80px;
 	height: 32px;
-	margin-left: 5px;
+	margin-left: 50px;
 	background-color: rgb(228, 231, 231);
 }
 
@@ -137,19 +137,20 @@
 	align-items: center;
 	justify-content: space-around;
 	margin: 8px 0px;
+	height: 50px;
 }
 
 .likes {
 	cursor: pointer;
 }
 
+.likes i {
+	margin-right: 8px;
+}
 .likes:hover {
 	background-color: rgb(197, 195, 195);
 	padding: 6px 12px;
 	border-radius: 5px;
-}
-.likes i {
-	margin-right: 8px;
 }
 
 .commentInputContainer {
@@ -179,6 +180,7 @@
 .commentInputText {
 	width: 100%;
 	border: none;
+	cursor: pointer;
 }
 
 .commentInputText:focus {

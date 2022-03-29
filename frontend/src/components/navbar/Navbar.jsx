@@ -95,10 +95,20 @@ const Navbar = () => {
 									<div className="userSettings">
 										<ul className="settingsList">
 											<Link to="/profiles/111">
-												<li className="settingsItem">Profile</li>
+												<li
+													className="settingsItem"
+													onClick={() => setToggle(false)}
+												>
+													Profile
+												</li>
 											</Link>
 											<Link to="/settings">
-												<li className="settingsItem">Settings</li>
+												<li
+													className="settingsItem"
+													onClick={() => setToggle(false)}
+												>
+													Settings
+												</li>
 											</Link>
 											<li className="settingsItem" onClick={handleLogout}>
 												Logout

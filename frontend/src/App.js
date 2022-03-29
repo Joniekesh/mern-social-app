@@ -54,31 +54,63 @@ const App = () => {
 					path="/login"
 					element={isAuthenticated ? <Navigate to="/" /> : <Login />}
 				></Route>
-				<Route path="/createPost" element={<CreatePost />}></Route>
-				<Route path="/:postId" element={<SinglePost />}></Route>
+				<Route
+					path="/createPost"
+					element={!isAuthenticated ? <Navigate to="/login" /> : <CreatePost />}
+				></Route>
+				<Route
+					path="/:postId"
+					element={!isAuthenticated ? <Navigate to="/login" /> : <SinglePost />}
+				></Route>
 				<Route
 					path="/:postId/comment/:commentId/replies"
-					element={<Reply />}
+					element={!isAuthenticated ? <Navigate to="/login" /> : <Reply />}
 				></Route>
 				<Route
 					path="/:postId/postReactedUsers"
-					element={<PostReactedUsers />}
+					element={
+						!isAuthenticated ? <Navigate to="/login" /> : <PostReactedUsers />
+					}
 				></Route>
 
 				<Route
 					path="/:postId/comment/:commentId/commentReactedUsers"
-					element={<CommentReactedUser />}
+					element={
+						!isAuthenticated ? <Navigate to="/login" /> : <CommentReactedUser />
+					}
 				></Route>
 				<Route
 					path="/:postId/comment/:commentId/reply/:replyId/replyReactedUsers"
-					element={<ReplyReactedUser />}
+					element={
+						!isAuthenticated ? <Navigate to="/login" /> : <ReplyReactedUser />
+					}
 				></Route>
-				<Route path="/profiles" element={<Profiles />}></Route>
-				<Route path="/profiles/:id" element={<Profile />}></Route>
-				<Route path="/createProfile" element={<CreateProfile />}></Route>
-				<Route path="/experience" element={<Experience />}></Route>
-				<Route path="/education" element={<Education />}></Route>
-				<Route path="/settings" element={<Settings />}></Route>
+				<Route
+					path="/profiles"
+					element={!isAuthenticated ? <Navigate to="/login" /> : <Profiles />}
+				></Route>
+				<Route
+					path="/profiles/:id"
+					element={!isAuthenticated ? <Navigate to="/login" /> : <Profile />}
+				></Route>
+				<Route
+					path="/createProfile"
+					element={
+						!isAuthenticated ? <Navigate to="/login" /> : <CreateProfile />
+					}
+				></Route>
+				<Route
+					path="/experience"
+					element={!isAuthenticated ? <Navigate to="/login" /> : <Experience />}
+				></Route>
+				<Route
+					path="/education"
+					element={!isAuthenticated ? <Navigate to="/login" /> : <Education />}
+				></Route>
+				<Route
+					path="/settings"
+					element={!isAuthenticated ? <Navigate to="/login" /> : <Settings />}
+				></Route>
 			</Routes>
 		</Router>
 	);

@@ -54,6 +54,10 @@
 	cursor: pointer;
 }
 
+.postCreatePhoto i {
+	margin-right: 8px;
+}
+
 .postCreateVideo {
 	color: #7fc15e;
 	cursor: pointer;

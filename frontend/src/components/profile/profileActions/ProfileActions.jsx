@@ -6,10 +6,20 @@ const ProfileActions = () => {
 		<div className="profileActions">
 			<ul className="profileActionsList">
 				<Link to="/createProfile">
-					<li className="profileActionsListItem">Create Profile</li>
+					<li
+						className="profileActionsListItem"
+						style={{ backgroundColor: "#0e76a8" }}
+					>
+						Create Profile
+					</li>
 				</Link>
 				<Link to="/experience">
-					<li className="profileActionsListItem">Add Experience</li>
+					<li
+						className="profileActionsListItem"
+						style={{ backgroundColor: "purple" }}
+					>
+						Add Experience
+					</li>
 				</Link>
 				<Link to="/education">
 					<li className="profileActionsListItem">Add Education</li>

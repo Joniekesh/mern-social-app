@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const ProfileTop = () => {
 	return (
-		<>
+		<div className="profileTopDivs">
 			<div className="profileTop">
 				<img className="profileCoverImg" src="/assets/companyImg.jpeg" alt="" />
 				<i className="fa-solid fa-pen coverImgEdit"></i>{" "}
@@ -154,7 +154,7 @@ const ProfileTop = () => {
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 

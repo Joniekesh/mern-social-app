@@ -52,7 +52,7 @@ router.get("/:postId", protect, async (req, res) => {
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind == "ObjectId") {
-			res.status(404).json({ msg: "Post not found" });
+			return res.status(404).json({ msg: "Post not found" });
 		}
 		res.status(500).send("Server Error");
 	}
@@ -171,14 +171,13 @@ router.delete("/:postId", protect, async (req, res) => {
 		res.status(500).send("Server Error");
 	}
 });
-// TO BE RECTIFIED  LATER
 // @desc   Get Timeline posts
-// @route  GET /api/posts/timeline
+// @route  GET /api/posts/me/timeline
 // @access Private
-router.get("/timeline", protect, async (req, res) => {
+router.get("/me/timeline", protect, async (req, res) => {
 	try {
 		const currentUser = await User.findById(req.user.id);
-		const currentUserPosts = await Post.find({ user: currentUser._id });
+		const currentUserPosts = await Post.find({ user: req.user.id });
 
 		const friendsPosts = await Promise.all(
 			currentUser.followings.map((friendId) => {

@@ -1,3 +1,12 @@
+.profileTopDivs {
+	flex-direction: column;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: white;
+	padding: 10px;
+	height: 100%;
+	margin: 16px 0px;
+}
 .profileTop {
 	display: flex;
 	flex-direction: column;

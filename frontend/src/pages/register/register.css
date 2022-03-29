@@ -57,18 +57,19 @@ label {
 	font-size: 1rem;
 	font-weight: bold;
 	border: none;
-	border-bottom: 1px solid gray;
+	border-bottom: 1px solid #0e76a8;
 	color: purple;
 }
 
 .inputGroup input:focus {
 	outline: none;
+	border-bottom: 2px solid #0e76a8;
 }
 .regBtn {
 	border: none;
 	cursor: pointer;
 	padding: 8px 16px;
-	background-color: rgb(1, 1, 50);
+	background-color: purple;
 	color: #fff;
 	border-radius: 5px;
 	margin: 8px 8px 8px 16px;

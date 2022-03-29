@@ -101,7 +101,7 @@ router.put("/:id/follow", protect, async (req, res) => {
 });
 
 // @desc   Get all friends
-// @route  GET /api/friends
+// @route  GET /api/friends/all
 // @acess  Private
 router.get("/friends/all", protect, async (req, res) => {
 	try {

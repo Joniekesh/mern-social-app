@@ -1,5 +1,6 @@
 import "./profileForm.css";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const initialState = {
 	status: "",
@@ -16,6 +17,7 @@ const initialState = {
 };
 
 const ProfileForm = () => {
+	const [isOpen, setIsOpen] = useState(false);
 	const [formdata, setFormdata] = useState(initialState);
 
 	const {
@@ -125,67 +127,74 @@ const ProfileForm = () => {
 					</small>
 				</div>
 				<div className="socialLinkBtn">
-					<button type="button">Add Social Links</button>
+					<button type="button" onClick={() => setIsOpen(!isOpen)}>
+						Add Social Links
+					</button>
 					<span>Optional</span>
 				</div>
-				<div className="socialInput">
-					<div className="formGroup social">
-						<i
-							className="fa-brands fa-linkedin-in"
-							style={{ color: "#0e76a8" }}
-						></i>
-						<input
-							type="text"
-							placeholder="Linkedin URL"
-							name="linkedin"
-							value={linkedin}
-							onChange={onChange}
-						/>
+				{isOpen && (
+					<div className="socialInput">
+						<div className="formGroup social">
+							<i
+								className="fa-brands fa-linkedin-in"
+								style={{ color: "#0e76a8" }}
+							></i>
+							<input
+								type="text"
+								placeholder="Linkedin URL"
+								name="linkedin"
+								value={linkedin}
+								onChange={onChange}
+							/>
+						</div>
+						<div className="formGroup social ">
+							<i
+								className="fa-brands fa-facebook-f"
+								style={{ color: "#4267B2" }}
+							></i>
+							<input
+								type="text"
+								placeholder="Facebook URL"
+								name="facebook"
+								value={facebook}
+								onChange={onChange}
+							/>
+						</div>
+						<div className="formGroup social">
+							<i
+								className="fa-brands fa-twitter"
+								style={{ color: "#00acee" }}
+							></i>
+							<input
+								type="text"
+								placeholder="Twitter URL"
+								name="twitter"
+								value={twitter}
+								onChange={onChange}
+							/>
+						</div>
+						<div className="formGroup social">
+							<i
+								className="fa-brands fa-instagram"
+								style={{ color: "#8a3ab9" }}
+							></i>
+							<input
+								type="text"
+								placeholder="Instagram URL"
+								name="instagram"
+								value={instagram}
+								onChange={onChange}
+							/>
+						</div>
 					</div>
-					<div className="formGroup social ">
-						<i
-							className="fa-brands fa-facebook-f"
-							style={{ color: "#4267B2" }}
-						></i>
-						<input
-							type="text"
-							placeholder="Facebook URL"
-							name="facebook"
-							value={facebook}
-							onChange={onChange}
-						/>
-					</div>
-					<div className="formGroup social">
-						<i
-							className="fa-brands fa-twitter"
-							style={{ color: "#00acee" }}
-						></i>
-						<input
-							type="text"
-							placeholder="Twitter URL"
-							name="twitter"
-							value={twitter}
-							onChange={onChange}
-						/>
-					</div>
-					<div className="formGroup social">
-						<i
-							className="fa-brands fa-instagram"
-							style={{ color: "#8a3ab9" }}
-						></i>
-						<input
-							type="text"
-							placeholder="Instagram URL"
-							name="instagram"
-							value={instagram}
-							onChange={onChange}
-						/>
-					</div>
-				</div>
+				)}
 				<button type="submit" className="createprofileSubmitBtn">
 					Submit
 				</button>
 			</form>
+			<Link to="/profiles/111">
+				<button className="createProfileGoBackBtn">Go Back</button>
+			</Link>
 		</div>
 	);
 };

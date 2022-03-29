@@ -13,8 +13,7 @@ const PostItem = () => {
 						<div className="topLeftUserInfo">
 							<h4 className="username">Okoro John</h4>
 							<p className="skillsList">
-								Full Stack Developer: MERN | Socket.io | Redux | Firebase |
-								Git...
+								Full Stack Developer: MERN | Socket.io | Redux Firebase | Git...
 							</p>
 							<span className="followersCount">20,334 followers</span>
 							<span className="time">2 years</span>
@@ -67,18 +66,20 @@ const PostItem = () => {
 					<span>Send</span>
 				</div>
 			</div>
-			<div className="commentInputContainer">
-				<img className="commentImg" src="/assets/profile.jpeg" alt="" />
-				<div className="commentInput">
-					<input
-						className="commentInputText"
-						type="text"
-						placeholder="Add a comment..."
-					/>
-					<i className="fa-solid fa-face-laugh commentInputIcon"></i>
-					<i className="fa-solid fa-image"></i>
+			<Link to="/111">
+				<div className="commentInputContainer">
+					<img className="commentImg" src="/assets/profile.jpeg" alt="" />
+					<div className="commentInput">
+						<input
+							className="commentInputText"
+							type="text"
+							placeholder="Add a comment..."
+						/>
+						<i className="fa-solid fa-face-laugh commentInputIcon"></i>
+						<i className="fa-solid fa-image"></i>
+					</div>
 				</div>
-			</div>
+			</Link>
 		</div>
 	);
 };

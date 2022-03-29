@@ -4,6 +4,7 @@ const RightBar = () => {
 	return (
 		<div className="homeRight">
 			<h4 className="homeRigthText">Follow users for wider connections</h4>
+			<hr className="line" />
 			<div className="homerightLists">
 				<div className="homeRightListitem">
 					<div className="homeRightTop">
@@ -39,6 +40,8 @@ const RightBar = () => {
 					</div>
 				</div>
 			</div>
+			<hr className="line" />
+			<span className="rightBarViewMore">View More...</span>
 		</div>
 	);
 };
