@@ -1,22 +1,17 @@
 import "./login.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/actions/authActions";
-import { setAlert } from "../../redux/actions/alertActions";
 
 const Login = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-
 		dispatch(login({ email, password }));
-		dispatch(setAlert("Login Successful", "success"));
 	};
 	return (
 		<div className="login">

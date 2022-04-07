@@ -1,6 +1,8 @@
 import "./experienceForm.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { addExperience } from "../../../redux/actions/prifileActions";
 
 const initialState = {
 	title: "",
@@ -8,28 +10,39 @@ const initialState = {
 	location: "",
 	from: "",
 	to: "",
-	current: "",
+	current: false,
 	description: "",
 };
 
 const ExperienceForm = () => {
-	const [formdata, setFormdata] = useState(initialState);
+	const navigate = useNavigate();
 
-	const { title, company, location, from, to, current, description } = formdata;
+	const userLogin = useSelector((state) => state.userLogin);
+	const { user } = userLogin;
+
+	const [formData, setFormData] = useState(initialState);
+	const { title, company, location, from, to, current, description } = formData;
 
 	const onChange = (e) => {
-		setFormdata({ ...formdata, [e.target.name]: e.target.value });
+		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
+
+	const dispatch = useDispatch();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+
+		dispatch(addExperience(formData));
+
+		navigate("/dashboard");
+		window.location.reload();
 	};
 
 	return (
 		<div className="experienceForm">
 			<div className="experienceFormIntro">
 				<i className="fa-solid fa-briefcase"></i>
-				<h1>Add An Experience</h1>
+				<h1>Add Experience</h1>
 			</div>
 			<hr className="line" />
 			<p>Add any experience you have had in the past</p>
@@ -56,7 +69,7 @@ const ExperienceForm = () => {
 				<div className="experienceFormGroup">
 					<input
 						type="text"
-						placeholder="Location"
+						placeholder="Location eg (Country, City)"
 						name="location"
 						value={location}
 						onChange={onChange}
@@ -72,10 +85,10 @@ const ExperienceForm = () => {
 							type="checkbox"
 							name="current"
 							checked={current}
-							onChange={() => setFormdata({ ...formdata, current: !current })}
+							onChange={() => setFormData({ ...formData, current: !current })}
 						/>{" "}
-						<h4>Current Job</h4>
 					</p>
+					<h4>Current Job</h4>
 				</div>
 				<div className="experienceFormGroup">
 					<h4>To Date</h4>
@@ -92,7 +105,7 @@ const ExperienceForm = () => {
 				<button type="submit" className="experienceFormGroupBtn">
 					Submit
 				</button>
-				<Link to="/profiles/111">
+				<Link to="/dashboard">
 					<button type="button" className="experienceBackBtn">
 						Go Back
 					</button>

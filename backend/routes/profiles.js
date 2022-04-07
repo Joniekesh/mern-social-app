@@ -13,7 +13,10 @@ const axios = require("axios");
 // @access Private
 router.get("/me", protect, async (req, res) => {
 	try {
-		const profile = await Profile.findOne({ user: req.user.id });
+		const profile = await Profile.findOne({ user: req.user.id }).populate(
+			"user",
+			["name", "profilePic"]
+		);
 
 		if (!profile) {
 			return res.status(404).json({ msg: "Profile not found" });
@@ -26,7 +29,7 @@ router.get("/me", protect, async (req, res) => {
 	}
 });
 
-// @desc   Create profile
+// @desc   Create/Update profile
 // @route  POST /api/profiles
 // @access Private
 router.post(
@@ -96,7 +99,7 @@ router.post(
 // @desc   Get all profiles
 // @route  GET /api/profiles
 // @access Private
-router.get("/", async (req, res) => {
+router.get("/", protect, async (req, res) => {
 	try {
 		const profiles = await Profile.find().populate("user", [
 			"name",
@@ -117,7 +120,7 @@ router.get("/", async (req, res) => {
 // @desc   Get profile by user ID
 // @route  GET /api/profiles/:userId
 // @access Public
-router.get("/user/:userId", async (req, res) => {
+router.get("/user/:userId", protect, async (req, res) => {
 	try {
 		const profile = await Profile.findOne({ user: req.params.userId }).populate(
 			"user",
@@ -224,7 +227,7 @@ router.put("/education/:eduId", protect, async (req, res) => {
 			edu.description = description || edu.current;
 
 			const updatedProfile = await profile.save();
-			res.json(updatedProfile);
+			return res.json(updatedProfile);
 		} else {
 			res.status(404).json({ msg: "Profile not found" });
 		}
@@ -389,7 +392,7 @@ router.delete("/experience/:expId", protect, async (req, res) => {
 // @desc   Get user repositories from github
 // @route  GET /api/profiles/github/:username
 // @access Public
-router.get("/github/:username", async (req, res) => {
+router.get("/github/:username", protect, async (req, res) => {
 	try {
 		const uri = encodeURI(
 			`https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`

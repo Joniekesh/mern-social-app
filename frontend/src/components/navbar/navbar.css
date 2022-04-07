@@ -128,7 +128,7 @@
 
 .userSettings {
 	position: absolute;
-	width: 50%;
+	width: 240px;
 	right: -24px;
 	top: 48px;
 	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
@@ -150,9 +150,7 @@
 .settingsItem {
 	margin: 8px 0px;
 	cursor: pointer;
-	border-bottom: 1px solid #ddd;
 	width: 100%;
-	background-color: rgb(209, 206, 206);
 	padding: 4px;
 	border-radius: 3px;
 	transition: all 0.5s ease;
@@ -169,4 +167,25 @@
 	font-size: 1.5rem;
 	color: rgb(199, 196, 196);
 	cursor: pointer;
+}
+
+.dropDown {
+	display: flex;
+	width: 100%;
+}
+
+.dropDownImg {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.dropDownProfile p {
+	font-weight: bold;
+	margin-bottom: 3px;
+}
+
+.dropDownProfile span {
+	font-size: 15px;
 }

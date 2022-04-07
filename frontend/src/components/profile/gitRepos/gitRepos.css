@@ -1,0 +1,50 @@
+.gitReposListItem {
+	border: 1px solid #ddd;
+	padding: 10px;
+	margin-bottom: 5px;
+}
+
+.reposInfo {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.reposLeft,
+.reposRight {
+	display: flex;
+	flex-direction: column;
+	font-size: 14px;
+}
+
+.reposLeft {
+	color: #0e76a8;
+}
+
+.stars {
+	background-color: teal;
+	color: white;
+	padding: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.watchers {
+	background-color: #171515;
+	color: white;
+	padding: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 5px 0px;
+}
+
+.forks {
+	background-color: #0e76a8;
+	color: white;
+	padding: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

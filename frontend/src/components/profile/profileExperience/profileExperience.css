@@ -26,6 +26,25 @@
 	font-weight: 500;
 }
 
+.employmentDetails {
+	display: flex;
+	align-items: center;
+	margin: 5px 0px;
+}
+
+.employmentDetails span {
+	margin-right: 5px;
+}
+
+.experienceDate {
+	display: flex;
+	flex-direction: column;
+}
+
+.expDate {
+	margin-bottom: 5px;
+}
+
 .experienceDesc span,
 .experienceDate {
 	font-size: 13.5px;

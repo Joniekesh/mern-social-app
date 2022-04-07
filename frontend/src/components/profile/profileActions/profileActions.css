@@ -8,4 +8,9 @@
 	padding: 6px;
 	border-radius: 12px;
 	color: white;
+	transition: all 0.4s ease;
+}
+
+.profileActionsListItem:hover {
+	opacity: 0.8;
 }

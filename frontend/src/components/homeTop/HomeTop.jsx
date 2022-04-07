@@ -1,12 +1,16 @@
 import "./homeTop.css";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const HomeTop = () => {
+	const userLogin = useSelector((state) => state.userLogin);
+	const { user } = userLogin;
+
 	return (
 		<div className="homeCenterPostCreate">
 			<Link to="/createPost">
 				<div className="homeCenterTopDiv">
-					<img src="/assets/profile2.jpeg" alt="" />
+					<img src={user.profilePic} alt="" />
 					<input type="text" placeholder="Write a post..." />
 				</div>
 			</Link>

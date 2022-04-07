@@ -17,8 +17,13 @@
 
 .topLeft {
 	display: flex;
+	justify-content: space-between;
 	cursor: pointer;
 	width: 100%;
+}
+
+.userDiv {
+	display: flex;
 }
 
 .topLeftImg {
@@ -45,18 +50,22 @@
 
 .topRight {
 	display: flex;
+}
+
+.topRightFollowDiv {
+	display: flex;
 	align-items: center;
 	justify-content: center;
 	color: teal;
 	cursor: pointer;
-	font-size: 15px;
 	font-weight: bold;
 	transition: all 0.5s ease;
-	padding: 16px;
-	width: 80px;
-	height: 32px;
-	margin-left: 50px;
 	background-color: rgb(228, 231, 231);
+	padding: 16px 6px;
+	height: 24px;
+	border-radius: 5px;
+	margin-right: 16px;
+	transition: all 1s ease;
 }
 
 .topRight i {

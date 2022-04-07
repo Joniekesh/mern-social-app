@@ -8,7 +8,10 @@ const Navbar = () => {
 	const [toggle, setToggle] = useState(false);
 
 	const userLogin = useSelector((state) => state.userLogin);
-	const { isAuthenticated } = userLogin;
+	const { isAuthenticated, user } = userLogin;
+
+	const profile = useSelector((state) => state.profile);
+	const { profile: currentProfile } = profile;
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -66,7 +69,7 @@ const Navbar = () => {
 					<ul className="navbarRightList">
 						{isAuthenticated && (
 							<>
-								<Link to="/profiles">
+								<Link to="/profile">
 									<li className="navbarRightListItem">DEVELOPERS</li>
 								</Link>
 								<Link to="/">
@@ -77,16 +80,13 @@ const Navbar = () => {
 										LOGOUT
 									</li>
 								</Link>
-								<Link to="/settings">
-									<div className="navbarRightListItem badgeContainer">
-										<img
-											className="navImg "
-											src="/assets/profile.jpeg"
-											alt=""
-										/>
-										<span className="imgBadge"></span>
-									</div>
-								</Link>
+								<div
+									className="navbarRightListItem badgeContainer"
+									onClick={() => setToggle(!toggle)}
+								>
+									<img className="navImg " src={user?.profilePic} alt="" />
+									<span className="imgBadge"></span>
+								</div>
 								<i
 									className="fa-solid fa-caret-down caret"
 									onClick={() => setToggle(!toggle)}
@@ -94,13 +94,26 @@ const Navbar = () => {
 								{toggle && (
 									<div className="userSettings">
 										<ul className="settingsList">
-											<Link to="/profiles/111">
+											<Link to="/dashboard">
 												<li
-													className="settingsItem"
+													className="settingsItem dropDown"
 													onClick={() => setToggle(false)}
 												>
-													Profile
+													<div>
+														<img
+															className="dropDownImg"
+															src={user?.profilePic}
+															alt=""
+														/>
+													</div>
+													<div className="dropDownProfile">
+														<p>{user.name}</p>
+														<span>
+															{currentProfile?.headline.substring(0, 30)}...
+														</span>
+													</div>
 												</li>
+												<hr className="line" />
 											</Link>
 											<Link to="/settings">
 												<li
@@ -123,7 +136,7 @@ const Navbar = () => {
 								<Link to="/register">
 									<li className="navbarRightListItem">REGISTER</li>
 								</Link>
-								<Link to="login">
+								<Link to="/login">
 									<li className="navbarRightListItem">LOGIN</li>
 								</Link>
 							</>

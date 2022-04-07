@@ -36,7 +36,7 @@ router.put("/me", protect, async (req, res) => {
 // @desc   Get all users
 // @route  GET /api/users
 // @access Public
-router.get("/", async (req, res) => {
+router.get("/", protect, async (req, res) => {
 	try {
 		const users = await User.find().select("-password");
 
@@ -50,7 +50,7 @@ router.get("/", async (req, res) => {
 // @desc   Get a user by ID
 // @route  GET /api/users
 // @access Public
-router.get("/:id", async (req, res) => {
+router.get("/:id", protect, async (req, res) => {
 	try {
 		const user = await User.findById(req.params.id).select("-password");
 

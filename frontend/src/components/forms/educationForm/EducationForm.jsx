@@ -1,36 +1,47 @@
 import "./educationForm.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
-const initialState = {
-	school: "",
-	degree: "",
-	fieldofstudy: "",
-	from: "",
-	to: "",
-	current: "",
-	description: "",
-};
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { addEducation } from "../../../redux/actions/prifileActions";
 
 const EducationForm = () => {
-	const [formdata, setFormdata] = useState(initialState);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { user } = userLogin;
+
+	const initialState = {
+		school: "",
+		degree: "",
+		fieldofstudy: "",
+		from: "",
+		to: "",
+		current: false,
+		description: "",
+	};
+	const [formData, setFormData] = useState(initialState);
 
 	const { school, degree, fieldofstudy, from, to, current, description } =
-		formdata;
+		formData;
 
 	const onChange = (e) => {
-		setFormdata({ ...formdata, [e.target.name]: e.target.value });
+		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+		dispatch(addEducation(formData));
+
+		navigate("/dashboard");
+		window.location.reload();
 	};
 
 	return (
 		<div className="experienceForm">
 			<div className="experienceFormIntro">
 				<i className="fa-solid fa-graduation-cap"></i>
-				<h1>Add An Education</h1>
+				<h1>Add Education</h1>
 			</div>
 			<hr className="line" />
 			<p>Add any school you have attended</p>
@@ -75,10 +86,10 @@ const EducationForm = () => {
 							type="checkbox"
 							name="current"
 							checked={current}
-							onChange={() => setFormdata({ ...formdata, current: !current })}
+							onChange={() => setFormData({ ...formData, current: !current })}
 						/>{" "}
-						<h4>Current School</h4>
 					</p>
+					<h4>Current School</h4>
 				</div>
 				<div className="experienceFormGroup">
 					<h4>To Date</h4>
@@ -95,7 +106,7 @@ const EducationForm = () => {
 				<button type="submit" className="experienceFormGroupBtn">
 					Submit
 				</button>
-				<Link to="/profiles/111">
+				<Link to="/dashboard">
 					<button type="button" className="experienceBackBtn">
 						Go Back
 					</button>

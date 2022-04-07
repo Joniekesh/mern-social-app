@@ -1,6 +1,8 @@
 import "./profileForm.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { createProfile } from "../../../redux/actions/prifileActions";
 
 const initialState = {
 	status: "",
@@ -9,16 +11,24 @@ const initialState = {
 	location: "",
 	skills: "",
 	githubusername: "",
+	headline: "",
 	bio: "",
 	linkedin: "",
 	facebook: "",
 	twitter: "",
 	instagram: "",
+	youtube: "",
 };
 
 const ProfileForm = () => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [formdata, setFormdata] = useState(initialState);
+	const [formData, setFormdata] = useState(initialState);
+
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { user } = userLogin;
 
 	const {
 		status,
@@ -27,19 +37,24 @@ const ProfileForm = () => {
 		location,
 		skills,
 		githubusername,
+		headline,
 		bio,
 		linkedin,
 		facebook,
 		twitter,
 		instagram,
-	} = formdata;
+		youtube,
+	} = formData;
 
 	const onChange = (e) => {
-		setFormdata({ ...formdata, [e.target.name]: e.target.value });
+		setFormdata({ ...formData, [e.target.name]: e.target.value });
 	};
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+		dispatch(createProfile(formData));
+
+		navigate("/dashboard");
 	};
 
 	return (
@@ -89,7 +104,7 @@ const ProfileForm = () => {
 				<div className="formGroup">
 					<input
 						type="text"
-						placeholder="Location"
+						placeholder="Location eg (Country, City)"
 						name="location"
 						value={location}
 						onChange={onChange}
@@ -108,13 +123,26 @@ const ProfileForm = () => {
 						Please use comma separated values (eg. HTML,CSS,Javascript,Python)
 					</small>
 				</div>
-				<div
-					className="formGroup"
-					placeholder="Github username"
-					name="githubusername"
-					value={githubusername}
-					onChange={onChange}
-				></div>
+				<div className="formGroup">
+					<input
+						type="text"
+						placeholder="Github username"
+						name="githubusername"
+						value={githubusername}
+						onChange={onChange}
+					/>
+				</div>
+				<div className="formGroup">
+					<textarea
+						placeholder="A headline describing your key skills"
+						name="headline"
+						value={headline}
+						onChange={onChange}
+					/>
+					<small className="textareaSmall">
+						Tell us a little about yourself
+					</small>
+				</div>
 				<div className="formGroup">
 					<textarea
 						placeholder="A short bio of yourself"
@@ -186,13 +214,26 @@ const ProfileForm = () => {
 								onChange={onChange}
 							/>
 						</div>
+						<div className="formGroup social">
+							<i
+								className="fa-brands fa-youtube"
+								style={{ color: "#c4302b" }}
+							></i>
+							<input
+								type="text"
+								placeholder="YouTube URL"
+								name="youtube"
+								value={youtube}
+								onChange={onChange}
+							/>
+						</div>
 					</div>
 				)}
 				<button type="submit" className="createprofileSubmitBtn">
 					Submit
 				</button>
 			</form>
-			<Link to="/profiles/111">
+			<Link to="/dashboard">
 				<button className="createProfileGoBackBtn">Go Back</button>
 			</Link>
 		</div>

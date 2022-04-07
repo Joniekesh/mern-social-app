@@ -30,6 +30,9 @@ const ProfileSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		headline: {
+			type: String,
+		},
 		bio: {
 			type: String,
 		},

@@ -6,12 +6,14 @@
 	padding: 10px;
 	height: 100%;
 	margin: 16px 0px;
+	flex: 3;
 }
 .profileTop {
 	display: flex;
 	flex-direction: column;
 	position: relative;
 }
+
 .profileCoverImg {
 	width: 100%;
 	height: 300px;
@@ -22,19 +24,13 @@
 }
 
 .coverImgEdit {
-	color: teal;
 	position: absolute;
 	top: 16px;
 	right: 16px;
-	cursor: pointer;
 }
 
-.profilePicEdit {
-	position: absolute;
-	font-size: 18px;
-	right: 317px;
-	top: 265px;
-	font-size: 24px;
+.coverImgEdit i {
+	color: teal;
 	cursor: pointer;
 }
 
@@ -43,7 +39,7 @@
 	width: 150px;
 	height: 150px;
 	border-radius: 50%;
-	border: 2px solid teal;
+	border: 2px solid #0e76a8;
 	object-fit: cover;
 	top: 30vh;
 	right: 0;

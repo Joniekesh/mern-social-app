@@ -1,0 +1,27 @@
+.profilesWrapper {
+	max-width: 700px;
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+	justify-content: center;
+}
+
+.profilesWrapper h1 {
+	color: teal;
+}
+
+.profilesWrapperIntro {
+	display: flex;
+	margin: 10px 0px;
+}
+
+.profilesWrapperIntro i {
+	margin-right: 10px;
+	color: purple;
+	font-size: 20px;
+}
+
+.profilesLists {
+	display: flex;
+	flex-direction: column;
+}

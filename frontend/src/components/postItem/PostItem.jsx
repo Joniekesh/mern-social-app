@@ -1,50 +1,59 @@
 import "./postItem.css";
 import { Link } from "react-router-dom";
 
-const PostItem = () => {
+const PostItem = ({ post }) => {
 	return (
 		<div className="homeCenterPostItem">
 			<div className="homeCenterTop">
 				<div className="topLeft">
-					<Link to="/profiles/111">
-						<img className="topLeftImg" src="/assets/profile.jpeg" alt="" />
-					</Link>
-					<Link to="/profiles/111">
-						<div className="topLeftUserInfo">
-							<h4 className="username">Okoro John</h4>
-							<p className="skillsList">
-								Full Stack Developer: MERN | Socket.io | Redux Firebase | Git...
-							</p>
-							<span className="followersCount">20,334 followers</span>
-							<span className="time">2 years</span>
-						</div>
-					</Link>
+					<div className="userDiv">
+						<Link to={`/profile/`}>
+							<img className="topLeftImg" src={post?.profilePic} alt="" />
+						</Link>
+						<Link to={`/profile/${post?.user}`}>
+							<div className="topLeftUserInfo">
+								<h4 className="username">{post?.name}</h4>
+								<p className="skillsList">Profile headline</p>
+								<span className="followersCount">20,334 followers</span>
+								<span className="time">2 years</span>
+							</div>
+						</Link>
+					</div>
 					<div className="topRight">
-						<i className="fa-solid fa-plus"></i>
-						<span>Follow</span>
+						<div className="topRightFollowDiv">
+							<i className="fa-solid fa-plus"></i>
+							<span>Follow</span>
+						</div>
+						<i class="fa-solid fa-ellipsis-vertical"></i>
+					</div>
+					<div className="deleteUpdateBtns" style={{ display: "none" }}>
+						<div className="updateBtns">
+							<i className="fa-solid fa-pen"></i>
+							<span>Edit</span>
+						</div>
+						<div className="updateBtns">
+							<i className="fa-solid fa-trash"></i>
+							<span>Delete</span>
+						</div>
 					</div>
 				</div>
 			</div>
 			<hr className="line" />
-			<p className="postText">
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis cum
-				repellat officia hic ipsa aliquid in asperiores, modi perspiciatis...see
-				more.
-			</p>
-			<Link to="/111">
-				<img className="homeCenterPostImg" src="/assets/postImg.jpeg" alt="" />
+			<p className="postText">{post?.desc}</p>
+			<Link to={`/post/${post?._id}`}>
+				<img className="homeCenterPostImg" src={post?.photo} alt="" />
 			</Link>
 			<div className="reactionsDiv">
-				<Link to="/111">
+				<Link to={`/post/${post?._id}`}>
 					<div className="reactions">
 						<i className="fa-solid fa-thumbs-up thumb"></i>
 						<i className="fa-solid fa-heart heart"></i>
 						<i className="fa-solid fa-face-laugh laugh"></i>
-						<span>26</span>
+						<span>{post?.likes.length}</span>
 					</div>
 				</Link>
-				<Link to="/111">
-					<span className="commentCount">43 Comments</span>
+				<Link to={`/post/${post?._id}`}>
+					<span className="commentCount">{post?.comments.length} Comments</span>
 				</Link>
 			</div>
 			<hr className="line" />
@@ -66,7 +75,7 @@ const PostItem = () => {
 					<span>Send</span>
 				</div>
 			</div>
-			<Link to="/111">
+			<Link to={`/post/${post?._id}`}>
 				<div className="commentInputContainer">
 					<img className="commentImg" src="/assets/profile.jpeg" alt="" />
 					<div className="commentInput">

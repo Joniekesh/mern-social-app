@@ -8,8 +8,11 @@ import {
 	USER_REGISTER_FAIL,
 	USER_REGISTER_SUCCESS,
 	USER_LOGOUT,
+	USER_UPDATE_SUCCESS,
+	USER_UPDATE_FAIL,
 } from "../constants/authConstants";
 
+// Get loggedin user
 export const loadUser = () => async (dispatch) => {
 	try {
 		const config = {
@@ -31,6 +34,7 @@ export const loadUser = () => async (dispatch) => {
 	}
 };
 
+// Register user
 export const register = (formData) => async (dispatch) => {
 	try {
 		const config = {
@@ -60,6 +64,7 @@ export const register = (formData) => async (dispatch) => {
 	}
 };
 
+//Login user
 export const login = (formData) => async (dispatch) => {
 	try {
 		const config = {
@@ -85,6 +90,35 @@ export const login = (formData) => async (dispatch) => {
 
 		dispatch({
 			type: USER_LOGIN_FAIL,
+		});
+	}
+};
+
+// Update user
+export const updateUser = (user) => async (dispatch, getState) => {
+	const { userLogin } = getState();
+
+	const config = {
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${userLogin.token}`,
+		},
+	};
+
+	try {
+		const { data } = await axios.put("/users/me", user, config);
+
+		dispatch({
+			type: USER_UPDATE_SUCCESS,
+			payload: data,
+		});
+	} catch (err) {
+		dispatch({
+			type: USER_UPDATE_FAIL,
+			payload: {
+				msg: err.response.statusText,
+				status: err.response.status,
+			},
 		});
 	}
 };

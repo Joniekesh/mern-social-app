@@ -6,6 +6,8 @@ import {
 	USER_LOADED_FAIL,
 	USER_LOGOUT,
 	USER_LOADED_SUCCESS,
+	USER_UPDATE_SUCCESS,
+	USER_UPDATE_FAIL,
 } from "../constants/authConstants";
 
 const initialState = {
@@ -44,6 +46,12 @@ export const userLoginReducer = (state = initialState, action) => {
 				isAuthenticated: true,
 				user: payload,
 				loading: false,
+			};
+		case USER_UPDATE_FAIL:
+			return {
+				...state,
+				loading: false,
+				user: payload,
 			};
 		default:
 			return state;
