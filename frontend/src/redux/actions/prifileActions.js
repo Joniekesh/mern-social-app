@@ -10,6 +10,7 @@ import {
 	UPDATE_EDUCATION,
 	GET_GIT_REPOS,
 	GIT_REPOS_ERROR,
+	CLEAR_PROFILE,
 } from "../constants/profileConstants";
 
 // Get loggedin user profile
@@ -31,7 +32,7 @@ export const getCurrentProfile = () => async (dispatch, getState) => {
 	} catch (err) {
 		dispatch({
 			type: PROFILE_ERROR,
-			error: {
+			payload: {
 				msg: err.response.statusText,
 				status: err.response.status,
 			},
@@ -41,6 +42,7 @@ export const getCurrentProfile = () => async (dispatch, getState) => {
 
 // Get all profiles
 export const getProfiles = () => async (dispatch, getState) => {
+	dispatch({ type: CLEAR_PROFILE });
 	const { userLogin } = getState();
 
 	try {
@@ -140,7 +142,7 @@ export const addEducation = (formData) => async (dispatch, getState) => {
 	} catch (err) {
 		dispatch({
 			type: PROFILE_ERROR,
-			error: {
+			payload: {
 				msg: err.response.statusText,
 				status: err.response.status,
 			},

@@ -9,6 +9,7 @@ import {
 	UPDATE_EDUCATION,
 	GET_GIT_REPOS,
 	GIT_REPOS_ERROR,
+	CLEAR_PROFILE,
 } from "../constants/profileConstants";
 const initialState = {
 	profiles: [],
@@ -37,6 +38,12 @@ export const profileReducer = (state = initialState, action) => {
 				loading: false,
 			};
 
+		case CLEAR_PROFILE:
+			return {
+				...state,
+				profile: null,
+				repos: [],
+			};
 		case REMOVE_EDUCATION:
 			return {
 				...state,

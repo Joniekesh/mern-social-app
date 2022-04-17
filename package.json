@@ -25,7 +25,9 @@
 		"firebase": "^9.6.10",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.2.4",
-		"normalize-url": "^4.5.1"
+		"normalize-url": "^4.5.1",
+		"stream": "^0.0.2",
+		"util": "^0.12.4"
 	},
 	"devDependencies": {
 		"concurrently": "^7.0.0",

@@ -1,0 +1,21 @@
+.commentReply {
+	height: calc(100vh - 60px);
+}
+
+.commentReplyWrapper {
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: white;
+	padding: 10px;
+	border-radius: 8px;
+}
+
+.replyTitle {
+	margin: 10px 0px;
+}
+.replyWrappAll {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-bottom: 105px;
+}

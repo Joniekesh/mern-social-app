@@ -1,7 +1,7 @@
-import "./postReactedUserItem.css";
+import "./commentReactedUserItem.css";
 import { Link } from "react-router-dom";
 
-const PostReactedUserItem = ({ like }) => {
+const CommentReactedUserItem = ({ like }) => {
 	return (
 		<div className="postReactedUserItem">
 			<div className="postReactedUserInfo">
@@ -25,4 +25,4 @@ const PostReactedUserItem = ({ like }) => {
 	);
 };
 
-export default PostReactedUserItem;
+export default CommentReactedUserItem;

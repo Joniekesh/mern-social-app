@@ -14,8 +14,6 @@ const Home = () => {
 	const post = useSelector((state) => state.post);
 	const { posts, loading } = post;
 
-	console.log(posts);
-
 	useEffect(() => {
 		dispatch(getPosts());
 	}, [dispatch]);

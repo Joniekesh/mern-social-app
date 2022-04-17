@@ -1,66 +1,126 @@
 import "./replyItem.css";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { format } from "timeago.js";
+import { deleteReply } from "../../redux/actions/postActions";
+import { likeReply } from "../../redux/actions/postActions";
 
-const ReplyItem = () => {
+const ReplyItem = ({ post, comment, reply, profile }) => {
 	const [openModal, setOpenModal] = useState(false);
+	const [like, setLike] = useState(reply.likes.length);
+	const [isLiked, setIsLiked] = useState(false);
+
+	const dispatch = useDispatch();
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { isAuthenticated, user, loading } = userLogin;
+
+	const currentLikedUser = reply.likes.find((like) => like.user === user._id);
+
+	const newLike = {
+		user,
+		name: user.name,
+		profilePic: user.profilePic,
+	};
+
+	useEffect(() => {
+		setIsLiked(reply.likes.includes(currentLikedUser));
+	}, [reply.likes, currentLikedUser]);
+
+	const handleReplyLike = () => {
+		dispatch(likeReply(post._id, comment._id, reply._id, newLike));
+		setLike(isLiked ? like - 1 : like + 1);
+		setIsLiked(!isLiked);
+
+		window.location.reload();
+	};
+
+	const handleReplyDelete = () => {
+		if (isAuthenticated & (user._id === reply.user)) {
+			dispatch(deleteReply(post._id, comment._id, reply._id));
+
+			window.location.reload();
+		}
+	};
 
 	return (
 		<div className="replyListItem">
 			<div className="replyTop">
 				<div className="replyTopImg">
-					<Link to="/profiles/111">
-						<img className="replyImg" src="/assets/profile.jpeg" alt="" />
+					<Link to={`/profiles/${reply?.user}`}>
+						<img className="replyImg" src={reply?.profilePic} alt="" />
 					</Link>
 				</div>
 				<div className="replyWrapperDiv">
-					<div className="replyTopMiddleUserInfoDiv">
-						<p className="replyUserName">Okoro John</p>
-						<span className="replyUserProfileDesc">
-							Full Stack Developer: MERN | Socket.io | Redux | Firebase | Git...
-						</span>
-						<span className="userRegDate">5 months</span>
-					</div>
-					{openModal && (
-						<div className="postEditDeletePopup">
-							<div className="postUpdate">
-								<i className="fa-solid fa-pen"></i>
-								<span>Edit</span>
-							</div>
-							<hr className="line" />
-							<div className="postDelete">
-								<i className="fa-solid fa-trash-can"></i>
-								<span>Delete</span>
-							</div>
+					<div className="replyWrapperTopDiv">
+						<div className="replyTopMiddleUserInfoDiv">
+							<p className="replyUserName">{reply?.name}</p>
+							<span className="replyUserProfileDesc">
+								Full Stack Developer: MERN | Socket.io | Redux | Firebase |
+								Git...
+							</span>
+							<span className="userRegDate">{format(reply.date)}</span>
 						</div>
-					)}
-					<i
-						className="fa-solid fa-ellipsis-vertical replyEllipsis"
-						onClick={() => setOpenModal(!openModal)}
-					></i>
+						{openModal && (
+							<div className="postEditDeletePopup">
+								<div className="postUpdate">
+									<i className="fa-solid fa-pen"></i>
+									<span>Edit</span>
+								</div>
+								<hr className="line" />
+								<div className="postDelete">
+									<i
+										className="fa-solid fa-trash-can"
+										onClick={handleReplyDelete}
+									></i>
+									<span>Delete</span>
+								</div>
+							</div>
+						)}
+						{post.user === reply.user && (
+							<Link to={`/profiles/${reply.user}`}>
+								<div className="author">Author</div>
+							</Link>
+						)}
+						{!loading && isAuthenticated && user._id === reply.user && (
+							<i
+								style={{ color: "teal" }}
+								className="fa-solid fa-ellipsis-vertical replyEllipsis"
+								onClick={() => setOpenModal(!openModal)}
+							></i>
+						)}
+					</div>
 					<hr className="line" />
-					<p className="replyDesc">
-						Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem,
-						voluptates aut. Mollitia, quidem laboriosam? Atque exercitationem
-						veritatis ut voluptatum officia?
-					</p>
+					<p className="replyDesc">{reply?.desc}</p>
 				</div>
 			</div>
 			<div className="replyReactionsDiv">
 				<div className="replyplyLikesDiv">
-					<span className="replylikeItem">Like</span>
-					<Link to="/111/comment/111/reply/111/replyReactedUsers">
+					<span
+						className={isLiked ? "replylikeItem replyLiked" : "replylikeItem"}
+						onClick={handleReplyLike}
+					>
+						Like
+					</span>
+					<Link
+						to={`/posts/${post?._id}/comments/${comment?._id}/replies/${reply?._id}/replyReactedUsers`}
+					>
 						<div className="replylikeCountThumb">
-							<span className="replylikesCount">12</span>
+							<span className="replylikesCount">{reply?.likes.length}</span>
 							<i className="fa-solid fa-thumbs-up replyThumb"></i>
 						</div>
 					</Link>
 				</div>
 				<div className="replyItemDiv">
-					<span className="replyItemTitle">Reply</span>
-					<span className="replyItemCount">5 Replies</span>
+					<Link
+						to={`/posts/${post._id}/comments/${comment._id}/replies/${reply._id}}}`}
+					>
+						<span className="replyItemTitle">Reply</span>
+					</Link>
+					<span className="replyItemCount">{reply.length} Replies</span>
 				</div>
-				<span className="replytimeCount">2 mins ago</span>
+				<span className="replytimeCount">{format(reply.date)}</span>
 			</div>
 		</div>
 	);

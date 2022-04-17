@@ -19,8 +19,8 @@ const Navbar = () => {
 	const handleLogout = () => {
 		dispatch(logout());
 
-		window.location.reload();
 		navigate("/login");
+		window.location.reload();
 	};
 
 	return (
@@ -69,7 +69,7 @@ const Navbar = () => {
 					<ul className="navbarRightList">
 						{isAuthenticated && (
 							<>
-								<Link to="/profile">
+								<Link to="/profiles">
 									<li className="navbarRightListItem">DEVELOPERS</li>
 								</Link>
 								<Link to="/">

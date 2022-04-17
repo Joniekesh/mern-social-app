@@ -10,6 +10,7 @@ const PostSchema = new mongoose.Schema(
 		},
 		profilePic: {
 			type: String,
+			default: "",
 		},
 		desc: {
 			type: String,
@@ -17,6 +18,7 @@ const PostSchema = new mongoose.Schema(
 		},
 		photo: {
 			type: String,
+			default: "",
 		},
 		likes: [
 			{
@@ -28,6 +30,7 @@ const PostSchema = new mongoose.Schema(
 				},
 				profilePic: {
 					type: String,
+					default: "",
 				},
 			},
 		],
@@ -42,6 +45,7 @@ const PostSchema = new mongoose.Schema(
 				},
 				profilePic: {
 					type: String,
+					default: "",
 				},
 				desc: {
 					type: String,
@@ -57,6 +61,7 @@ const PostSchema = new mongoose.Schema(
 						},
 						profilePic: {
 							type: String,
+							default: "",
 						},
 					},
 				],
@@ -70,6 +75,7 @@ const PostSchema = new mongoose.Schema(
 						},
 						profilePic: {
 							type: String,
+							default: "",
 						},
 						desc: {
 							type: String,

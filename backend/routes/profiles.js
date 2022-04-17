@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
+const checkObjectId = require("../middleware/checkObjectId");
 const protect = require("../middleware/authMiddleware");
 const Profile = require("../models/Profile");
 const Post = require("../models/Post");
@@ -118,14 +119,13 @@ router.get("/", protect, async (req, res) => {
 });
 
 // @desc   Get profile by user ID
-// @route  GET /api/profiles/:userId
+// @route  GET /api/profiles/user/:userId
 // @access Public
 router.get("/user/:userId", protect, async (req, res) => {
 	try {
-		const profile = await Profile.findOne({ user: req.params.userId }).populate(
-			"user",
-			["name", "profilePic"]
-		);
+		const profile = await Profile.findOne({
+			user: req.params.userId,
+		}).populate("user", ["name", "profilePic"]);
 
 		if (!profile) {
 			return res.status(404).json({ msg: "Profile not found" });
@@ -134,10 +134,10 @@ router.get("/user/:userId", protect, async (req, res) => {
 		res.json(profile);
 	} catch (err) {
 		console.error(err.message);
-		if (err.kind == "ObjectId") {
-			res.status(404).json({ msg: "Profile not found" });
+		if (err.kind === "ObjectId") {
+			return res.status(401).json({ msg: "user not found" });
 		}
-		res.status(500).send("Server Error");
+		return res.status(500).send("Server Error");
 	}
 });
 
@@ -234,7 +234,9 @@ router.put("/education/:eduId", protect, async (req, res) => {
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind == "ObjectId") {
-			res.status(400).json({ msg: "Error with profile education update" });
+			return res
+				.status(400)
+				.json({ msg: "Error with profile education update" });
 		}
 		res.status(500).send("Server Error");
 	}
@@ -267,7 +269,9 @@ router.delete("/education/:eduId", protect, async (req, res) => {
 	} catch (error) {
 		console.error(err.message);
 		if (err.kind == "ObjectId") {
-			res.status(400).json({ msg: "Error with profile education deletion" });
+			return res
+				.status(400)
+				.json({ msg: "Error with profile education deletion" });
 		}
 		res.status(500).send("Server Error");
 	}
@@ -350,7 +354,9 @@ router.put("/experience/:expId", protect, async (req, res) => {
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind == "ObjectId") {
-			res.status(400).json({ msg: "Error with profile experience update" });
+			return res
+				.status(400)
+				.json({ msg: "Error with profile experience update" });
 		}
 		res.status(500).send("Server Error");
 	}
@@ -383,7 +389,9 @@ router.delete("/experience/:expId", protect, async (req, res) => {
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind == "ObjectId") {
-			res.status(400).json({ msg: "Error with profile experience deletion" });
+			return res
+				.status(400)
+				.json({ msg: "Error with profile experience deletion" });
 		}
 		res.status(500).send("Server Error");
 	}
@@ -392,7 +400,7 @@ router.delete("/experience/:expId", protect, async (req, res) => {
 // @desc   Get user repositories from github
 // @route  GET /api/profiles/github/:username
 // @access Public
-router.get("/github/:username", protect, async (req, res) => {
+router.get("/github/:username", async (req, res) => {
 	try {
 		const uri = encodeURI(
 			`https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
@@ -408,8 +416,7 @@ router.get("/github/:username", protect, async (req, res) => {
 		return res.json(githubResponse.data);
 	} catch (err) {
 		console.error(err.message);
-		res.status(404).json({ msg: "Github repositories not found" });
-		res.status(500).send("Server Error");
+		return res.status(404).json({ msg: "No github profile found" });
 	}
 });
 

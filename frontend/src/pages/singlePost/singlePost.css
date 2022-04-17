@@ -3,7 +3,6 @@
 }
 
 .singlePostWrapper {
-	width: 100%;
 	display: flex;
 	flex-direction: column;
 	margin: auto;
@@ -13,15 +12,17 @@
 	border-radius: 5px;
 }
 
-.singlePostReactions {
-	display: flex;
-	justify-content: space-between;
+.singlePostReaction {
+	color: teal;
+	font-weight: bold;
 }
 
 .commentsLists {
+	overflow-y: scroll;
 	height: 100vh;
 	overflow-y: scroll;
 	scroll-behavior: smooth;
+	margin-bottom: 105px;
 }
 
 ::-webkit-scrollbar {
@@ -39,11 +40,11 @@
 
 .reactionsLists {
 	display: flex;
-	width: 100%;
 }
 
 .reactionListItem {
 	display: flex;
+	margin: 5px 0 16px 0;
 }
 
 .reactionListItemImg {

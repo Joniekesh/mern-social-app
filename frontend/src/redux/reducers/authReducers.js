@@ -8,6 +8,9 @@ import {
 	USER_LOADED_SUCCESS,
 	USER_UPDATE_SUCCESS,
 	USER_UPDATE_FAIL,
+	GET_USERS,
+	GET_USER,
+	USER_FOLLOW,
 } from "../constants/authConstants";
 
 const initialState = {
@@ -15,6 +18,7 @@ const initialState = {
 	isAuthenticated: null,
 	loading: true,
 	user: null,
+	users: [],
 };
 export const userLoginReducer = (state = initialState, action) => {
 	const { type, payload } = action;
@@ -41,6 +45,7 @@ export const userLoginReducer = (state = initialState, action) => {
 				user: null,
 			};
 		case USER_LOADED_SUCCESS:
+		case GET_USER:
 			return {
 				...state,
 				isAuthenticated: true,
@@ -53,6 +58,15 @@ export const userLoginReducer = (state = initialState, action) => {
 				loading: false,
 				user: payload,
 			};
+		case GET_USERS:
+			return {
+				...state,
+				users: payload,
+				loading: false,
+			};
+		case USER_FOLLOW:
+			return {};
+
 		default:
 			return state;
 	}

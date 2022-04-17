@@ -13,7 +13,7 @@ const ProfilesItem = ({ profile }) => {
 					{profile.status} at {profile.company}
 				</span>
 				<span>{profile.location}</span>
-				<Link to={`/profile/${profile.user}`}>
+				<Link to={`/profiles/${profile.user}`}>
 					<button className="profilesBtn">View Profile</button>
 				</Link>
 			</div>

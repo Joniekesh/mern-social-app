@@ -49,8 +49,8 @@ const ProfilesTop = ({ profile }) => {
 					</a>
 				</div>
 				<br />
-				<p>University of Nigeria:</p>
-				<p>Bioresources Engineering</p>
+				<p>{profile?.education?.school}</p>
+				<p>{profile?.education?.fieldofstudy}</p>
 				<br />
 				<div className="socialHandles">
 					<a href={profile?.website} target="_blank" rel="noreferrer">

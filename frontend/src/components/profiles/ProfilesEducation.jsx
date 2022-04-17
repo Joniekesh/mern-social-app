@@ -29,23 +29,36 @@ const ProfilesEducation = ({ education, profile }) => {
 			<div className="experienceListItem">
 				<img className="companyImg" src="/assets/companyImg.jpeg" alt="" />
 				<div className="experienceDesc">
-					<div className="experienceDescDiv">
-						<p className="experienceUser">{education?.school}</p>
+					<div>
+						<p>
+							<b>School:</b>
+							{education.school}
+						</p>
 					</div>
-					<div className="employmentDetails">
-						<span>
-							<b>{education?.degree}:</b>
-						</span>
-						<span>({education?.fieldofstudy})</span>
+					<div>
+						<p>
+							<b>Degree:</b>
+							{education.degree}
+						</p>
 					</div>
-					<div className="experienceDate">
-						<span className="expDate">
-							{new Date(education?.from).toDateString()} -
+					<div>
+						<p>
+							<b>Field of Study:</b>
+							{education.fieldofstudy}
+						</p>
+					</div>
+					<div>
+						<p>
+							<b>Duration:</b>
+							{new Date(education.from).toDateString()} -
 							{education.to ? new Date(education.to).toDateString() : "Current"}
-						</span>
-						<span>
-							<b>(3yrs 2 mos)</b>
-						</span>
+						</p>
+					</div>
+					<div>
+						<p>
+							<b>Description:</b>
+							{education.description}
+						</p>
 					</div>
 				</div>
 				{user._id === profile.user && (

@@ -56,6 +56,10 @@
 	position: relative;
 }
 
+.profileUsername {
+	color: teal;
+}
+
 .profileInfoEdit {
 	position: absolute;
 	top: 320px;

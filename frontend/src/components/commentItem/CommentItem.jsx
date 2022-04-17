@@ -1,17 +1,58 @@
 import "./commentItem.css";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { format } from "timeago.js";
+import { deleteComment, likeComment } from "../../redux/actions/postActions";
+import ReplyItem from "../../components/replieItem/ReplyItem";
 
-const CommentItem = () => {
+const CommentItem = ({ post, comment }) => {
 	const [openModal, setOpenModal] = useState(false);
+	const [like, setLike] = useState(comment?.likes.length);
+	const [isLiked, setIsLiked] = useState(false);
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { isAuthenticated, user, loading } = userLogin;
+
+	const dispatch = useDispatch();
+
+	const currentLike = comment?.likes.find((like) => like?.user === user._id);
+
+	useEffect(() => {
+		setIsLiked(comment?.likes.includes(currentLike));
+	}, [comment?.likes, currentLike]);
+
+	const likeData = {
+		user,
+		name: user.name,
+		profilePic: user.profilePic,
+	};
+
+	const handleLike = () => {
+		if (isAuthenticated) {
+			dispatch(likeComment(post._id, comment._id, likeData));
+			setLike(isLiked ? like - 1 : like + 1);
+			setIsLiked(!isLiked);
+
+			window.location.reload();
+		}
+	};
+
+	const deleteHandler = () => {
+		if (isAuthenticated && user._id === comment?.user) {
+			dispatch(deleteComment(post._id, comment._id));
+
+			window.location.reload();
+		}
+	};
 
 	return (
 		<div className="commentsListItem">
-			<Link to="/profiles/111">
+			<Link to={`/profiles/${comment?.user}`}>
 				<div className="singleLeftDiv">
 					<img
 						className="singlePostcommentImg"
-						src="/assets/profile2.jpeg"
+						src={comment?.profilePic}
 						alt=""
 					/>
 				</div>
@@ -19,14 +60,14 @@ const CommentItem = () => {
 			<div className="commentDivWrapper">
 				<div className="commentsDiv">
 					<div className="commentTop">
-						<Link to="/profiles/111">
+						<Link to={`/profiles/${comment?.user}`}>
 							<div className="commentTopLeft">
-								<p className="commentUserName">Okoro John</p>
+								<p className="commentUserName">{comment?.name}</p>
 								<span className="commentUserProfileDesc">
 									Full Stack Developer: MERN | Socket.io | Redux | Firebase |
 									Git...
 								</span>
-								<span className="commentTime">1 day</span>
+								<span className="commentTime">{format(comment?.date)}</span>
 							</div>
 						</Link>
 						{openModal && (
@@ -37,47 +78,73 @@ const CommentItem = () => {
 								</div>
 								<hr className="line" />
 								<div className="postDelete">
-									<i className="fa-solid fa-trash-can"></i>
+									<i
+										className="fa-solid fa-trash-can"
+										onClick={deleteHandler}
+									></i>
 									<span>Delete</span>
 								</div>
 							</div>
 						)}
-
-						<i
-							className="fa-solid fa-ellipsis-vertical elipsis"
-							onClick={() => setOpenModal(!openModal)}
-						></i>
+						{post?.user === comment?.user && (
+							<Link to={`/profiles/${comment?.user}`}>
+								<div className="author">Author</div>
+							</Link>
+						)}
+						{!loading && isAuthenticated && user._id === comment?.user && (
+							<i
+								className="fa-solid fa-ellipsis-vertical elipsis"
+								style={{ color: "teal" }}
+								onClick={() => setOpenModal(!openModal)}
+							></i>
+						)}
 					</div>
 					<hr className="line" />
 					<div className="commentBottom">
-						<p className="commentDesc">
-							Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nam
-							possimus pariatur corporis delectus magnam aspernatur. Nisi rem
-							eveniet similique sapiente reprehenderit reiciendis in facilis
-							possimus tempora quae praesentium dicta aspernatur rerum,
-							distinctio iure exercitationem iste laboriosam facere aliquid non
-							porro! Excepturi rem veniam harum minus sapiente illum. Veritatis,
-							molestiae quae?{" "}
-						</p>
+						<p className="commentDesc">{comment?.desc}</p>
 					</div>
 				</div>
 				<div className="commentReactionsDiv">
 					<div className="commentReplyLikesDiv">
-						<span className="likeItem">Like</span>
-						<Link to="/:111/comment/:111/commentReactedUsers">
+						<span
+							className={isLiked ? "likeItem liked" : "likeItem"}
+							onClick={handleLike}
+						>
+							Like
+						</span>
+						<Link
+							to={`/posts/${post?._id}/comments/${comment?._id}/commentReactedUsers`}
+						>
 							<div className="likeCountThumb">
-								<span className="likesCount">12</span>
+								<span className="likesCount">{comment?.likes.length}</span>
 								<i className="fa-solid fa-thumbs-up likeThumb"></i>
 							</div>
 						</Link>
 					</div>
 					<div className="commentReplyDiv">
-						<Link to="/:111/comment/:111/replies">
+						<Link to={`/posts/${post?._id}/comments/${comment?._id}`}>
 							<span className="replyItem">Reply</span>
 						</Link>
-						<span className="replyCount">5 Replies</span>
+						<span className="replyCount">
+							{comment?.replies.length} Replies
+						</span>
 					</div>
-					<span className="timeCount">2 mins ago</span>
+					<span className="timeCount">{format(comment?.date)}</span>
+				</div>
+				{comment?.replies.length > 0 && (
+					<Link to={`/posts/${post?._id}/comments/${comment?._id}`}>
+						<span>Show previous replies...</span>
+					</Link>
+				)}
+				<div className="replyList">
+					{comment?.replies.map((reply) => (
+						<ReplyItem
+							reply={reply}
+							key={reply._id}
+							post={post}
+							comment={comment}
+						/>
+					))}
 				</div>
 			</div>
 		</div>

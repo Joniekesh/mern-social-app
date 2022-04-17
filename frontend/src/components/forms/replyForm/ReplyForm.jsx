@@ -1,9 +1,9 @@
-import "./commentForm.css";
+import "./replyForm.css";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addPostComment } from "../../../redux/actions/postActions";
+import { addReply } from "../../../redux/actions/postActions";
 
-const CommentForm = ({ post }) => {
+const ReplyForm = ({ postId, commentId }) => {
 	const [desc, setDesc] = useState("");
 
 	const userLogin = useSelector((state) => state.userLogin);
@@ -11,7 +11,7 @@ const CommentForm = ({ post }) => {
 
 	const dispatch = useDispatch();
 
-	const newComment = {
+	const newReply = {
 		user,
 		name: user.name,
 		profilePic: user.profilePic,
@@ -22,7 +22,7 @@ const CommentForm = ({ post }) => {
 		e.preventDefault();
 
 		if (isAuthenticated) {
-			dispatch(addPostComment(post._id, newComment));
+			dispatch(addReply(postId, commentId, newReply));
 
 			window.location.reload();
 		}
@@ -56,4 +56,4 @@ const CommentForm = ({ post }) => {
 	);
 };
 
-export default CommentForm;
+export default ReplyForm;

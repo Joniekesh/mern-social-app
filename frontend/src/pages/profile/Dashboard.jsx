@@ -7,21 +7,38 @@ import ProfileExperience from "../../components/profile/profileExperience/Profil
 import ProfileEducation from "../../components/profile/profileEducation/ProfileEducation";
 import ProfileActions from "../../components/profile/profileActions/ProfileActions";
 import ProfileRightBar from "../../components/profile/profileRightBar/ProfileRightBar";
-import ProfileUserPosts from "../../components/profile/profileUserPosts/ProfileUserPosts";
 import { getCurrentProfile } from "../../redux/actions/prifileActions";
 import Spinner from "../../components/spinner/Spinner";
+import GitRepos from "../../components/profile/gitRepos/GitRepos";
+import { getGitRepos } from "../../redux/actions/prifileActions";
+import HomeTop from "../../components/homeTop/HomeTop";
+import { getTimelinePosts } from "../../redux/actions/postActions";
+import PostItem from "../../components/postItem/PostItem";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
 
 	const profile = useSelector((state) => state.profile);
-	const { profile: currentProfile, loading, error } = profile;
+	const { profile: currentProfile, loading, repos } = profile;
+
+	const username = currentProfile?.githubusername;
 
 	const userLogin = useSelector((state) => state.userLogin);
-	const { user } = userLogin;
+	const { isAuthenticated, user } = userLogin;
+
+	const post = useSelector((state) => state.post);
+	const { post: timeLinePosts, loading: postLoading } = post;
 
 	useEffect(() => {
 		dispatch(getCurrentProfile());
+	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(getGitRepos(username));
+	}, [dispatch, username]);
+
+	useEffect(() => {
+		dispatch(getTimelinePosts());
 	}, [dispatch]);
 
 	return (
@@ -35,7 +52,7 @@ const Dashboard = () => {
 							<i className="fa-solid fa-user"></i>
 							<span>Dashboard</span>
 						</div>
-						{currentProfile === null ? (
+						{!loading && isAuthenticated && currentProfile === null ? (
 							<ProfileActions />
 						) : (
 							<>
@@ -43,7 +60,7 @@ const Dashboard = () => {
 									<div className="profileLeft">
 										<ProfileTop profile={currentProfile} />
 										<div className="profileRight">
-											<h4>{user.name}'s Followers</h4>
+											<h4>{currentProfile.name}'s Followers</h4>
 											<hr className="line" />
 											<div className="profileRightLists">
 												<ProfileRightBar />
@@ -56,6 +73,11 @@ const Dashboard = () => {
 												View More...
 											</span>
 										</div>
+									</div>
+
+									<div className="profileBio">
+										<h2>{currentProfile.name}'s Bio</h2>
+										<p>{currentProfile.bio}</p>
 									</div>
 
 									<div className="experienceEduDiv">
@@ -113,17 +135,32 @@ const Dashboard = () => {
 											</Link>
 										</div>
 									</div>
+
+									<div className="gitReposWrapper">
+										<h2>Github Repos</h2>
+										<div className="gitReposList">
+											{repos?.length > 0 ? (
+												repos.map((repo, index) => (
+													<GitRepos repo={repo} key={index} />
+												))
+											) : (
+												<h4>
+													No Repos to show. Please add your github username to
+													have your repos populated.
+												</h4>
+											)}
+										</div>
+									</div>
 								</div>
-								<hr className="line" />
-								<div className="profileUserPostDiv">
-									<h2>Posts by this user</h2>
-									<div className="userPostItems">
-										<ProfileUserPosts />
-										<ProfileUserPosts />
-										<ProfileUserPosts />
-										<ProfileUserPosts />
-										<ProfileUserPosts />
-										<ProfileUserPosts />
+								<div className="timeLinePostWrapper">
+									<h2>{currentProfile.name}'s Timeline Posts</h2>
+
+									<HomeTop />
+									<div className="timeLinePostLists">
+										{!postLoading &&
+											timeLinePosts?.map((post) => (
+												<PostItem post={post} key={post._id} />
+											))}
 									</div>
 								</div>
 							</>

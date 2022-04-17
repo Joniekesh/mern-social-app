@@ -17,7 +17,6 @@ import Profiles from "./pages/profiles/Profiles";
 import Profile from "./pages/profile/singleProfile/Profile";
 import Dashboard from "./pages/profile/Dashboard";
 import SinglePost from "./pages/singlePost/SinglePost";
-import Reply from "./pages/reply/Reply";
 import PostReactedUsers from "./pages/postReactedUsers/PostReactedUsers";
 import CommentReactedUser from "./pages/commentReactedUser/CommentReactedUser";
 import ReplyReactedUser from "./pages/replyReactedUser/ReplyReactedUser";
@@ -29,6 +28,8 @@ import Settings from "./pages/settings/Settings";
 import ExperienceEdit from "./pages/profile/experience/ExperienceEdit";
 import EducationEdit from "./pages/profile/education/EducationEdit";
 import EditProfile from "./pages/profile/editProfile/EditProfile";
+import EditPost from "./pages/createPost/EditPost";
+import CommentReply from "./pages/commentReply/CommentReply";
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -66,37 +67,40 @@ const App = () => {
 					element={<PrivateRoute component={CreatePost} />}
 				></Route>
 				<Route
-					path="/post/:postId"
+					path="/editPost"
+					element={<PrivateRoute component={EditPost} />}
+				></Route>
+				<Route
+					path="/posts/:postId"
 					element={<PrivateRoute component={SinglePost} />}
 				></Route>
 				<Route
-					path="/post/:postId/comment/:commentId/replies"
-					element={<PrivateRoute component={Reply} />}
-				></Route>
-				<Route
-					path="/post/:postId/postReactedUsers"
+					path="/posts/:postId/postReactedUsers"
 					element={<PrivateRoute component={PostReactedUsers} />}
 				></Route>
-
 				<Route
-					path="/post/:postId/comment/:commentId/commentReactedUsers"
+					path="/posts/:postId/comments/:commentid"
+					element={<PrivateRoute component={CommentReply} />}
+				></Route>
+				<Route
+					path="/posts/:postId/comments/:commentId/commentReactedUsers"
 					element={<PrivateRoute component={CommentReactedUser} />}
 				></Route>
 				<Route
-					path="/post/:postId/comment/:commentId/reply/:replyId/replyReactedUsers"
+					path="/posts/:postId/comments/:commentId/replies/:replyId/replyReactedUsers"
 					element={<PrivateRoute component={ReplyReactedUser} />}
-				></Route>
-				<Route
-					path="/profile"
-					element={<PrivateRoute component={Profiles} />}
-				></Route>
-				<Route
-					path="/profile/:id"
-					element={<PrivateRoute component={Profile} />}
 				></Route>
 				<Route
 					path="/dashboard"
 					element={<PrivateRoute component={Dashboard} />}
+				></Route>
+				<Route
+					path="/profiles"
+					element={<PrivateRoute component={Profiles} />}
+				></Route>
+				<Route
+					path="/profiles/:id"
+					element={<PrivateRoute component={Profile} />}
 				></Route>
 				<Route
 					path="/createProfile"

@@ -37,6 +37,24 @@ router.post(
 	}
 );
 
+// @desc   Get all posts
+// @route  GET /api/posts
+// @access Private
+router.get("/", protect, async (req, res) => {
+	try {
+		const posts = await Post.find();
+
+		if (!posts) {
+			return res.status(404).json({ msg: "Posts not found" });
+		}
+
+		res.json(posts);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send("Server Error");
+	}
+});
+
 // @desc   Get a post by ID
 // @route  GET /api/posts/:postId
 // @access Private
@@ -54,24 +72,6 @@ router.get("/:postId", protect, async (req, res) => {
 		if (err.kind == "ObjectId") {
 			return res.status(404).json({ msg: "Post not found" });
 		}
-		res.status(500).send("Server Error");
-	}
-});
-
-// @desc   Get all posts
-// @route  GET /api/posts
-// @access Private
-router.get("/", protect, async (req, res) => {
-	try {
-		const posts = await Post.find();
-
-		if (!posts) {
-			return res.status(404).json({ msg: "Posts not found" });
-		}
-
-		res.json(posts);
-	} catch (err) {
-		console.error(err.message);
 		res.status(500).send("Server Error");
 	}
 });
@@ -101,7 +101,7 @@ router.put("/:postId", protect, async (req, res) => {
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind == "ObjectId") {
-			res.status(404).json({ msg: "Post not found" });
+			return res.status(404).json({ msg: "Post not found" });
 		}
 		res.status(500).send("Server Error");
 	}
@@ -125,21 +125,21 @@ router.put("/likes/:postId", protect, async (req, res) => {
 					likes: { user, name: user.name, profilePic: user.profilePic },
 				},
 			});
-			res.json("The post has been liked");
+			res.json(post.likes);
 		} else {
 			await post.updateOne({
 				$pull: {
 					likes: { user },
 				},
 			});
-			res.json("The post has been disliked");
+			res.json(post.likes);
 		}
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind == "ObjectId") {
-			res.status(404).json({ msg: "Post not found" });
+			return res.status(404).json({ msg: "Post not found" });
 		}
-		res.status(500).send("Server Error");
+		return res.status(500).send("Server Error");
 	}
 });
 
@@ -192,6 +192,34 @@ router.get("/me/timeline", protect, async (req, res) => {
 	}
 });
 
+// @desc   Get TimelinePosts by user ID,
+// @route  GET /api/posts/timeline/:userId
+// @acess  Private
+router.get("/timeline/:userId", protect, async (req, res) => {
+	try {
+		const user = await User.findById(req.params.userId);
+		const userPosts = await Post.find({ user: req.params.userId });
+
+		if (!userPosts) {
+			return res.status(404).json({ msg: "User not found" });
+		}
+
+		const friendsPosts = await Promise.all(
+			user.followings.map((friendId) => {
+				return Post.find({ user: friendId });
+			})
+		);
+
+		res.json(userPosts.concat(...friendsPosts));
+	} catch (err) {
+		console.error(err.message);
+		if (err.kind == "ObjectId") {
+			return res.status(404).json({ msg: "Posts not found" });
+		}
+		return res.send("Server Error");
+	}
+});
+
 // @desc   Get users all posts
 // @route  GET /api/posts/profile/me
 // @access Private
@@ -210,7 +238,7 @@ router.get("/profile/me", protect, async (req, res) => {
 	}
 });
 
-// @desc   Create a comment on a post
+// @desc   Create Post Comment
 // @route  POST /api/posts/comments/:postId
 // @access Private
 router.post(
@@ -241,13 +269,13 @@ router.post(
 			post.comments.unshift(newComment);
 			await post.save();
 
-			res.json(post);
+			res.json(newComment);
 		} catch (err) {
 			console.error(err.message);
 			if (err.kind == "ObjectId") {
-				res.status(404).json({ msg: "Post not found" });
+				return res.status(404).json({ msg: "Post not found" });
 			}
-			res.status(500).send("Server Error");
+			return res.status(500).send("Server Error");
 		}
 	}
 );
@@ -285,9 +313,9 @@ router.put("/comments/:postId/:commentId", protect, async (req, res) => {
 
 		res.json(post);
 	} catch (err) {
-		console.lerror(err.message);
+		console.error(err.message);
 		if (err.kind == "ObjectId") {
-			res.status(400).json({ msg: "Error with comment update" });
+			return res.status(400).json({ msg: "Error with comment update" });
 		}
 		res.status(500).send("Server Error");
 	}
@@ -319,7 +347,7 @@ router.put("/comments/likes/:postId/:commentId", protect, async (req, res) => {
 
 			await post.save();
 
-			res.json("Comment liked");
+			res.json(comment.likes);
 		} else {
 			comment.likes = comment.likes.filter(
 				({ user }) => user.toString() !== req.user.id
@@ -327,7 +355,7 @@ router.put("/comments/likes/:postId/:commentId", protect, async (req, res) => {
 
 			await post.save();
 
-			res.json("Comment disliked");
+			res.json(comment.likes);
 		}
 	} catch (err) {
 		console.error(err.message);
@@ -512,7 +540,7 @@ router.put(
 				reply.likes.unshift({ user: req.user.id });
 				await post.save();
 
-				res.json("Reply liked");
+				res.json(reply.likes);
 			} else {
 				reply.likes = reply.likes.filter(
 					({ user }) => user.toString() !== req.user.id
@@ -520,7 +548,7 @@ router.put(
 
 				await post.save();
 
-				res.json("Post disliked");
+				res.json(reply.likes);
 			}
 		} catch (err) {
 			console.error(err.message);

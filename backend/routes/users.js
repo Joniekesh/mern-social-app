@@ -62,7 +62,7 @@ router.get("/:id", protect, async (req, res) => {
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind == "ObjectId") {
-			res.status(404).json({ msg: "User not found" });
+			return res.status(404).json({ msg: "User not found" });
 		}
 		res.status(500).send("Server Error");
 	}
@@ -91,7 +91,7 @@ router.put("/:id/follow", protect, async (req, res) => {
 		} catch (err) {
 			console.error(err.message);
 			if (err.kind == "ObjectId") {
-				res.status(400).json({ msg: "Error with follow/unfollow user" });
+				return res.status(400).json({ msg: "Error with follow/unfollow user" });
 			}
 			res.status(500).send("Server Error");
 		}

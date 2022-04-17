@@ -10,7 +10,7 @@ const HomeTop = () => {
 		<div className="homeCenterPostCreate">
 			<Link to="/createPost">
 				<div className="homeCenterTopDiv">
-					<img src={user.profilePic} alt="" />
+					<img src={user?.profilePic} alt="" />
 					<input type="text" placeholder="Write a post..." />
 				</div>
 			</Link>

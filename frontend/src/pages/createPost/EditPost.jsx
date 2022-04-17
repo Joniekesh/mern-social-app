@@ -1,8 +1,7 @@
-import "./createPost.css";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { createPost } from "../../redux/actions/postActions";
+import { useNavigate, useLocation } from "react-router-dom";
+import { updatePost } from "../../redux/actions/postActions";
 import app from "../../firebase";
 
 import {
@@ -12,16 +11,20 @@ import {
 	getDownloadURL,
 } from "firebase/storage";
 
-const CreatePost = () => {
+const EditPost = () => {
+	const {
+		state: { post },
+	} = useLocation();
+
 	const [close, setClose] = useState(true);
 	const [file, setFile] = useState("");
-	const [desc, setDesc] = useState("");
+	const [desc, setDesc] = useState(post.desc);
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const userLogin = useSelector((state) => state.userLogin);
-	const { user } = userLogin;
+	const { isAuthenticated, user } = userLogin;
 
 	const handleClose = () => {
 		setClose(true);
@@ -29,7 +32,7 @@ const CreatePost = () => {
 		navigate("/");
 	};
 
-	const handleCreate = (e) => {
+	const handleUpdate = (e) => {
 		e.preventDefault();
 
 		const fileName = new Date().getTime() + file.name;
@@ -62,10 +65,12 @@ const CreatePost = () => {
 						desc,
 						photo: downloadURL,
 					};
-					dispatch(createPost(postData));
-					navigate("/");
+					if (isAuthenticated && user._id === post.user) {
+						dispatch(updatePost(post._id, postData));
+						navigate(`/post/${post._id}`);
 
-					window.location.reload();
+						window.location.reload();
+					}
 				});
 			}
 		);
@@ -77,7 +82,7 @@ const CreatePost = () => {
 				{close && (
 					<div className="createPostWrapper">
 						<div className="createPostwrapperTop">
-							<h3 className="createPostIntro">Create a new post</h3>
+							<h3 className="createPostIntro">Update Post</h3>
 							<span className="cancelBtn" onClick={handleClose}>
 								X
 							</span>
@@ -91,21 +96,25 @@ const CreatePost = () => {
 							/>
 							<p className="createPostUsername">{user.name}</p>
 						</div>
-						<form onSubmit={handleCreate}>
+						<form onSubmit={handleUpdate}>
 							<textarea
 								type="text"
-								value={desc}
+								defaultValue={desc}
 								className="createPostTextarea"
 								placeholder="Create a post"
 								onChange={(e) => setDesc(e.target.value)}
 							></textarea>
-							{file && (
+							{file ? (
 								<div className="ImgDiv">
 									<img
 										className="createPostBodyImg"
 										src={URL.createObjectURL(file)}
 										alt=""
 									/>
+								</div>
+							) : (
+								<div className="ImgDiv">
+									<img className="createPostBodyImg" src={post.photo} alt="" />
 								</div>
 							)}
 							<hr className="line" />
@@ -125,7 +134,7 @@ const CreatePost = () => {
 									<span>Add Vidoe</span>
 								</div>
 								<button type="submit" className="postCreateButton">
-									Post
+									Update
 								</button>
 							</div>
 						</form>
@@ -136,4 +145,4 @@ const CreatePost = () => {
 	);
 };
 
-export default CreatePost;
+export default EditPost;

@@ -29,28 +29,38 @@ const ProfilesExperience = ({ profile, experience }) => {
 			<div className="experienceListItem">
 				<img className="companyImg" src="/assets/companyImg.jpeg" alt="" />
 				<div className="experienceDesc">
-					<div className="experienceDescDiv">
-						<p className="experienceUser">{experience?.title}</p>
+					<div>
+						<p>
+							<b>Title:</b>
+							{experience?.title}
+						</p>
 					</div>
-					<div className="employmentDetails">
-						<span>
-							<b>@</b>
-						</span>
-						<span>
-							<b>{experience?.company}</b>
-						</span>{" "}
-						{experience?.location}
+					<div>
+						<p>
+							<b>Company:</b>
+							{experience.company}
+						</p>
 					</div>
-					<div className="experienceDate">
-						<span className="expDate">
-							{new Date(experience?.from).toDateString()} -
+					<div>
+						<p>
+							<b>Location:</b>
+							{experience?.location}
+						</p>
+					</div>
+
+					<div>
+						<p>
+							<b>Duration:</b> {new Date(experience?.from).toDateString()} -
 							{experience?.to
 								? new Date(experience.to).toDateString()
 								: "Current"}
-						</span>
-						<span>
-							<b>(2Years 3months)</b>
-						</span>
+						</p>
+					</div>
+					<div>
+						<p>
+							<b>Description:</b>
+							{experience.description}
+						</p>
 					</div>
 				</div>
 				{profile.user === user._id && (

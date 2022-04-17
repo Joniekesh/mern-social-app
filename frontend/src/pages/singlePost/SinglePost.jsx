@@ -6,13 +6,14 @@ import CommentItem from "../../components/commentItem/CommentItem";
 import CommentForm from "../../components/forms/commentForm/CommentForm";
 import { getPostById } from "../../redux/actions/postActions";
 import PostItem from "../../components/postItem/PostItem";
+import Spinner from "../../components/spinner/Spinner";
 
 const SinglePost = () => {
 	const { postId } = useParams();
 	const dispatch = useDispatch();
 
 	const post = useSelector((state) => state.post);
-	const { post: singlePost } = post;
+	const { post: singlePost, loading } = post;
 
 	useEffect(() => {
 		dispatch(getPostById(postId));
@@ -21,59 +22,53 @@ const SinglePost = () => {
 	return (
 		<div className="singlePost">
 			<div className="container">
-				<div className="singlePostWrapper">
-					<PostItem post={singlePost} />
-					<p className="singlePostReaction">Reactions</p>
-					<Link to="/111/postReactedUsers">
-						<div className="reactionsLists">
-							<div className="reactionListItem">
-								<img
-									className="reactionListItemImg"
-									src="/assets/profile2.jpeg"
-									alt=""
-								/>
-								<i className="fa-solid fa-thumbs-up reactionListLike"></i>
+				{loading ? (
+					<Spinner />
+				) : (
+					<>
+						<div className="singlePostWrapper">
+							<PostItem post={singlePost} />
+							<p className="singlePostReaction">Reactions</p>
+							<div className="reactionsLists">
+								{singlePost?.likes?.length > 0 ? (
+									singlePost.likes.map((like) => (
+										<Link
+											to={`/posts/${singlePost._id}/postReactedUsers`}
+											key={like._id}
+										>
+											<div className="reactionListItem">
+												<img
+													className="reactionListItemImg"
+													src={like?.profilePic}
+													alt=""
+												/>
+												<i className="fa-solid fa-thumbs-up reactionListLike"></i>
+											</div>
+										</Link>
+									))
+								) : (
+									<h4>No reaction for this post yet</h4>
+								)}
 							</div>
-							<div className="reactionListItem">
-								<img
-									className="reactionListItemImg"
-									src="/assets/profile2.jpeg"
-									alt=""
-								/>
-								<i className="fa-solid fa-thumbs-up reactionListLike"></i>
-							</div>
-							<div className="reactionListItem">
-								<img
-									className="reactionListItemImg"
-									src="/assets/profile2.jpeg"
-									alt=""
-								/>
-								<i className="fa-solid fa-thumbs-up reactionListLike"></i>
-							</div>
-							<div className="reactionListItem">
-								<img
-									className="reactionListItemImg"
-									src="/assets/profile2.jpeg"
-									alt=""
-								/>
-								<i className="fa-solid fa-thumbs-up reactionListLike"></i>
+							<p className="singlePostReaction">Comments</p>
+
+							<div className="commentsLists">
+								{singlePost?.comments?.length > 0 ? (
+									singlePost.comments.map((comment) => (
+										<CommentItem
+											comment={comment}
+											key={comment._id}
+											post={singlePost}
+										/>
+									))
+								) : (
+									<h4>No comment for this post yet</h4>
+								)}
 							</div>
 						</div>
-					</Link>
-					<p className="singlePostReaction">Comments</p>
-
-					<div className="commentsLists">
-						<CommentItem />
-						<CommentItem />
-						<CommentItem />
-						<CommentItem />
-						<CommentItem />
-						<CommentItem />
-						<CommentItem />
-						<CommentItem />
-					</div>
-				</div>
-				<CommentForm />
+						<CommentForm post={singlePost} />
+					</>
+				)}
 			</div>
 		</div>
 	);

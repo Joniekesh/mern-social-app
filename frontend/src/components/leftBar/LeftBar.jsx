@@ -19,10 +19,10 @@ const LeftBar = () => {
 				<div className="leftBarUserInfoDiv">
 					<div className="lefBarUserInfo">
 						<div>
-							<img src={user.profilePic} alt="" />
+							<img src={user?.profilePic} alt="" />
 						</div>
 						<div className="lefBarUserInfoUsername">
-							<h4>{user.name}</h4>
+							<h4>{user?.name}</h4>
 							<p>{currentProfile?.headline.substring(0, 45)}...</p>
 						</div>
 					</div>

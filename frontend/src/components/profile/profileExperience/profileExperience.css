@@ -17,37 +17,14 @@
 	flex-direction: column;
 }
 
-.experienceDescDiv {
-	display: flex;
-	align-items: center;
-}
-
-.experienceUser {
-	font-weight: 500;
-}
-
-.employmentDetails {
-	display: flex;
-	align-items: center;
-	margin: 5px 0px;
-}
-
-.employmentDetails span {
-	margin-right: 5px;
-}
-
-.experienceDate {
-	display: flex;
-	flex-direction: column;
-}
-
-.expDate {
+.experienceDesc div {
+	font-size: 15px;
 	margin-bottom: 5px;
 }
 
-.experienceDesc span,
-.experienceDate {
-	font-size: 13.5px;
+.experienceDesc div p b {
+	color: teal;
+	margin-right: 5px;
 }
 
 .experienceActions {
