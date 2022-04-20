@@ -1,5 +1,5 @@
 import "./commentItem.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { format } from "timeago.js";
@@ -15,6 +15,7 @@ const CommentItem = ({ post, comment }) => {
 	const { isAuthenticated, user, loading } = userLogin;
 
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const currentLike = comment?.likes.find((like) => like?.user === user._id);
 
@@ -46,6 +47,14 @@ const CommentItem = ({ post, comment }) => {
 		}
 	};
 
+	const editHandler = () => {
+		navigate(`/editComment/${post._id}`, {
+			state: {
+				comment,
+			},
+		});
+	};
+
 	return (
 		<div className="commentsListItem">
 			<Link to={`/profiles/${comment?.user}`}>
@@ -72,16 +81,13 @@ const CommentItem = ({ post, comment }) => {
 						</Link>
 						{openModal && (
 							<div className="postEditDeletePopup">
-								<div className="postUpdate">
+								<div className="postUpdate" onClick={editHandler}>
 									<i className="fa-solid fa-pen"></i>
 									<span>Edit</span>
 								</div>
 								<hr className="line" />
-								<div className="postDelete">
-									<i
-										className="fa-solid fa-trash-can"
-										onClick={deleteHandler}
-									></i>
+								<div className="postDelete" onClick={deleteHandler}>
+									<i className="fa-solid fa-trash-can"></i>
 									<span>Delete</span>
 								</div>
 							</div>

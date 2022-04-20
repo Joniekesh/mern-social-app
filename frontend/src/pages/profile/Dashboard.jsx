@@ -10,7 +10,6 @@ import ProfileRightBar from "../../components/profile/profileRightBar/ProfileRig
 import { getCurrentProfile } from "../../redux/actions/prifileActions";
 import Spinner from "../../components/spinner/Spinner";
 import GitRepos from "../../components/profile/gitRepos/GitRepos";
-import { getGitRepos } from "../../redux/actions/prifileActions";
 import HomeTop from "../../components/homeTop/HomeTop";
 import { getTimelinePosts } from "../../redux/actions/postActions";
 import PostItem from "../../components/postItem/PostItem";
@@ -19,23 +18,16 @@ const Dashboard = () => {
 	const dispatch = useDispatch();
 
 	const profile = useSelector((state) => state.profile);
-	const { profile: currentProfile, loading, repos } = profile;
-
-	const username = currentProfile?.githubusername;
-
-	const userLogin = useSelector((state) => state.userLogin);
-	const { isAuthenticated, user } = userLogin;
+	const { profile: currentProfile, loading } = profile;
 
 	const post = useSelector((state) => state.post);
 	const { post: timeLinePosts, loading: postLoading } = post;
 
+	console.log(timeLinePosts);
+
 	useEffect(() => {
 		dispatch(getCurrentProfile());
 	}, [dispatch]);
-
-	useEffect(() => {
-		dispatch(getGitRepos(username));
-	}, [dispatch, username]);
 
 	useEffect(() => {
 		dispatch(getTimelinePosts());
@@ -52,7 +44,7 @@ const Dashboard = () => {
 							<i className="fa-solid fa-user"></i>
 							<span>Dashboard</span>
 						</div>
-						{!loading && isAuthenticated && currentProfile === null ? (
+						{!loading && currentProfile === null ? (
 							<ProfileActions />
 						) : (
 							<>
@@ -138,18 +130,7 @@ const Dashboard = () => {
 
 									<div className="gitReposWrapper">
 										<h2>Github Repos</h2>
-										<div className="gitReposList">
-											{repos?.length > 0 ? (
-												repos.map((repo, index) => (
-													<GitRepos repo={repo} key={index} />
-												))
-											) : (
-												<h4>
-													No Repos to show. Please add your github username to
-													have your repos populated.
-												</h4>
-											)}
-										</div>
+										<GitRepos />
 									</div>
 								</div>
 								<div className="timeLinePostWrapper">
@@ -157,9 +138,9 @@ const Dashboard = () => {
 
 									<HomeTop />
 									<div className="timeLinePostLists">
-										{!postLoading &&
-											timeLinePosts?.map((post) => (
-												<PostItem post={post} key={post._id} />
+										{timeLinePosts &&
+											Object.keys(timeLinePosts)?.map((key, index) => (
+												<PostItem post={timeLinePosts[key]} key={index} />
 											))}
 									</div>
 								</div>

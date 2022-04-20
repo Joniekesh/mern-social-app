@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../components/spinner/Spinner";
 import { updateUser } from "../../redux/actions/authActions";
+import { deleteAccount } from "../../redux/actions/prifileActions";
 import app from "../../firebase";
 
 import {
@@ -27,6 +28,12 @@ const Settings = () => {
 		setInputs({ ...inputs, [e.target.name]: e.target.value });
 	};
 
+	const handleDelete = () => {
+		dispatch(deleteAccount());
+
+		navigate("/login");
+	};
+
 	const handleUpdate = (e) => {
 		e.preventDefault();
 
@@ -35,15 +42,9 @@ const Settings = () => {
 		const storageRef = ref(storage, fileName);
 		const uploadTask = uploadBytesResumable(storageRef, file);
 
-		// Register three observers:
-		// 1. 'state_changed' observer, called any time the state changes
-		// 2. Error observer, called on failure
-		// 3. Completion observer, called on successful completion
 		uploadTask.on(
 			"state_changed",
 			(snapshot) => {
-				// Observe state change events such as progress, pause, and resume
-				// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
 				const progress =
 					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 				console.log("Upload is " + progress + "% done");
@@ -56,12 +57,8 @@ const Settings = () => {
 						break;
 				}
 			},
-			(error) => {
-				// Handle unsuccessful uploads
-			},
+			(error) => {},
 			() => {
-				// Handle successful uploads on complete
-				// For instance, get the download URL: https://firebasestorage.googleapis.com/...
 				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
 					const userInfo = { ...inputs, profilePic: downloadURL };
 					dispatch(updateUser(userInfo));
@@ -82,7 +79,9 @@ const Settings = () => {
 					<div className="settingsWrapper">
 						<div className="settingsTop">
 							<p className="update">Update Your Account</p>
-							<p className="delete">Delete Your Account</p>
+							<p className="delete" onClick={handleDelete}>
+								Delete Your Account
+							</p>
 						</div>
 						<form className="settingsCenter" onSubmit={handleUpdate}>
 							<span>Profile Picture</span>

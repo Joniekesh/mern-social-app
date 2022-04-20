@@ -14,6 +14,8 @@ import {
 	ADD_REPLY,
 	LIKE_REPLY,
 	DELETE_REPLY,
+	UPDATE_COMMENT,
+	UPDATE_REPLY,
 } from "../constants/postConstants";
 
 // Get all posts
@@ -105,7 +107,7 @@ export const createPost = (postData) => async (dispatch, getState) => {
 // Uddate Post
 // Not working yet
 export const updatePost = (id, formData) => async (dispatch, getState) => {
-	const { userLogin } = useState();
+	const { userLogin } = getState();
 
 	const config = {
 		headers: {
@@ -115,7 +117,7 @@ export const updatePost = (id, formData) => async (dispatch, getState) => {
 	};
 
 	try {
-		const data = await axios.put(`/posts/${id}`, formData, config);
+		const { data } = await axios.put(`/posts/${id}`, formData, config);
 
 		dispatch({
 			type: UPDATE_POST,
@@ -175,10 +177,6 @@ export const getUserTimeLinePosts = (userId) => async (dispatch, getState) => {
 	} catch (err) {
 		dispatch({
 			type: POST_ERROR,
-			payload: {
-				msg: err.response.statusText,
-				status: err.response.status,
-			},
 		});
 	}
 };
@@ -237,11 +235,39 @@ export const addPostComment =
 		} catch (err) {
 			dispatch({
 				type: POST_ERROR,
+			});
+		}
+	};
+
+// Update Comment
+export const updateComment =
+	(postId, commentId, commentData) => async (dispatch, getState) => {
+		const { userLogin } = getState();
+
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${userLogin.token}`,
+			},
+		};
+
+		try {
+			const { data } = await axios.put(
+				`/posts/comments/${postId}/${commentId}`,
+				commentData,
+				config
+			);
+
+			dispatch({
+				type: UPDATE_COMMENT,
 				payload: {
-					msg: err.response.statusText,
-					status: err.response.status,
+					postId,
+					commentId,
+					data,
 				},
 			});
+		} catch (err) {
+			dispatch({ type: POST_ERROR });
 		}
 	};
 
@@ -271,10 +297,6 @@ export const deleteComment =
 		} catch (err) {
 			dispatch({
 				type: POST_ERROR,
-				// payload: {
-				// 	msg: err.response.statusText,
-				// 	status: err.response.status,
-				// },
 			});
 		}
 	};
@@ -341,6 +363,45 @@ export const addReply =
 				payload: {
 					postId,
 					commentId,
+					data,
+				},
+			});
+		} catch (err) {
+			dispatch({
+				type: POST_ERROR,
+				payload: {
+					msg: err.response.statusText,
+					status: err.response.status,
+				},
+			});
+		}
+	};
+
+// Update Reply
+export const upDateReply =
+	(postId, commentId, replyId, replyData) => async (dispatch, getState) => {
+		const { userLogin } = getState();
+
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${userLogin.token}`,
+			},
+		};
+
+		try {
+			const { data } = await axios.put(
+				`/posts/comments/replies/${postId}/${commentId}/${replyId}`,
+				replyData,
+				config
+			);
+
+			dispatch({
+				type: UPDATE_REPLY,
+				payload: {
+					postId,
+					commentId,
+					replyId,
 					data,
 				},
 			});

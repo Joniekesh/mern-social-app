@@ -12,6 +12,8 @@ import {
 	ADD_REPLY,
 	DELETE_REPLY,
 	LIKE_REPLY,
+	UPDATE_COMMENT,
+	UPDATE_REPLY,
 } from "../constants/postConstants";
 
 const initialState = {
@@ -41,13 +43,18 @@ export const postReducers = (state = initialState, action) => {
 			return {
 				...state,
 				posts: [payload, ...state.posts],
+				loading: false,
 			};
+		// Text is updating but not image yet
+		// To be fixed later
 		case UPDATE_POST:
+			const postToUpdate = state.posts.find((post) => post._id === payload.id);
 			return {
 				...state,
-				posts: state.posts.find((post) =>
-					post._id === payload.id ? { ...post, payload } : post
-				),
+				post: {
+					...postToUpdate,
+					desc: payload.data,
+				},
 				loading: false,
 			};
 		case ADD_LIKE:
@@ -72,6 +79,22 @@ export const postReducers = (state = initialState, action) => {
 						? { ...post, comments: [...state.post.comments, payload.data] }
 						: post
 				),
+				loading: false,
+			};
+		case UPDATE_COMMENT:
+			const postForCommentUpdate = state.posts.find(
+				(post) => post._id === payload.postId
+			);
+			const commentToUpdate = postForCommentUpdate.comments.find(
+				(comment) => comment._id === payload.commentId
+			);
+			return {
+				...state,
+				post: {
+					...postForCommentUpdate,
+					comments: [...commentToUpdate, payload.data],
+				},
+				loading: false,
 			};
 		case DELETE_COMMENT:
 			const post = state.posts.find((post) => post._id === payload.postId);
@@ -83,6 +106,7 @@ export const postReducers = (state = initialState, action) => {
 						(comment) => comment._id !== payload.commentId
 					),
 				},
+				loading: false,
 			};
 		case LIKE_COMMENT:
 			const postForComment = state.posts.find(
@@ -97,6 +121,7 @@ export const postReducers = (state = initialState, action) => {
 					...postForComment,
 					comments: [...currentComment, { likes: payload.data }],
 				},
+				loading: false,
 			};
 		case ADD_REPLY:
 			const postForReply = state.posts.find(
@@ -111,6 +136,26 @@ export const postReducers = (state = initialState, action) => {
 					...postForReply,
 					comments: [...currentCommentForReply, payload.data],
 				},
+				loading: false,
+			};
+		case UPDATE_REPLY:
+			const postToEditReply = state.posts.find(
+				(post) => post._id === payload.postId
+			);
+			const commentToEditReply = postToEditReply.comments.find(
+				(comment) => comment._id === payload.commentId
+			);
+			const replyToEdit = commentToEditReply.replies.find(
+				(reply) => reply._id === payload.replyId
+			);
+			return {
+				...state,
+				post: {
+					...postToEditReply,
+					comments: [...commentToEditReply],
+					replies: [...replyToEdit, payload.data],
+				},
+				loading: false,
 			};
 
 		case LIKE_REPLY:
@@ -131,6 +176,7 @@ export const postReducers = (state = initialState, action) => {
 					comments: [...commentForReplyLike],
 					replies: [...currentReply, { likes: payload.data }],
 				},
+				loading: false,
 			};
 		case DELETE_REPLY:
 			const postForReplyDelete = state.posts.find(
@@ -149,6 +195,7 @@ export const postReducers = (state = initialState, action) => {
 						(reply) => reply._id !== payload.replyId
 					),
 				},
+				loading: false,
 			};
 
 		case POST_ERROR:

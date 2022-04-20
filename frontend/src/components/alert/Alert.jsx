@@ -4,7 +4,7 @@ const Alert = () => {
 	const alert = useSelector((state) => state.alert);
 	const { alert: alerts } = alert;
 	return (
-		<div className="alertWrapper">
+		<div className="alert-wrapper">
 			{alerts !== null &&
 				alerts?.length > 0 &&
 				alerts.map((alert) => (

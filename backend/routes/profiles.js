@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
@@ -118,28 +119,31 @@ router.get("/", protect, async (req, res) => {
 	}
 });
 
+module.exports = router;
 // @desc   Get profile by user ID
-// @route  GET /api/profiles/user/:userId
+// @route  GET /api/profiles/user/:user_id
 // @access Public
-router.get("/user/:userId", protect, async (req, res) => {
-	try {
-		const profile = await Profile.findOne({
-			user: req.params.userId,
-		}).populate("user", ["name", "profilePic"]);
+router.get(
+	"/user/:user_id",
+	checkObjectId("user_id"),
+	protect,
+	async ({ params: { user_id } }, res) => {
+		try {
+			const profile = await Profile.findOne({
+				user: user_id,
+			}).populate("user", ["name", "profilePic"]);
 
-		if (!profile) {
-			return res.status(404).json({ msg: "Profile not found" });
-		}
+			if (!profile) {
+				return res.status(404).json({ msg: "Profile not found" });
+			}
 
-		res.json(profile);
-	} catch (err) {
-		console.error(err.message);
-		if (err.kind === "ObjectId") {
-			return res.status(401).json({ msg: "user not found" });
+			res.json(profile);
+		} catch (err) {
+			console.error(err.message);
+			return res.status(500).send("Server Error");
 		}
-		return res.status(500).send("Server Error");
 	}
-});
+);
 
 // @desc   Delete profile, user and posts
 // @route  DELETE /api/profiles
@@ -419,5 +423,3 @@ router.get("/github/:username", async (req, res) => {
 		return res.status(404).json({ msg: "No github profile found" });
 	}
 });
-
-module.exports = router;

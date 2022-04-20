@@ -1,21 +1,31 @@
 import "./profileRightBar.css";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { getProfileById } from "../../../redux/actions/prifileActions";
+import { useEffect } from "react";
 
-const ProfileRightBar = () => {
+const ProfileRightBar = ({ follower }) => {
+	const dispatch = useDispatch();
+
+	const profile = useSelector((state) => state.profile);
+	const { profile: currentProfile } = profile;
+
+	useEffect(() => {
+		dispatch(getProfileById(follower));
+	}, [dispatch, follower]);
+
 	return (
 		<div className="profileRightBar">
 			<div className="profileRightBarListItem">
 				<div className="left">
-					<Link to="/profiles/111">
-						<img src="/assets/profile2.jpeg" alt="" />
+					<Link to={`/profiles/${currentProfile?.user}`}>
+						<img src={currentProfile?.profilePic} alt="" />
 					</Link>
 				</div>
-				<Link to="/profiles/111">
+				<Link to={`/profiles/${currentProfile?.user}`}>
 					<div className="center">
-						<h4>James Bond</h4>
-						<p>
-							Full Stack Developer: MERN | Socket.io | Redux | Firebase | Git...
-						</p>
+						<h4>{currentProfile?.name}</h4>
+						<p>{currentProfile?.headline}</p>
 					</div>
 				</Link>
 				<div className="right">

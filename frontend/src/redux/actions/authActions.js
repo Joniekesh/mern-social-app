@@ -10,10 +10,6 @@ import {
 	USER_LOGOUT,
 	USER_UPDATE_SUCCESS,
 	USER_UPDATE_FAIL,
-	USER_FOLLOW,
-	USER_ERROR,
-	GET_USERS,
-	GET_USER,
 } from "../constants/authConstants";
 
 // Get loggedin user
@@ -55,6 +51,7 @@ export const register = (formData) => async (dispatch) => {
 		});
 
 		dispatch(loadUser());
+		dispatch(setAlert("Registration SUCCESFUL", "success"));
 	} catch (err) {
 		const errors = err.response.data.errors;
 
@@ -85,6 +82,7 @@ export const login = (formData) => async (dispatch) => {
 		});
 
 		dispatch(loadUser());
+		dispatch(setAlert("Login SUCCESSFUL", "success"));
 	} catch (err) {
 		const errors = err.response.data.errors;
 
@@ -116,6 +114,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
 			type: USER_UPDATE_SUCCESS,
 			payload: data,
 		});
+		dispatch(setAlert("User update SUCCESSFUL", "success"));
 	} catch (err) {
 		dispatch({
 			type: USER_UPDATE_FAIL,
@@ -124,99 +123,9 @@ export const updateUser = (user) => async (dispatch, getState) => {
 				status: err.response.status,
 			},
 		});
+		dispatch(setAlert("Error with update", "danger"));
 	}
 };
-
-// Get Users
-export const getUsers = () => async (dispatch, getState) => {
-	const { userLogin } = getState();
-
-	const config = {
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${userLogin.token}`,
-		},
-	};
-
-	try {
-		const { data } = await axios.get("/users", config);
-		dispatch({
-			type: GET_USERS,
-			payload: data,
-		});
-	} catch (err) {
-		dispatch({
-			type: USER_ERROR,
-			payload: {
-				msg: err.response.statusText,
-				status: err.response.status,
-			},
-		});
-	}
-};
-
-// Get User By ID
-export const getUserById = (userId) => async (dispatch, getState) => {
-	const { userLogin } = getState();
-
-	const config = {
-		headers: {
-			Authorization: `Bearer ${userLogin.token}`,
-		},
-	};
-
-	try {
-		const { data } = await axios.get(`/users/${userId}`, config);
-		dispatch({
-			type: GET_USER,
-			payload: data,
-		});
-	} catch (err) {
-		dispatch({
-			type: USER_ERROR,
-			payload: {
-				msg: err.response.statusText,
-				status: err.response.status,
-			},
-		});
-	}
-};
-
-// Follow/Unfollow User
-export const followUser =
-	(userId, followData) => async (dispatch, getState) => {
-		const { userLogin } = getState();
-
-		const config = {
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${userLogin.token}`,
-			},
-		};
-
-		try {
-			const { data } = await axios.put(
-				`/users/${userId}/follow`,
-				followData,
-				config
-			);
-			dispatch({
-				type: USER_FOLLOW,
-				payload: {
-					userId,
-					data,
-				},
-			});
-		} catch (err) {
-			dispatch({
-				type: USER_ERROR,
-				payload: {
-					msg: err.response.statusText,
-					status: err.response.status,
-				},
-			});
-		}
-	};
 
 // Logout User
 export const logout = () => ({

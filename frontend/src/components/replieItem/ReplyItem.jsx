@@ -1,5 +1,5 @@
 import "./replyItem.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { format } from "timeago.js";
@@ -12,6 +12,7 @@ const ReplyItem = ({ post, comment, reply, profile }) => {
 	const [isLiked, setIsLiked] = useState(false);
 
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { isAuthenticated, user, loading } = userLogin;
@@ -34,6 +35,14 @@ const ReplyItem = ({ post, comment, reply, profile }) => {
 		setIsLiked(!isLiked);
 
 		window.location.reload();
+	};
+
+	const handleReplyEdit = () => {
+		navigate(`/editCommentReply/${post._id}/${comment._id}`, {
+			state: {
+				reply,
+			},
+		});
 	};
 
 	const handleReplyDelete = () => {
@@ -64,16 +73,13 @@ const ReplyItem = ({ post, comment, reply, profile }) => {
 						</div>
 						{openModal && (
 							<div className="postEditDeletePopup">
-								<div className="postUpdate">
+								<div className="postUpdate" onClick={handleReplyEdit}>
 									<i className="fa-solid fa-pen"></i>
 									<span>Edit</span>
 								</div>
 								<hr className="line" />
-								<div className="postDelete">
-									<i
-										className="fa-solid fa-trash-can"
-										onClick={handleReplyDelete}
-									></i>
+								<div className="postDelete" onClick={handleReplyDelete}>
+									<i className="fa-solid fa-trash-can"></i>
 									<span>Delete</span>
 								</div>
 							</div>

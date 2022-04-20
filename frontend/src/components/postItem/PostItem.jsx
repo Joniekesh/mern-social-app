@@ -5,37 +5,51 @@ import { Link, useNavigate } from "react-router-dom";
 import { likePost, deletePost } from "../../redux/actions/postActions";
 import { getProfileById } from "../../redux/actions/prifileActions";
 import { format } from "timeago.js";
+import { getUserById } from "../../redux/actions/userActions";
+import { followUser, unFollowUser } from "../../redux/actions/userActions";
 
 const PostItem = ({ post }) => {
+	const user = useSelector((state) => state.user);
+	const { user: postUser } = user;
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { isAuthenticated, user: currentUser } = userLogin;
+
 	const [toggle, setToggle] = useState(false);
 	const [like, setLike] = useState(post?.likes?.length);
 	const [isLiked, setIsLiked] = useState(false);
+	const [isFollowed, setIsFollowed] = useState(
+		postUser?.followers?.includes(currentUser?._id)
+	);
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const userLogin = useSelector((state) => state.userLogin);
-	const { isAuthenticated, user } = userLogin;
+	const id = post?.user;
 
 	const profile = useSelector((state) => state.profile);
 	const { profile: currentProfile } = profile;
-
-	const id = post?.user;
 
 	useEffect(() => {
 		dispatch(getProfileById(id));
 	}, [dispatch, id]);
 
-	const currentLike = post?.likes?.find((like) => like.user === user._id);
+	const currentLike = post?.likes?.find(
+		(like) => like.user === currentUser?._id
+	);
 
 	useEffect(() => {
 		setIsLiked(post?.likes?.includes(currentLike));
 	}, [post?.likes, currentLike]);
 
+	useEffect(() => {
+		dispatch(getUserById(id));
+	}, [dispatch, id]);
+
 	const userData = {
-		name: user.name,
+		name: currentUser.name,
 		user,
-		profilePic: user.profilePic,
+		profilePic: currentUser.profilePic,
 	};
 
 	const handleLikes = () => {
@@ -43,6 +57,20 @@ const PostItem = ({ post }) => {
 		setLike(isLiked ? like - 1 : like + 1);
 		setIsLiked(!isLiked);
 
+		window.location.reload();
+	};
+
+	useEffect(() => {
+		setIsFollowed(postUser?.followers?.includes(currentUser._id));
+	}, [postUser?.followers, currentUser._id]);
+
+	const handleFollow = () => {
+		if (isFollowed) {
+			dispatch(unFollowUser(postUser._id, { user: currentUser._id }));
+		} else {
+			dispatch(followUser(postUser._id, { user: currentUser._id }));
+		}
+		setIsFollowed(!isFollowed);
 		window.location.reload();
 	};
 
@@ -55,7 +83,7 @@ const PostItem = ({ post }) => {
 	};
 
 	const handleDelete = () => {
-		if (isAuthenticated && user._id === post.user) {
+		if (isAuthenticated && currentUser._id === post.user) {
 			dispatch(deletePost(post._id));
 			navigate("/");
 
@@ -68,26 +96,40 @@ const PostItem = ({ post }) => {
 			<div className="homeCenterTop">
 				<div className="topLeft">
 					<div className="userDiv">
-						<Link to={`/profiles/${post?.user}`}>
+						<Link to={`/profiles/${id}`}>
 							<img className="topLeftImg" src={post?.profilePic} alt="" />
 						</Link>
 						<Link to={`/profiles/${post?.user}`}>
 							<div className="topLeftUserInfo">
 								<h4 className="username">{post?.name}</h4>
 								<p className="skillsList">{currentProfile?.headline}</p>
-								<span className="followersCount">20,334 followers</span>
+								<span className="followersCount">
+									{postUser?.followers.length} Followers
+								</span>
 								<span className="time">{format(post?.createdAt)}</span>
 							</div>
 						</Link>
 					</div>
 					<div className="topRight">
-						<div className="topRightFollowDiv">
-							<i className="fa-solid fa-plus"></i>
-							<span>Follow</span>
-						</div>
-						{isAuthenticated && user?._id === post?.user && (
+						{postUser?._id !== currentUser?._id && (
+							<div className="topRightFollowDiv" onClick={handleFollow}>
+								{isFollowed ? (
+									<>
+										<i className="fa-solid fa-minus"></i>
+										<span>Unfollow</span>
+									</>
+								) : (
+									<>
+										<i className="fa-solid fa-plus"></i>
+										<span>Follow</span>
+									</>
+								)}
+							</div>
+						)}
+						{isAuthenticated && currentUser?._id === post?.user && (
 							<i
 								class="fa-solid fa-ellipsis-vertical"
+								style={{ color: "teal", fontSize: "20px" }}
 								onClick={() => setToggle(!toggle)}
 							></i>
 						)}
@@ -154,7 +196,7 @@ const PostItem = ({ post }) => {
 			</div>
 			<Link to={`/posts/${post?._id}`}>
 				<div className="commentInputContainer">
-					<img className="commentImg" src={user.profilePic} alt="" />
+					<img className="commentImg" src={currentUser.profilePic} alt="" />
 					<div className="commentInput">
 						<input
 							className="commentInputText"

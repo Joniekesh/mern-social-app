@@ -57,27 +57,15 @@
 	display: flex;
 }
 
-.topRight i {
-	color: teal;
-}
-
 .topRightFollowDiv {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	color: teal;
 	cursor: pointer;
-	font-weight: bold;
-	transition: all 0.5s ease;
-	background-color: rgb(228, 231, 231);
-	padding: 16px 6px;
+	font-weight: 500;
 	height: 24px;
-	border-radius: 5px;
 	margin-right: 16px;
-}
-
-.topRightFollowDiv:hover {
-	transform: scale(1.1);
 }
 
 .deleteUpdateBtns {
@@ -115,10 +103,6 @@
 .topRight i {
 	margin-right: 5px;
 	font-size: 16px;
-}
-.topRight:hover {
-	transform: scale(1.08);
-	border-radius: 5px;
 }
 
 .line {

@@ -11,6 +11,7 @@ import {
 	GET_GIT_REPOS,
 	GIT_REPOS_ERROR,
 	CLEAR_PROFILE,
+	DELETE_ACCOUNT,
 } from "../constants/profileConstants";
 
 // Get loggedin user profile
@@ -19,6 +20,7 @@ export const getCurrentProfile = () => async (dispatch, getState) => {
 
 	const config = {
 		headers: {
+			// "Content-Type": "application/json",
 			Authorization: `Bearer ${userLogin.token}`,
 		},
 	};
@@ -84,10 +86,10 @@ export const getProfileById = (userId) => async (dispatch, getState) => {
 	} catch (err) {
 		dispatch({
 			type: PROFILE_ERROR,
-			payload: {
-				msg: err.response.statusText,
-				status: err.response.status,
-			},
+			// payload: {
+			// 	msg: err.response.statusText,
+			// 	status: err.response.status,
+			// },
 		});
 	}
 };
@@ -327,6 +329,34 @@ export const getGitRepos = (username) => async (dispatch, getState) => {
 	} catch (err) {
 		dispatch({
 			type: GIT_REPOS_ERROR,
+		});
+	}
+};
+
+// Delete Account (removes profile, posts and user)
+export const deleteAccount = () => async (dispatch, getState) => {
+	const { userLogin } = getState();
+
+	const config = {
+		headers: {
+			Authorization: `Bearer ${userLogin.token}`,
+		},
+	};
+
+	try {
+		if (window.confirm("Are You SURE? This can NOT be UNDONE!")) {
+			await axios.delete("/profiles", config);
+
+			dispatch({ type: DELETE_ACCOUNT });
+			dispatch({ type: CLEAR_PROFILE });
+		}
+	} catch (err) {
+		dispatch({
+			type: PROFILE_ERROR,
+			payload: {
+				msg: err.response.statusText,
+				status: err.response.statusText,
+			},
 		});
 	}
 };

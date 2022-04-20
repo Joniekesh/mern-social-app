@@ -43,6 +43,7 @@ export const profileReducer = (state = initialState, action) => {
 				...state,
 				profile: null,
 				repos: [],
+				loading: false,
 			};
 		case REMOVE_EDUCATION:
 			return {
@@ -63,6 +64,7 @@ export const profileReducer = (state = initialState, action) => {
 					...state.profile,
 					education: [...state.profile.education, payload],
 				},
+				loading: false,
 			};
 
 		case UPDATE_EXPERIENCE:
@@ -72,6 +74,7 @@ export const profileReducer = (state = initialState, action) => {
 					...state.profile,
 					experience: [...state.profile.experience, payload],
 				},
+				loading: false,
 			};
 
 		case REMOVE_EXPERIENCE:

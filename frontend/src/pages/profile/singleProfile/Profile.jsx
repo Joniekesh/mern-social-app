@@ -10,34 +10,35 @@ import ProfilesExperience from "../../../components/profiles/ProfilesExperience"
 import ProfilesEducation from "../../../components/profiles/ProfilesEducation";
 import Spinner from "../../../components/spinner/Spinner";
 import GitRepos from "../../../components/profile/gitRepos/GitRepos";
-import { getGitRepos } from "../../../redux/actions/prifileActions";
 import HomeTop from "../../../components/homeTop/HomeTop";
 import { getUserTimeLinePosts } from "../../../redux/actions/postActions";
+import { getUserById } from "../../../redux/actions/userActions";
+
 import PostItem from "../../../components/postItem/PostItem";
 
 const Profile = () => {
-	const dispatch = useDispatch();
 	const { id } = useParams();
-
-	const profile = useSelector((state) => state.profile);
-	const { profile: userProfile, repos, loading } = profile;
+	const dispatch = useDispatch();
 
 	const userLogin = useSelector((state) => state.userLogin);
-	const { isAuthenticated, user } = userLogin;
+	const { isAuthenticated, currentUser } = userLogin;
+
+	const user = useSelector((state) => state.user);
+	const { user: guestUser } = user;
+
+	const profile = useSelector((state) => state.profile);
+	const { profile: userProfile, loading } = profile;
 
 	const post = useSelector((state) => state.post);
-	const { post: userTimelinePosts } = post;
-	console.log(userTimelinePosts);
+	const { post: userTimelinePosts, loading: loadingPost } = post;
 
-	const username = userProfile?.githubusername;
+	useEffect(() => {
+		dispatch(getUserById(id));
+	}, [dispatch, id]);
 
 	useEffect(() => {
 		dispatch(getProfileById(id));
 	}, [dispatch, id]);
-
-	useEffect(() => {
-		dispatch(getGitRepos(username));
-	}, [dispatch, username]);
 
 	useEffect(() => {
 		dispatch(getUserTimeLinePosts(id));
@@ -54,20 +55,27 @@ const Profile = () => {
 							<i className="fa-solid fa-user"></i>
 							<span>Dashboard</span>
 						</div>
-						{userProfile === null && userProfile?.user === user._id && (
-							<ProfileActions />
-						)}
+						{!loading &&
+							userProfile === null &&
+							userProfile?.user === currentUser?._id && <ProfileActions />}
 						<div className="profileWrapper">
 							<div className="profilesTopDiv">
-								<ProfilesTop profile={userProfile} />
+								<ProfilesTop
+									profile={userProfile}
+									guestUser={guestUser}
+									currentUser={currentUser}
+								/>
 								<div className="profileLeft profilesTopRightDiv">
 									<div className="profileRight editThis">
 										<h4>{userProfile?.name}'s Followers</h4>
 										<hr className="line" />
 										<div className="profileRightLists">
-											<ProfileRightBar />
-											<ProfileRightBar />
-											<ProfileRightBar />
+											{guestUser?.followers?.map((follower) => (
+												<ProfileRightBar
+													follower={follower}
+													key={follower._id}
+												/>
+											))}
 										</div>
 										<span className="profileFollowersViewMore">
 											View More...
@@ -105,7 +113,7 @@ const Profile = () => {
 											)}
 										</div>
 									</div>
-									{isAuthenticated && user._id === userProfile?.user && (
+									{isAuthenticated && currentUser?._id === userProfile?.user && (
 										<Link to="/experience">
 											<div className="experienceAdd">
 												<i className="fa-solid fa-plus"></i>
@@ -136,7 +144,7 @@ const Profile = () => {
 											)}
 										</div>
 									</div>
-									{isAuthenticated && user._id === userProfile?.user && (
+									{isAuthenticated && currentUser?._id === userProfile?.user && (
 										<Link to="/education">
 											<div className="experienceAdd">
 												<i className="fa-solid fa-plus"></i>
@@ -148,26 +156,22 @@ const Profile = () => {
 							<div className="gitReposWrapper">
 								<h2>Github Repos</h2>
 								<div className="gitReposList">
-									{repos?.length > 0 ? (
-										repos.map((repo, index) => (
-											<GitRepos repo={repo} key={index} />
-										))
-									) : (
-										<h4>
-											No Repos to show. Please add your github username to have
-											your repos populated.
-										</h4>
-									)}
+									<GitRepos userProfile={userProfile} />
 								</div>
 							</div>
 
 							<div className="timeLinePostWrapper">
 								<h2>{userProfile?.name}'s Timeline Posts</h2>
-								{isAuthenticated && user._id === userProfile?.user && (
+								{isAuthenticated && currentUser?._id === userProfile?.user && (
 									<HomeTop />
 								)}
+
 								<div className="timeLinePostLists">
-									<PostItem post={userTimelinePosts} />
+									{!loading &&
+										userTimelinePosts &&
+										Object.keys(userTimelinePosts)?.map((key, index) => (
+											<PostItem post={userTimelinePosts[key]} key={index} />
+										))}
 								</div>
 							</div>
 						</div>

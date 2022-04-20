@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const protect = require("../middleware/authMiddleware");
 const User = require("../models/User");
+const { default: mongoose } = require("mongoose");
 
 // @desc   Update user
 // @route  PUT /api/users
@@ -51,24 +52,26 @@ router.get("/", protect, async (req, res) => {
 // @route  GET /api/users
 // @access Public
 router.get("/:id", protect, async (req, res) => {
-	try {
-		const user = await User.findById(req.params.id).select("-password");
+	const valid = mongoose.Types.ObjectId.isValid(req.params.id);
+	if (valid) {
+		try {
+			const user = await User.findById(req.params.id).select("-password");
 
-		if (!user) {
-			return res.status(404).json({ msg: "User not found" });
-		}
+			if (!user) {
+				return res.status(404).json({ msg: "User not found" });
+			}
 
-		res.json(user);
-	} catch (err) {
-		console.error(err.message);
-		if (err.kind == "ObjectId") {
-			return res.status(404).json({ msg: "User not found" });
+			res.json(user);
+		} catch (err) {
+			console.error(err.message);
+			res.status(500).send("Server Error");
 		}
-		res.status(500).send("Server Error");
+	} else {
+		res.status(400).json({ msg: "ID is not valid" });
 	}
 });
 
-// @desc   Follow/Unfollow a user
+// @desc   Follow a user
 // @route  PUT /api/users/:id/follow
 // @access Private
 router.put("/:id/follow", protect, async (req, res) => {
@@ -83,20 +86,45 @@ router.put("/:id/follow", protect, async (req, res) => {
 
 				res.status(200).json({ msg: "User has been followed" });
 			} else {
-				await user.updateOne({ $pull: { followers: req.user.id } });
-				await currentUser.updateOne({ $pull: { followings: req.params.id } });
-
-				res.status(200).json({ msg: "User has been unfollowed" });
+				res.status(400).json({ msg: "You already follow this user" });
 			}
 		} catch (err) {
 			console.error(err.message);
 			if (err.kind == "ObjectId") {
-				return res.status(400).json({ msg: "Error with follow/unfollow user" });
+				return res.status(400).json({ msg: "Error with follow user" });
 			}
 			res.status(500).send("Server Error");
 		}
 	} else {
-		res.status(400).json({ msg: "You cannot follow/unfollow yourself" });
+		res.status(400).json({ msg: "You cannot unfollow yourself" });
+	}
+});
+// @desc   Unfollow a user
+// @route  PUT /api/users/:id/follow
+// @access Private
+router.put("/:id/unfollow", protect, async (req, res) => {
+	if (req.user.id.toString() !== req.params.id) {
+		try {
+			const user = await User.findById(req.params.id);
+			const currentUser = await User.findById(req.user.id);
+
+			if (user.followers.includes(req.user.id)) {
+				await user.updateOne({ $pull: { followers: req.user.id } });
+				await currentUser.updateOne({ $pull: { followings: req.params.id } });
+
+				res.status(200).json({ msg: "User has been followed" });
+			} else {
+				res.status(400).json({ msg: "You do not follow this user yet" });
+			}
+		} catch (err) {
+			console.error(err.message);
+			if (err.kind == "ObjectId") {
+				return res.status(400).json({ msg: "Error with unfollow user" });
+			}
+			res.status(500).send("Server Error");
+		}
+	} else {
+		res.status(400).json({ msg: "You cannot follow yourself" });
 	}
 });
 

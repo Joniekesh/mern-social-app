@@ -1,12 +1,30 @@
 import "./profilesTop.css";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { followUser, unFollowUser } from "../../redux/actions/userActions";
 
-const ProfilesTop = ({ profile }) => {
+const ProfilesTop = ({ profile, guestUser, currentUser }) => {
+	const [follow, setFollow] = useState(
+		guestUser?.followers?.includes(currentUser?._id)
+	);
+
+	useEffect(() => {
+		setFollow(guestUser?.followers?.includes(currentUser?._id));
+	}, [guestUser?.followers, currentUser?._id]);
+
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
-	const userLogin = useSelector((state) => state.userLogin);
-	const { isAuthenticated, user } = userLogin;
+	const handleFollow = () => {
+		if (follow) {
+			dispatch(unFollowUser(guestUser._id, { _id: currentUser?._id }));
+		} else {
+			dispatch(followUser(guestUser._id, { _id: currentUser?._id }));
+		}
+		setFollow(!follow);
+	};
 
 	const handleProfileEdit = () => {
 		navigate("/editProfile", {
@@ -31,7 +49,7 @@ const ProfilesTop = ({ profile }) => {
 			</div>
 			<div className="profileUserInfo">
 				<h2 className="profileUsername">{profile?.name}</h2>
-				{isAuthenticated && user._id === profile?.user && (
+				{currentUser?._id === profile?.user && (
 					<i
 						className="fa-solid fa-pen profileInfoEdit"
 						onClick={handleProfileEdit}
@@ -102,13 +120,24 @@ const ProfilesTop = ({ profile }) => {
 				</div>
 			</div>
 			<br />
-			<div className="profileUserFollow">
-				<div className="profileFollowDiv">
-					<i className="fa-solid fa-plus"></i>
-					<span className="profileFollow">Follow</span>
+			{guestUser?._id !== currentUser?._id && (
+				<div className="profileUserFollow">
+					<div className="profileFollowDiv" onClick={handleFollow}>
+						{follow ? (
+							<>
+								<i className="fa-solid fa-minus"></i>
+								<span className="profileFollow">Unfollow</span>
+							</>
+						) : (
+							<>
+								<i className="fa-solid fa-plus"></i>
+								<span className="profileFollow">Follow</span>
+							</>
+						)}
+					</div>
+					<span className="profileMessage">Message</span>
 				</div>
-				<span className="profileMessage">Message</span>
-			</div>
+			)}
 			<br />
 			<hr className="line" />
 			<div className="skills">

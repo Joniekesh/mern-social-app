@@ -10,8 +10,3 @@ export const USER_LOADED_FAIL = "USER_LOADED_FAIL";
 
 export const USER_UPDATE_SUCCESS = "USER_UPDATE_SUCCESS";
 export const USER_UPDATE_FAIL = "USER_UPDATE_FAIL";
-
-export const GET_USERS = "GET_USERS";
-export const GET_USER = "GET_USER";
-export const USER_FOLLOW = "USER_FOLLOW";
-export const USER_ERROR = "USER_ERROR";

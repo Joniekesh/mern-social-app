@@ -1,3 +1,4 @@
+import "./App.css";
 import {
 	BrowserRouter as Router,
 	Routes,
@@ -30,6 +31,8 @@ import EducationEdit from "./pages/profile/education/EducationEdit";
 import EditProfile from "./pages/profile/editProfile/EditProfile";
 import EditPost from "./pages/createPost/EditPost";
 import CommentReply from "./pages/commentReply/CommentReply";
+import EditComment from "./components/commentItem/EditComment";
+import EditCommentReply from "./pages/commentReply/EditCommentReply";
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -69,6 +72,14 @@ const App = () => {
 				<Route
 					path="/editPost"
 					element={<PrivateRoute component={EditPost} />}
+				></Route>
+				<Route
+					path="/editComment/:postId"
+					element={<PrivateRoute component={EditComment} />}
+				></Route>
+				<Route
+					path="/editCommentReply/:postId/:commentId"
+					element={<PrivateRoute component={EditCommentReply} />}
 				></Route>
 				<Route
 					path="/posts/:postId"

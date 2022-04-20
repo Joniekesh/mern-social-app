@@ -18,7 +18,7 @@ const EditPost = () => {
 
 	const [close, setClose] = useState(true);
 	const [file, setFile] = useState("");
-	const [desc, setDesc] = useState(post.desc);
+	const [desc, setDesc] = useState("");
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -34,7 +34,6 @@ const EditPost = () => {
 
 	const handleUpdate = (e) => {
 		e.preventDefault();
-
 		const fileName = new Date().getTime() + file.name;
 		const storage = getStorage(app);
 		const storageRef = ref(storage, fileName);
@@ -67,7 +66,7 @@ const EditPost = () => {
 					};
 					if (isAuthenticated && user._id === post.user) {
 						dispatch(updatePost(post._id, postData));
-						navigate(`/post/${post._id}`);
+						navigate(`/posts/${post._id}`);
 
 						window.location.reload();
 					}
@@ -99,7 +98,7 @@ const EditPost = () => {
 						<form onSubmit={handleUpdate}>
 							<textarea
 								type="text"
-								defaultValue={desc}
+								defaultValue={post.desc}
 								className="createPostTextarea"
 								placeholder="Create a post"
 								onChange={(e) => setDesc(e.target.value)}

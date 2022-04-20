@@ -1,0 +1,48 @@
+.editCommentWrapper {
+	border: 1px solid #ddd;
+	border-radius: 0px 16px 0px 16px;
+}
+.editCommentDesc {
+	width: 100%;
+	height: 20vh;
+	padding: 10px;
+	font-size: 18px;
+	color: teal;
+	border: none;
+}
+
+.editCommentDesc:focus {
+	outline: none;
+	border-bottom: 2px solid teal;
+}
+
+.commentEditBtnGroup {
+	float: right;
+	margin-top: 8px;
+}
+
+.editCancelBtn,
+.updatelBtn {
+	border: none;
+	padding: 7px;
+	cursor: pointer;
+	font-size: 16px;
+	font-weight: 500;
+	border-radius: 5px;
+}
+
+.editCancelBtn {
+	background-color: crimson;
+	color: white;
+}
+
+.updatelBtn {
+	margin-left: 16px;
+	background-color: teal;
+	color: white;
+}
+
+.editCancelBtn:hover,
+.updatelBtn:hover {
+	opacity: 0.8;
+}
