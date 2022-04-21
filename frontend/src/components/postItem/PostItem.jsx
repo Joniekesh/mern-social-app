@@ -8,12 +8,12 @@ import { format } from "timeago.js";
 import { getUserById } from "../../redux/actions/userActions";
 import { followUser, unFollowUser } from "../../redux/actions/userActions";
 
-const PostItem = ({ post }) => {
-	const user = useSelector((state) => state.user);
-	const { user: postUser } = user;
-
+const PostItem = ({ post, socket }) => {
 	const userLogin = useSelector((state) => state.userLogin);
 	const { isAuthenticated, user: currentUser } = userLogin;
+
+	const user = useSelector((state) => state.user);
+	const { user: postUser } = user;
 
 	const [toggle, setToggle] = useState(false);
 	const [like, setLike] = useState(post?.likes?.length);
@@ -57,7 +57,12 @@ const PostItem = ({ post }) => {
 		setLike(isLiked ? like - 1 : like + 1);
 		setIsLiked(!isLiked);
 
-		window.location.reload();
+		socket?.emit("sendNotification", {
+			senderName: user.name,
+			receiverName: postUser.name,
+		});
+
+		// window.location.reload();
 	};
 
 	useEffect(() => {

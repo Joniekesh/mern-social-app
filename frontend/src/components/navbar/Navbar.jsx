@@ -1,11 +1,12 @@
 import "./navbar.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/actions/authActions";
 
-const Navbar = () => {
+const Navbar = ({ socket }) => {
 	const [toggle, setToggle] = useState(false);
+	const [notifications, setNotifications] = useState([]);
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { isAuthenticated, user } = userLogin;
@@ -22,6 +23,13 @@ const Navbar = () => {
 		navigate("/login");
 		window.location.reload();
 	};
+
+	useEffect(() => {
+		socket?.on("getNotification", (data) => {
+			setNotifications((prev) => [...prev, data]);
+		});
+	}, [socket]);
+	console.log(notifications);
 
 	return (
 		<div className="navbar">

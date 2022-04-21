@@ -8,7 +8,7 @@ import { getPostById } from "../../redux/actions/postActions";
 import PostItem from "../../components/postItem/PostItem";
 import Spinner from "../../components/spinner/Spinner";
 
-const SinglePost = () => {
+const SinglePost = ({ socket }) => {
 	const { postId } = useParams();
 	const dispatch = useDispatch();
 
@@ -27,7 +27,7 @@ const SinglePost = () => {
 				) : (
 					<>
 						<div className="singlePostWrapper">
-							<PostItem post={singlePost} />
+							<PostItem post={singlePost} socket={socket} />
 							<p className="singlePostReaction">Reactions</p>
 							<div className="reactionsLists">
 								{singlePost?.likes?.length > 0 ? (

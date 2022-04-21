@@ -11,7 +11,7 @@ import PrivateRoute from "./routing/PrivateRoute";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { loadUser } from "./redux/actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
 import Profiles from "./pages/profiles/Profiles";
@@ -33,13 +33,24 @@ import EditPost from "./pages/createPost/EditPost";
 import CommentReply from "./pages/commentReply/CommentReply";
 import EditComment from "./components/commentItem/EditComment";
 import EditCommentReply from "./pages/commentReply/EditCommentReply";
+import { io } from "socket.io-client";
 
 const App = () => {
+	// Socket
+	const [socket, setSocket] = useState(null);
+	const userLogin = useSelector((state) => state.userLogin);
+	const { isAuthenticated, user } = userLogin;
+
+	useEffect(() => {
+		setSocket(io("http://localhost:8800"));
+	}, []);
+
+	useEffect(() => {
+		socket?.emit("newUser", user);
+	}, [socket, user]);
+
 	const dispatch = useDispatch();
 	const token = `Bearer ${localStorage.getItem("token")}`;
-
-	const userLogin = useSelector((state) => state.userLogin);
-	const { isAuthenticated } = userLogin;
 
 	useEffect(() => {
 		if (token) {
@@ -48,7 +59,7 @@ const App = () => {
 	}, [token, dispatch]);
 	return (
 		<Router>
-			<Navbar />
+			<Navbar socket={socket} />
 			<Alert />
 
 			<Routes>
@@ -83,7 +94,7 @@ const App = () => {
 				></Route>
 				<Route
 					path="/posts/:postId"
-					element={<PrivateRoute component={SinglePost} />}
+					element={<PrivateRoute component={SinglePost} socket={socket} />}
 				></Route>
 				<Route
 					path="/posts/:postId/postReactedUsers"
