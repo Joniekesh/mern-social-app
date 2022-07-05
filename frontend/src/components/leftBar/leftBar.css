@@ -1,5 +1,6 @@
 .homeLeft {
 	flex: 2.5;
+	position: relative;
 }
 
 .homeLeftSearchDiv {
@@ -11,6 +12,55 @@
 	margin-bottom: 16px;
 	border: 1px solid #ddd;
 	border-radius: 5px;
+}
+
+.search {
+	background-color: #fff;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	padding: 10px;
+	border-radius: 8px;
+	position: absolute;
+	left: 0;
+	top: 30px;
+	width: 100%;
+	z-index: 33;
+}
+
+.searchList {
+	display: flex;
+	flex-direction: column;
+}
+
+.searchListItem {
+	padding: 5px;
+	cursor: pointer;
+}
+
+.searchContainer {
+	display: flex;
+}
+
+.searchImg {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-right: 8px;
+}
+
+.searchDetails {
+	display: flex;
+	flex-direction: column;
+}
+
+.searchUserName {
+	font-weight: 500;
+	color: teal;
+}
+
+.searchUserProfile {
+	font-size: 14px;
 }
 
 .homeLeftSearchDiv i {
@@ -58,4 +108,10 @@
 
 .lefBarUserInfo p {
 	font-size: 13.5px;
+}
+
+@media only screen and (max-width: 768px) {
+	.homeLeft {
+		display: none;
+	}
 }

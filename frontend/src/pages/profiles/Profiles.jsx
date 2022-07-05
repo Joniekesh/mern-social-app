@@ -1,14 +1,20 @@
 import "./profiles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getProfiles } from "../../redux/actions/prifileActions";
+import { getProfiles } from "../../redux/actions/profilesActions";
 import Spinner from "../../components/spinner/Spinner";
 import ProfilesItem from "../../components/profile/profilesItem/ProfilesItem";
 const Profiles = () => {
 	const dispatch = useDispatch();
 
-	const profile = useSelector((state) => state.profile);
-	const { profiles, loading } = profile;
+	const userLogin = useSelector((state) => state.userLogin);
+	const { user } = userLogin;
+
+	const profiles = useSelector((state) => state.profiles);
+	const { profiles: allProfiles, loading } = profiles;
+	// const guestsProfiles = allProfiles?.filter(
+	// 	(profile) => profile.user._id !== user._id
+	// );
 
 	useEffect(() => {
 		dispatch(getProfiles());
@@ -28,12 +34,12 @@ const Profiles = () => {
 								<p>Browse and connect with developers</p>
 							</div>
 							<div className="profilesLists">
-								{profiles?.length > 0 ? (
-									profiles.map((profile) => (
+								{allProfiles?.length > 0 ? (
+									allProfiles.map((profile) => (
 										<ProfilesItem profile={profile} key={profile._id} />
 									))
 								) : (
-									<h4>No Profiles to show</h4>
+									<h4>No Developers to show</h4>
 								)}
 							</div>
 						</div>

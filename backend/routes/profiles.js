@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
-const checkObjectId = require("../middleware/checkObjectId");
 const protect = require("../middleware/authMiddleware");
 const Profile = require("../models/Profile");
 const Post = require("../models/Post");
@@ -17,7 +16,7 @@ router.get("/me", protect, async (req, res) => {
 	try {
 		const profile = await Profile.findOne({ user: req.user.id }).populate(
 			"user",
-			["name", "profilePic"]
+			"name email profilePic coverPhoto followers followings"
 		);
 
 		if (!profile) {
@@ -61,8 +60,6 @@ router.post(
 
 		const profileFields = {
 			user: req.user.id,
-			name: req.user.name,
-			profilePic: req.user.profilePic,
 			website:
 				website && website !== ""
 					? normalize(website, { forceHttps: true })
@@ -103,10 +100,10 @@ router.post(
 // @access Private
 router.get("/", protect, async (req, res) => {
 	try {
-		const profiles = await Profile.find().populate("user", [
-			"name",
-			"profilePic",
-		]);
+		const profiles = await Profile.find().populate(
+			"user",
+			"name email profilePic coverPhoto followers followings"
+		);
 
 		if (!profiles) {
 			return res.status(404).json({ msg: "Profiles not found" });
@@ -119,47 +116,26 @@ router.get("/", protect, async (req, res) => {
 	}
 });
 
-module.exports = router;
 // @desc   Get profile by user ID
 // @route  GET /api/profiles/user/:user_id
 // @access Public
-router.get(
-	"/user/:user_id",
-	checkObjectId("user_id"),
-	protect,
-	async ({ params: { user_id } }, res) => {
-		try {
-			const profile = await Profile.findOne({
-				user: user_id,
-			}).populate("user", ["name", "profilePic"]);
-
-			if (!profile) {
-				return res.status(404).json({ msg: "Profile not found" });
-			}
-
-			res.json(profile);
-		} catch (err) {
-			console.error(err.message);
-			return res.status(500).send("Server Error");
-		}
-	}
-);
-
-// @desc   Delete profile, user and posts
-// @route  DELETE /api/profiles
-// @access Private
-router.delete("/", protect, async (req, res) => {
+router.get("/user/:id", protect, async (req, res) => {
 	try {
-		await Promise.all([
-			Post.deleteMany({ user: req.user.id }),
-			User.findOneAndRemove({ _id: req.user.id }),
-			Profile.findOneAndRemove({ user: req.user.id }),
-		]);
+		const profile = await Profile.findOne({
+			user: req.params.id,
+		}).populate(
+			"user",
+			"name email profilePic coverPhoto followers followings"
+		);
 
-		res.json("User Deleted");
+		if (!profile) {
+			return res.status(404).json({ msg: "Profile not found" });
+		}
+
+		res.json(profile);
 	} catch (err) {
 		console.error(err.message);
-		res.status(500).send("Server Error");
+		return res.status(500).send("Server Error");
 	}
 });
 
@@ -204,6 +180,7 @@ router.post(
 router.put("/education/:eduId", protect, async (req, res) => {
 	const { school, degree, fieldofstudy, from, to, current, description } =
 		req.body;
+
 	try {
 		const profile = await Profile.findOne({ user: req.user.id });
 
@@ -423,3 +400,23 @@ router.get("/github/:username", async (req, res) => {
 		return res.status(404).json({ msg: "No github profile found" });
 	}
 });
+
+// @desc   Delete profile, user and posts
+// @route  DELETE /api/profiles
+// @access Private
+router.delete("/", protect, async (req, res) => {
+	try {
+		await Promise.all([
+			Post.deleteMany({ user: req.user.id }),
+			User.findOneAndRemove({ _id: req.user.id }),
+			Profile.findOneAndRemove({ user: req.user.id }),
+		]);
+
+		res.json("User Deleted");
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send("Server Error");
+	}
+});
+
+module.exports = router;

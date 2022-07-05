@@ -5,3 +5,13 @@
 	padding: 10px;
 	flex: 3;
 }
+
+.followerDiv {
+	display: flex;
+}
+
+.first {
+	margin-right: 5px;
+	color: teal;
+	font-weight: 500;
+}

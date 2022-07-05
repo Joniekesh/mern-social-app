@@ -3,10 +3,15 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/actions/authActions";
+import { getUsers } from "../../redux/actions/userActions";
 
-const Navbar = ({ socket }) => {
+const Navbar = ({ setOpenSideMenu, setOverLay }) => {
+	const [search, setSearch] = useState("");
+
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
 	const [toggle, setToggle] = useState(false);
-	const [notifications, setNotifications] = useState([]);
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { isAuthenticated, user } = userLogin;
@@ -14,8 +19,12 @@ const Navbar = ({ socket }) => {
 	const profile = useSelector((state) => state.profile);
 	const { profile: currentProfile } = profile;
 
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
+	const users = useSelector((state) => state.user.users);
+
+	const handleClick = () => {
+		setOpenSideMenu(true);
+		setOverLay(true);
+	};
 
 	const handleLogout = () => {
 		dispatch(logout());
@@ -25,11 +34,8 @@ const Navbar = ({ socket }) => {
 	};
 
 	useEffect(() => {
-		socket?.on("getNotification", (data) => {
-			setNotifications((prev) => [...prev, data]);
-		});
-	}, [socket]);
-	console.log(notifications);
+		dispatch(getUsers());
+	}, [dispatch]);
 
 	return (
 		<div className="navbar">
@@ -48,16 +54,36 @@ const Navbar = ({ socket }) => {
 						<i className="fa-solid fa-magnifying-glass"></i>
 						<input
 							type="text"
-							placeholder="Search for posts, users or developers..."
+							placeholder="Search..."
+							onChange={(e) => setSearch(e.target.value)}
 						/>
+						{search.length > 0 && (
+							<div className="search">
+								<ul className="searchList">
+									{users
+										.filter((user) => user.name.toLowerCase().includes(search))
+										.map((user) => (
+											<li className="searchListItem" key={user._id}>
+												<Link to={`/profiles/${user._id}`}>
+													<div className="searchContainer">
+														<img className="searchImg" src={user.profilePic} />
+														<div className="searchDetails">
+															<span className="searchUserName">
+																{user.name}
+															</span>
+															<span className="searchUserProfile"></span>
+														</div>
+													</div>
+												</Link>
+											</li>
+										))}
+								</ul>
+							</div>
+						)}
 					</div>
 
 					<div className="navbarCenter">
 						<div className="navbarCenterWrapper">
-							<div className="icon">
-								<i className="fa-solid fa-user"></i>
-								<span className="count">2</span>
-							</div>
 							<div className="icon">
 								<i className="fa-solid fa-envelope"></i>
 								<span className="count">5</span>
@@ -68,7 +94,6 @@ const Navbar = ({ socket }) => {
 							</div>
 						</div>
 					</div>
-					<div className="timeline">Timeline</div>
 				</>
 			)}
 
@@ -89,7 +114,7 @@ const Navbar = ({ socket }) => {
 									</li>
 								</Link>
 								<div
-									className="navbarRightListItem badgeContainer"
+									className=" badgeContainer"
 									onClick={() => setToggle(!toggle)}
 								>
 									<img className="navImg " src={user?.profilePic} alt="" />
@@ -115,7 +140,7 @@ const Navbar = ({ socket }) => {
 														/>
 													</div>
 													<div className="dropDownProfile">
-														<p>{user.name}</p>
+														<p style={{ color: "teal" }}>{user.name}</p>
 														<span>
 															{currentProfile?.headline.substring(0, 30)}...
 														</span>
@@ -148,6 +173,17 @@ const Navbar = ({ socket }) => {
 									<li className="navbarRightListItem">LOGIN</li>
 								</Link>
 							</>
+						)}
+						{isAuthenticated && (
+							<div className="mobileView">
+								<img
+									className="mobileImg "
+									src={user?.profilePic}
+									alt=""
+									onClick={handleClick}
+								/>
+								<span className="mobileImgBadge"></span>
+							</div>
 						)}
 					</ul>
 				</div>

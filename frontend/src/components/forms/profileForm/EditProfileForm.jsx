@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { createProfile } from "../../../redux/actions/prifileActions";
+import { toast } from "react-toastify";
 
 const EditProfileForm = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -58,10 +59,10 @@ const EditProfileForm = () => {
 	const submitHandler = (e) => {
 		e.preventDefault();
 
-		if (isAuthenticated && profile.user === user._id) {
+		if (isAuthenticated && profile.user._id === user._id) {
 			dispatch(createProfile(formData));
+			toast.success("Profile updated", { theme: "colored" });
 			navigate("/dashboard");
-
 			window.location.reload();
 		}
 	};
@@ -118,7 +119,7 @@ const EditProfileForm = () => {
 						value={location}
 						onChange={onChange}
 					/>
-					<small>City and Country suggested (eg. Enugu, Nigeria )</small>
+					<small>City and Country (eg. Enugu, Nigeria )</small>
 				</div>
 				<div className="formGroup">
 					<input
@@ -140,17 +141,17 @@ const EditProfileForm = () => {
 						value={githubusername}
 						onChange={onChange}
 					/>
+					<small>Please provide your github username</small>
 				</div>
 				<div className="formGroup">
 					<textarea
+						style={{ height: "max-content" }}
 						placeholder="A headline describing your key skills"
 						name="headline"
 						value={headline}
 						onChange={onChange}
 					/>
-					<small className="textareaSmall">
-						Tell us a little about yourself
-					</small>
+					<small>Tell us your key stack and skills</small>
 				</div>
 				<div className="formGroup">
 					<textarea
@@ -159,9 +160,7 @@ const EditProfileForm = () => {
 						value={bio}
 						onChange={onChange}
 					/>
-					<small className="textareaSmall">
-						Tell us a little about yourself
-					</small>
+					<small>Tell us a little about yourself</small>
 				</div>
 				<div className="socialLinkBtn">
 					<button type="button" onClick={() => setIsOpen(!isOpen)}>

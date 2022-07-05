@@ -3,7 +3,8 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const protect = require("../middleware/authMiddleware");
 const User = require("../models/User");
-const { default: mongoose } = require("mongoose");
+const Profile = require("../models/Profile");
+const Post = require("../models/Post");
 
 // @desc   Update user
 // @route  PUT /api/users
@@ -36,7 +37,7 @@ router.put("/me", protect, async (req, res) => {
 
 // @desc   Get all users
 // @route  GET /api/users
-// @access Public
+// @access Private
 router.get("/", protect, async (req, res) => {
 	try {
 		const users = await User.find().select("-password");
@@ -52,22 +53,17 @@ router.get("/", protect, async (req, res) => {
 // @route  GET /api/users
 // @access Public
 router.get("/:id", protect, async (req, res) => {
-	const valid = mongoose.Types.ObjectId.isValid(req.params.id);
-	if (valid) {
-		try {
-			const user = await User.findById(req.params.id).select("-password");
+	try {
+		const user = await User.findById(req.params.id).select("-password");
 
-			if (!user) {
-				return res.status(404).json({ msg: "User not found" });
-			}
-
-			res.json(user);
-		} catch (err) {
-			console.error(err.message);
-			res.status(500).send("Server Error");
+		if (!user) {
+			return res.status(404).json({ msg: "User not found" });
 		}
-	} else {
-		res.status(400).json({ msg: "ID is not valid" });
+
+		res.json(user);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send("Server Error");
 	}
 });
 
@@ -80,11 +76,31 @@ router.put("/:id/follow", protect, async (req, res) => {
 			const user = await User.findById(req.params.id);
 			const currentUser = await User.findById(req.user.id);
 
-			if (!user.followers.includes(req.user.id)) {
-				await user.updateOne({ $push: { followers: req.user.id } });
-				await currentUser.updateOne({ $push: { followings: req.params.id } });
+			if (
+				!user.followers.some(
+					(follower) => follower.user.toString() === req.user.id
+				)
+			) {
+				await user.updateOne({
+					$push: {
+						followers: {
+							user: req.user._id,
+							name: req.user.name,
+							profilePic: req.user.profilePic,
+						},
+					},
+				});
+				await currentUser.updateOne({
+					$push: {
+						followings: {
+							user: req.params.id,
+							name: user.name,
+							profilePic: user.profilePic,
+						},
+					},
+				});
 
-				res.status(200).json({ msg: "User has been followed" });
+				res.status(200).json({ msg: "You are now following this user" });
 			} else {
 				res.status(400).json({ msg: "You already follow this user" });
 			}
@@ -96,9 +112,10 @@ router.put("/:id/follow", protect, async (req, res) => {
 			res.status(500).send("Server Error");
 		}
 	} else {
-		res.status(400).json({ msg: "You cannot unfollow yourself" });
+		res.status(400).json({ msg: "You cannot follow yourself" });
 	}
 });
+
 // @desc   Unfollow a user
 // @route  PUT /api/users/:id/follow
 // @access Private
@@ -108,11 +125,19 @@ router.put("/:id/unfollow", protect, async (req, res) => {
 			const user = await User.findById(req.params.id);
 			const currentUser = await User.findById(req.user.id);
 
-			if (user.followers.includes(req.user.id)) {
-				await user.updateOne({ $pull: { followers: req.user.id } });
-				await currentUser.updateOne({ $pull: { followings: req.params.id } });
+			if (
+				user.followers.some(
+					(follower) => follower.user.toString() === req.user.id
+				)
+			) {
+				await user.updateOne({
+					$pull: { followers: { user: req.user.id } },
+				});
+				await currentUser.updateOne({
+					$pull: { followings: { user: req.params.id } },
+				});
 
-				res.status(200).json({ msg: "User has been followed" });
+				res.status(200).json({ msg: "You are now unfollowing this user" });
 			} else {
 				res.status(400).json({ msg: "You do not follow this user yet" });
 			}
@@ -124,54 +149,35 @@ router.put("/:id/unfollow", protect, async (req, res) => {
 			res.status(500).send("Server Error");
 		}
 	} else {
-		res.status(400).json({ msg: "You cannot follow yourself" });
+		res.status(400).json({ msg: "You cannot unfollow yourself" });
 	}
 });
 
 // @desc   Get all friends
-// @route  GET /api/friends/all
+// @route  GET /api/users/:id/friends/all
 // @acess  Private
-router.get("/friends/all", protect, async (req, res) => {
-	try {
-		const user = await User.findById(req.user.id);
-		const friends = await Promise.all(
-			user.followings.map((friendId) => {
-				return User.findById(friendId);
-			})
-		);
+// router.get("/friends/:id/all", protect, async (req, res) => {
+// 	try {
+// 		const user = await User.findById(req.params.id);
+// 		const friends = await Promise.all(
+// 			user.followings.map((friendId) => {
+// 				return User.findById(friendId.user);
+// 			})
+// 		);
 
-		let friendList = [];
+// 		let friendList = [];
 
-		friends.map((friend) => {
-			const { _id, name, profilePic } = friend;
+// 		friends.map((friend) => {
+// 			const { _id, name, profilePic, followers, followings } = friend;
 
-			friendList.push({ _id, name, profilePic });
-		});
+// 			friendList.push({ _id, name, profilePic, followers, followings });
+// 		});
 
-		res.status(200).json(friendList);
-	} catch (err) {
-		console.error(err.message);
-		res.status(500).send("Server Error");
-	}
-});
-
-// @desc   Delete user
-// @route  DELETE /api/users
-// @access Private
-router.delete("/", protect, async (req, res) => {
-	try {
-		const user = await User.findById(req.user.id);
-		if (!user) {
-			return res.status(404).json({ msg: "User not found" });
-		}
-
-		await user.remove();
-
-		res.json({ msg: "User Removed" });
-	} catch (err) {
-		console.error(err.message);
-		res.status(500).send("Server Error");
-	}
-});
+// 		res.status(200).json(friendList);
+// 	} catch (err) {
+// 		console.error(err.message);
+// 		res.status(500).send("Server Error");
+// 	}
+// });
 
 module.exports = router;

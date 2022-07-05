@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { updateExperience } from "../../../redux/actions/prifileActions";
 
 const ExperienceEditForm = () => {
@@ -8,10 +9,7 @@ const ExperienceEditForm = () => {
 	const dispatch = useDispatch();
 
 	const userLogin = useSelector((state) => state.userLogin);
-	const { user, isAuthenticated } = userLogin;
-
-	const profile = useSelector((state) => state.profile);
-	const { profile: currentProfile } = profile;
+	const { isAuthenticated } = userLogin;
 
 	const {
 		state: { experience },
@@ -36,11 +34,11 @@ const ExperienceEditForm = () => {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		if (isAuthenticated && currentProfile.user === user._id) {
+		if (isAuthenticated) {
 			dispatch(updateExperience(experience._id, formData));
-
-			navigate("/dashboard");
+			toast.success("Experience Updated", { theme: "colored" });
 			window.location.reload();
+			navigate(-1);
 		}
 	};
 

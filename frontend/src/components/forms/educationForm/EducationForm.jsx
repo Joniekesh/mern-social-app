@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { addEducation } from "../../../redux/actions/prifileActions";
+import { toast } from "react-toastify";
 
 const EducationForm = () => {
 	const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const EducationForm = () => {
 	const submitHandler = (e) => {
 		e.preventDefault();
 		dispatch(addEducation(formData));
-
+		toast.success("Education Added", { theme: "colored" });
 		navigate("/dashboard");
 		window.location.reload();
 	};

@@ -1,7 +1,6 @@
 .home {
 	height: calc(100vh - 60px);
 }
-
 .homeWrapper {
 	display: flex;
 	gap: 20px;
@@ -10,4 +9,10 @@
 .homeCenter {
 	flex: 6;
 	width: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+	.homeCenter {
+		flex: 7;
+	}
 }

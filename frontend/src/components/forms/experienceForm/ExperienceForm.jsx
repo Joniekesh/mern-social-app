@@ -1,8 +1,9 @@
 import "./experienceForm.css";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { addExperience } from "../../../redux/actions/prifileActions";
+import { toast } from "react-toastify";
 
 const initialState = {
 	title: "",
@@ -16,9 +17,7 @@ const initialState = {
 
 const ExperienceForm = () => {
 	const navigate = useNavigate();
-
-	const userLogin = useSelector((state) => state.userLogin);
-	const { user } = userLogin;
+	const dispatch = useDispatch();
 
 	const [formData, setFormData] = useState(initialState);
 	const { title, company, location, from, to, current, description } = formData;
@@ -27,13 +26,11 @@ const ExperienceForm = () => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
-	const dispatch = useDispatch();
-
 	const submitHandler = (e) => {
 		e.preventDefault();
 
 		dispatch(addExperience(formData));
-
+		toast.success("Experience Added", { theme: "colored" });
 		navigate("/dashboard");
 		window.location.reload();
 	};

@@ -9,17 +9,17 @@ const GitRepos = ({ userProfile }) => {
 	const username = userProfile?.githubusername;
 
 	const profile = useSelector((state) => state.profile);
-	const { repos } = profile;
+	const { repos, loading } = profile;
 
 	useEffect(() => {
-		dispatch(getGitRepos(username));
+		username && dispatch(getGitRepos(username));
 	}, [dispatch, username]);
 
 	return (
 		<>
-			{username && repos?.length > 0 ? (
-				repos.map((repo) => (
-					<div className="gitReposListItem" key={repo._id}>
+			{!loading && username && repos?.length > 0 ? (
+				repos.map((repo, i) => (
+					<div className="gitReposListItem" key={i}>
 						<div className="reposInfo">
 							<div className="reposLeft">
 								<a

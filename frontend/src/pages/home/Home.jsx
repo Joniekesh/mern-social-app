@@ -7,16 +7,27 @@ import HomeTop from "../../components/homeTop/HomeTop";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../../redux/actions/postActions";
 import Spinner from "../../components/spinner/Spinner";
+import { getCurrentProfile } from "../../redux/actions/prifileActions";
 
 const Home = () => {
 	const dispatch = useDispatch();
 
+	const user = useSelector((state) => state.user);
+	const { users } = user;
+
 	const post = useSelector((state) => state.post);
 	const { posts, loading } = post;
+
+	const profile = useSelector((state) => state.profile);
+	const { profile: currentProfile } = profile;
 
 	useEffect(() => {
 		dispatch(getPosts());
 	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(getCurrentProfile());
+	}, []);
 
 	return (
 		<div className="home">
@@ -25,7 +36,7 @@ const Home = () => {
 			) : (
 				<div className="container">
 					<div className="homeWrapper">
-						<LeftBar />
+						<LeftBar profile={currentProfile} />
 
 						<div className="homeCenter">
 							<HomeTop />
@@ -39,7 +50,7 @@ const Home = () => {
 								<h4>No Posts to show</h4>
 							)}
 						</div>
-						<RightBar />
+						<RightBar users={users} />
 					</div>
 				</div>
 			)}

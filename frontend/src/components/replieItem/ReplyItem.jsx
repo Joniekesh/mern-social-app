@@ -6,7 +6,7 @@ import { format } from "timeago.js";
 import { deleteReply } from "../../redux/actions/postActions";
 import { likeReply } from "../../redux/actions/postActions";
 
-const ReplyItem = ({ post, comment, reply, profile }) => {
+const ReplyItem = ({ post, comment, reply }) => {
 	const [openModal, setOpenModal] = useState(false);
 	const [like, setLike] = useState(reply.likes.length);
 	const [isLiked, setIsLiked] = useState(false);
@@ -20,8 +20,10 @@ const ReplyItem = ({ post, comment, reply, profile }) => {
 	const currentLikedUser = reply.likes.find((like) => like.user === user._id);
 
 	const newLike = {
-		user,
+		user: user._id,
 		name: user.name,
+		followers: user.followers,
+		followings: user.followings,
 		profilePic: user.profilePic,
 	};
 
@@ -84,7 +86,7 @@ const ReplyItem = ({ post, comment, reply, profile }) => {
 								</div>
 							</div>
 						)}
-						{post.user === reply.user && (
+						{post.user._id === reply.user && (
 							<Link to={`/profiles/${reply.user}`}>
 								<div className="author">Author</div>
 							</Link>

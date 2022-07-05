@@ -4,13 +4,7 @@ const PostSchema = new mongoose.Schema(
 	{
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
-		},
-		name: {
-			type: String,
-		},
-		profilePic: {
-			type: String,
-			default: "",
+			ref: "User",
 		},
 		desc: {
 			type: String,
@@ -24,13 +18,19 @@ const PostSchema = new mongoose.Schema(
 			{
 				user: {
 					type: mongoose.Schema.Types.ObjectId,
+					ref: "User",
 				},
 				name: {
 					type: String,
 				},
 				profilePic: {
 					type: String,
-					default: "",
+				},
+				followers: {
+					type: Array,
+				},
+				followings: {
+					type: Array,
 				},
 			},
 		],
@@ -38,14 +38,19 @@ const PostSchema = new mongoose.Schema(
 			{
 				user: {
 					type: mongoose.Schema.Types.ObjectId,
+					ref: "User",
 				},
 				name: {
 					type: String,
-					required: true,
 				},
 				profilePic: {
 					type: String,
-					default: "",
+				},
+				followers: {
+					type: Array,
+				},
+				followings: {
+					type: Array,
 				},
 				desc: {
 					type: String,
@@ -55,13 +60,19 @@ const PostSchema = new mongoose.Schema(
 					{
 						user: {
 							type: mongoose.Schema.Types.ObjectId,
+							ref: "User",
 						},
 						name: {
 							type: String,
 						},
 						profilePic: {
 							type: String,
-							default: "",
+						},
+						followers: {
+							type: Array,
+						},
+						followings: {
+							type: Array,
 						},
 					},
 				],
@@ -69,13 +80,19 @@ const PostSchema = new mongoose.Schema(
 					{
 						user: {
 							type: mongoose.Schema.Types.ObjectId,
+							ref: "User",
 						},
 						name: {
 							type: String,
 						},
 						profilePic: {
 							type: String,
-							default: "",
+						},
+						followers: {
+							type: Array,
+						},
+						followings: {
+							type: Array,
 						},
 						desc: {
 							type: String,
@@ -84,13 +101,19 @@ const PostSchema = new mongoose.Schema(
 							{
 								user: {
 									type: mongoose.Schema.Types.ObjectId,
+									ref: "User",
 								},
 								name: {
 									type: String,
 								},
 								profilePic: {
 									type: String,
-									defualt: "",
+								},
+								followers: {
+									type: Array,
+								},
+								followings: {
+									type: Array,
 								},
 							},
 						],

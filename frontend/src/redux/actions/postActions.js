@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { toast } from "react-toastify";
 import {
 	GET_POSTS,
 	GET_POST,
@@ -16,6 +16,12 @@ import {
 	DELETE_REPLY,
 	UPDATE_COMMENT,
 	UPDATE_REPLY,
+	TIMELINE_POST_REQUEST,
+	TIMELINE_POST_SUCCESS,
+	TIMELINE_POST_FAIL,
+	TIMELINE_POST_REQUEST_BY_USERID,
+	TIMELINE_POST_SUCCESS_BY_USERID,
+	TIMELINE_POST_FAIL_BY_USERID,
 } from "../constants/postConstants";
 
 // Get all posts
@@ -39,7 +45,7 @@ export const getPosts = () => async (dispatch, getState) => {
 		dispatch({
 			type: POST_ERROR,
 			payload: {
-				msg: err.response.statusText,
+				// msg: err.response.statusText,
 				status: err.response.status,
 			},
 		});
@@ -93,6 +99,39 @@ export const createPost = (postData) => async (dispatch, getState) => {
 			type: ADD_POST,
 			payload: data,
 		});
+		toast.success("Post created", { theme: "colore" });
+	} catch (err) {
+		dispatch({
+			type: POST_ERROR,
+			payload: {
+				msg: err.response.statusText,
+				status: err.response.status,
+			},
+		});
+		toast.error(err.response.data, { theme: "colored" });
+	}
+};
+
+// Add Like to Post
+export const likePost = (id, userData) => async (dispatch, getState) => {
+	const { userLogin } = getState();
+
+	const config = {
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${userLogin.token}`,
+		},
+	};
+
+	try {
+		const { data } = await axios.put(`/posts/likes/${id}`, userData, config);
+		dispatch({
+			type: ADD_LIKE,
+			payload: {
+				id,
+				data,
+			},
+		});
 	} catch (err) {
 		dispatch({
 			type: POST_ERROR,
@@ -105,7 +144,6 @@ export const createPost = (postData) => async (dispatch, getState) => {
 };
 
 // Uddate Post
-// Not working yet
 export const updatePost = (id, formData) => async (dispatch, getState) => {
 	const { userLogin } = getState();
 
@@ -126,6 +164,7 @@ export const updatePost = (id, formData) => async (dispatch, getState) => {
 				data,
 			},
 		});
+		toast.success("Post Updated!", { theme: "colored" });
 	} catch (err) {
 		dispatch({
 			type: POST_ERROR,
@@ -134,6 +173,7 @@ export const updatePost = (id, formData) => async (dispatch, getState) => {
 				status: err.response.status,
 			},
 		});
+		toast.error(err.response.data, { theme: "colored" });
 	}
 };
 
@@ -147,12 +187,14 @@ export const getTimelinePosts = () => async (dispatch, getState) => {
 		},
 	};
 
+	dispatch({ type: TIMELINE_POST_REQUEST });
+
 	try {
 		const { data } = await axios.get("/posts/me/timeline", config);
-		dispatch({ type: GET_POST, payload: data });
+		dispatch({ type: TIMELINE_POST_SUCCESS, payload: data });
 	} catch (err) {
 		dispatch({
-			type: POST_ERROR,
+			type: TIMELINE_POST_FAIL,
 			payload: {
 				msg: err.response.statusText,
 				status: err.response.status,
@@ -161,25 +203,28 @@ export const getTimelinePosts = () => async (dispatch, getState) => {
 	}
 };
 
-// Get User's TimeLine Posts
-export const getUserTimeLinePosts = (userId) => async (dispatch, getState) => {
-	const { userLogin } = getState();
+// Get User's TimeLine Posts BY USER ID
+export const getUserTimeLinePostsByUserId =
+	(userId) => async (dispatch, getState) => {
+		const { userLogin } = getState();
 
-	const config = {
-		headers: {
-			Authorization: `Bearer ${userLogin.token}`,
-		},
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userLogin.token}`,
+			},
+		};
+
+		dispatch({ type: TIMELINE_POST_REQUEST_BY_USERID });
+
+		try {
+			const { data } = await axios.get(`/posts/timeline/${userId}`, config);
+			dispatch({ type: TIMELINE_POST_SUCCESS_BY_USERID, payload: data });
+		} catch (err) {
+			dispatch({
+				type: TIMELINE_POST_FAIL_BY_USERID,
+			});
+		}
 	};
-
-	try {
-		const { data } = await axios.get(`/posts/timeline/${userId}`, config);
-		dispatch({ type: GET_POST, payload: data });
-	} catch (err) {
-		dispatch({
-			type: POST_ERROR,
-		});
-	}
-};
 
 //Delete Post
 export const deletePost = (id) => async (dispatch, getState) => {
@@ -493,34 +538,3 @@ export const deleteReply =
 			});
 		}
 	};
-
-// Add Like to Post
-export const likePost = (id, userData) => async (dispatch, getState) => {
-	const { userLogin } = getState();
-
-	const config = {
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${userLogin.token}`,
-		},
-	};
-
-	try {
-		const { data } = await axios.put(`/posts/likes/${id}`, userData, config);
-		dispatch({
-			type: ADD_LIKE,
-			payload: {
-				id,
-				data,
-			},
-		});
-	} catch (err) {
-		dispatch({
-			type: POST_ERROR,
-			payload: {
-				msg: err.response.statusText,
-				status: err.response.status,
-			},
-		});
-	}
-};

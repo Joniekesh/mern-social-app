@@ -1,11 +1,13 @@
 .profileRightBarListItem {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 }
 
 .left img {
 	width: 32px;
 	height: 32px;
+	border: 1px solid white;
 	border-radius: 50%;
 	object-fit: cover;
 	margin-right: 5px;
@@ -23,9 +25,10 @@
 	cursor: pointer;
 	background-color: #0e76a8;
 	color: white;
-	height: 30px;
+	height: 28px;
 	padding: 5px;
 	border-radius: 5px;
+	font-size: 13px;
 }
 
 .right i {

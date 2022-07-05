@@ -1,74 +1,76 @@
 import "./settings.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../components/spinner/Spinner";
 import { updateUser } from "../../redux/actions/authActions";
 import { deleteAccount } from "../../redux/actions/prifileActions";
-import app from "../../firebase";
-
-import {
-	getStorage,
-	ref,
-	uploadBytesResumable,
-	getDownloadURL,
-} from "firebase/storage";
+import axios from "axios";
+import { USER_UPDATE_RESET } from "../../redux/constants/authConstants";
+import { toast } from "react-toastify";
 
 const Settings = () => {
-	const [inputs, setInputs] = useState({});
 	const [file, setFile] = useState("");
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [profilePic, setProfilePic] = useState("");
 
 	const navigate = useNavigate();
-
 	const dispatch = useDispatch();
-	const userLogin = useSelector((state) => state.userLogin);
-	const { user, loading } = userLogin;
 
-	const onChange = (e) => {
-		setInputs({ ...inputs, [e.target.name]: e.target.value });
-	};
+	const userLogin = useSelector((state) => state.userLogin);
+	const { isAuthenticated, user, loading } = userLogin;
+
+	const userUpdate = useSelector((state) => state.userUpdate);
+	const { success, loading: loadingUpdate } = userUpdate;
 
 	const handleDelete = () => {
-		dispatch(deleteAccount());
-
-		navigate("/login");
+		if (isAuthenticated) {
+			dispatch(deleteAccount());
+			navigate("/register");
+		}
 	};
 
-	const handleUpdate = (e) => {
+	const handleUpdate = async (e) => {
 		e.preventDefault();
 
-		const fileName = new Date().getTime() + file.name;
-		const storage = getStorage(app);
-		const storageRef = ref(storage, fileName);
-		const uploadTask = uploadBytesResumable(storageRef, file);
+		const data = new FormData();
+		data.append("file", file);
+		data.append("upload_preset", "upload");
 
-		uploadTask.on(
-			"state_changed",
-			(snapshot) => {
-				const progress =
-					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				console.log("Upload is " + progress + "% done");
-				switch (snapshot.state) {
-					case "paused":
-						console.log("Upload is paused");
-						break;
-					case "running":
-						console.log("Upload is running");
-						break;
-				}
-			},
-			(error) => {},
-			() => {
-				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					const userInfo = { ...inputs, profilePic: downloadURL };
-					dispatch(updateUser(userInfo));
+		try {
+			const uploadRes = await axios.post(
+				"https://api.cloudinary.com/v1_1/joniekesh/image/upload",
+				data
+			);
 
-					navigate("/dashboard");
-					window.location.reload();
-				});
-			}
-		);
+			const { url } = uploadRes.data;
+
+			dispatch(
+				updateUser({
+					_id: user._id,
+					name,
+					email,
+					password,
+					profilePic: url,
+				})
+			);
+		} catch (error) {}
 	};
+
+	useEffect(() => {
+		if (success) {
+			dispatch({ type: USER_UPDATE_RESET });
+			navigate("/dashboard");
+			window.location.reload();
+		} else {
+			setName(user.name);
+			setEmail(user.email);
+			setPassword(user.password);
+			setProfilePic(user.profilePic);
+		}
+	}, [success, user, dispatch, navigate]);
 
 	return (
 		<div className="settings">
@@ -105,25 +107,31 @@ const Settings = () => {
 								<i className="fas fa-user"></i>
 								<input
 									type="text"
-									placeholder={user.name}
-									name="name"
-									onChange={onChange}
+									value={name}
+									onChange={(e) => setName(e.target.value)}
 								/>
 							</div>
 							<div className="settingsInputGroup">
 								<i className="fa-solid fa-envelope"></i>
 								<input
 									type="email"
-									placeholder={user.email}
-									name="email"
-									onChange={onChange}
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
 								/>
 							</div>
 							<div className="settingsInputGroup">
 								<i className="fa-solid fa-lock"></i>
-								<input type="password" onChange={onChange} />
+								<input
+									type="password"
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
+								/>
 							</div>
-							<button className="settingsBtn" type="submit">
+							<button
+								className="settingsBtn"
+								type="submit"
+								disabled={loadingUpdate}
+							>
 								Update
 							</button>
 						</form>

@@ -3,14 +3,8 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createPost } from "../../redux/actions/postActions";
-import app from "../../firebase";
-
-import {
-	getStorage,
-	ref,
-	uploadBytesResumable,
-	getDownloadURL,
-} from "firebase/storage";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const CreatePost = () => {
 	const [close, setClose] = useState(true);
@@ -21,54 +15,41 @@ const CreatePost = () => {
 	const navigate = useNavigate();
 
 	const userLogin = useSelector((state) => state.userLogin);
-	const { user } = userLogin;
+	const { isAuthenticated, user } = userLogin;
 
 	const handleClose = () => {
 		setClose(true);
 
-		navigate("/");
+		navigate(-1);
 	};
 
-	const handleCreate = (e) => {
+	const handleCreate = async (e) => {
 		e.preventDefault();
 
-		const fileName = new Date().getTime() + file.name;
-		const storage = getStorage(app);
-		const storageRef = ref(storage, fileName);
-		const uploadTask = uploadBytesResumable(storageRef, file);
+		const data = new FormData();
+		data.append("file", file);
+		data.append("upload_preset", "upload");
 
-		uploadTask.on(
-			"state_changed",
-			(snapshot) => {
-				const progress =
-					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				console.log("Upload is " + progress + "% done");
-				switch (snapshot.state) {
-					case "paused":
-						console.log("Upload is paused");
-						break;
-					case "running":
-						console.log("Upload is running");
-						break;
-				}
-			},
-			(error) => {},
-			() => {
-				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					const postData = {
-						user: user._id,
-						name: user.name,
-						profilePic: user.profilePic,
-						desc,
-						photo: downloadURL,
-					};
-					dispatch(createPost(postData));
-					navigate("/");
+		try {
+			const uploadRes = await axios.post(
+				"https://api.cloudinary.com/v1_1/joniekesh/image/upload",
+				data
+			);
 
-					window.location.reload();
-				});
+			const { url } = uploadRes.data;
+
+			const postData = {
+				user,
+				desc,
+				photo: url,
+			};
+
+			if (isAuthenticated) {
+				dispatch(createPost(postData));
+				navigate("/");
+				toast.success("Post Updated", { theme: "colored" });
 			}
-		);
+		} catch (error) {}
 	};
 
 	return (
@@ -89,7 +70,9 @@ const CreatePost = () => {
 								src={user.profilePic ? user.profilePic : "/assets/avatar.jpeg"}
 								alt=""
 							/>
-							<p className="createPostUsername">{user.name}</p>
+							<p className="createPostUsername" style={{ color: "teal" }}>
+								{user.name}
+							</p>
 						</div>
 						<form onSubmit={handleCreate}>
 							<textarea

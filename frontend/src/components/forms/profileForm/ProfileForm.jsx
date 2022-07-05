@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { createProfile } from "../../../redux/actions/prifileActions";
+import { toast } from "react-toastify";
 
 const initialState = {
 	status: "",
@@ -53,8 +54,9 @@ const ProfileForm = () => {
 	const submitHandler = (e) => {
 		e.preventDefault();
 		dispatch(createProfile(formData));
-
+		toast.success("Profile Created", { theme: "colored" });
 		navigate("/dashboard");
+		window.location.reload();
 	};
 
 	return (
@@ -109,7 +111,7 @@ const ProfileForm = () => {
 						value={location}
 						onChange={onChange}
 					/>
-					<small>City and Country suggested (eg. Enugu, Nigeria )</small>
+					<small>City and Country (eg. Enugu, Nigeria )</small>
 				</div>
 				<div className="formGroup">
 					<input
@@ -131,6 +133,7 @@ const ProfileForm = () => {
 						value={githubusername}
 						onChange={onChange}
 					/>
+					<small>Please provide your github username</small>
 				</div>
 				<div className="formGroup">
 					<textarea
@@ -139,9 +142,7 @@ const ProfileForm = () => {
 						value={headline}
 						onChange={onChange}
 					/>
-					<small className="textareaSmall">
-						Tell us a little about yourself
-					</small>
+					<small>Tell us your key stack and skills</small>
 				</div>
 				<div className="formGroup">
 					<textarea
@@ -150,9 +151,7 @@ const ProfileForm = () => {
 						value={bio}
 						onChange={onChange}
 					/>
-					<small className="textareaSmall">
-						Tell us a little about yourself
-					</small>
+					<small>Tell us a little about yourself</small>
 				</div>
 				<div className="socialLinkBtn">
 					<button type="button" onClick={() => setIsOpen(!isOpen)}>

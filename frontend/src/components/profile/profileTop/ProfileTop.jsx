@@ -1,13 +1,13 @@
 import "./profileTop.css";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import UpdateCoverPic from "../../updateCoverPic/UpdateCoverPic";
 import { useSelector } from "react-redux";
 
 const ProfileTop = ({ profile }) => {
-	const userLogin = useSelector((state) => state.userLogin);
-	const { user } = userLogin;
-
 	const navigate = useNavigate();
+
+	const [updateModal, setUpdateModal] = useState(false);
 
 	const handleProfileEdit = () => {
 		navigate("/editProfile", {
@@ -23,77 +23,133 @@ const ProfileTop = ({ profile }) => {
 				<div className="coverPicCont">
 					<img
 						className="profileCoverImg"
-						src="/assets/companyImg.jpeg"
+						src={profile.user?.coverPhoto}
 						alt=""
 					/>
+					{!updateModal && (
+						<i
+							className="fas fa-pen profileCoverPhotofoEdit12"
+							onClick={() => setUpdateModal(true)}
+						></i>
+					)}
 				</div>
+				{updateModal && (
+					<UpdateCoverPic
+						setUpdateModal={setUpdateModal}
+						updateModal={updateModal}
+					/>
+				)}
 
-				<img className="profilePic" src={user?.profilePic} alt="" />
+				<img className="profilePic" src={profile.user?.profilePic} alt="" />
 			</div>
 			<div className="profileUserInfo">
-				<h2 className="profileUsername">{user.name}</h2>
+				<h2 className="profileUsername">{profile.user?.name}</h2>
 				<i
 					className="fa-solid fa-pen profileInfoEdit"
 					onClick={handleProfileEdit}
 				></i>{" "}
-				<p className="profileDesc">{profile?.headline}</p>{" "}
-				<span>2 Years of experience</span>
-				<br />
+				<p className="profileDesc">{profile?.headline}</p> <br />
 				<div className="placeofWork">
-					<span>{profile?.status} at </span>
+					<span
+						style={{ color: "teal", fontWeight: "bold", marginRight: "5px" }}
+					>
+						{profile?.status}
+					</span>
+					<span>at</span>
 					<a href={profile?.company} target="_blank" rel="noreferrer">
 						<span>
-							<b>{profile?.company}</b>
+							<b style={{ marginLeft: "5px" }}>{profile?.company}</b>
 						</span>
 					</a>
 				</div>
 				<br />
-				<p>University of Nigeria:</p>
-				<p>Bioresources Engineering</p>
+				{profile.education && <p>{profile.education[0]?.school}</p>}
+				{profile.education.length > 0 && (
+					<p style={{ color: "teal" }}>
+						<b>({profile.education[0]?.fieldofstudy})</b>
+					</p>
+				)}
 				<br />
 				<div className="socialHandles">
-					<a href={profile?.website} target="_blank" rel="noreferrer">
-						<i
-							className="fa-solid fa-earth-americas"
-							style={{ color: "#27176d" }}
-						></i>
-					</a>
-					<a href={profile?.githubusername} target="_blank" rel="noreferrer">
-						<i className="fa-brands fa-github" style={{ color: "#171515" }}></i>
-					</a>
-					<a href={profile.social?.linkedin} target="_blank" rel="noreferrer">
-						<i
-							className="fa-brands fa-linkedin-in"
-							style={{ color: "#0e76a8" }}
-						></i>
-					</a>
-					<a href={profile.social?.facebook} target="_blank" rel="noreferrer">
-						<i
-							className="fa-brands fa-facebook-f"
-							style={{ color: "#4267B2" }}
-						></i>
-					</a>
-					<a href={profile.social?.twitter} target="_blank" rel="noreferrer">
-						<i
-							className="fa-brands fa-twitter"
-							style={{ color: "#00acee " }}
-						></i>
-					</a>
-					<a href={profile.social?.instagram} target="_blank" rel="noreferrer">
-						<i
-							className="fa-brands fa-instagram"
-							style={{ color: "#8a3ab9 " }}
-						></i>
-					</a>
-					<a href={profile.social?.youtube} target="_blank" rel="noreferrer">
-						<i
-							className="fa-brands fa-youtube"
-							style={{ color: "#c4302b " }}
-						></i>
-					</a>
+					{profile?.website && (
+						<a href={profile?.website} target="_blank" rel="noreferrer">
+							<i
+								className="fa-solid fa-earth-americas"
+								style={{ color: "#27176d" }}
+							></i>
+						</a>
+					)}
+
+					{profile?.social?.linkedin && (
+						<a
+							href={profile?.social?.linkedin}
+							target="_blank"
+							rel="noreferrer"
+						>
+							<i
+								className="fa-brands fa-linkedin-in"
+								style={{ color: "#0e76a8" }}
+							></i>
+						</a>
+					)}
+					{profile?.social?.facebook && (
+						<a
+							href={profile?.social?.facebook}
+							target="_blank"
+							rel="noreferrer"
+						>
+							<i
+								className="fa-brands fa-facebook-f"
+								style={{ color: "#4267B2" }}
+							></i>
+						</a>
+					)}
+					{profile?.social?.twitter && (
+						<a href={profile?.social?.twitter} target="_blank" rel="noreferrer">
+							<i
+								className="fa-brands fa-twitter"
+								style={{ color: "#00acee " }}
+							></i>
+						</a>
+					)}
+					{profile?.social?.instagram && (
+						<a
+							href={profile?.social?.instagram}
+							target="_blank"
+							rel="noreferrer"
+						>
+							<i
+								className="fa-brands fa-instagram"
+								style={{ color: "#8a3ab9 " }}
+							></i>
+						</a>
+					)}
+					{profile?.social?.youtube && (
+						<a href={profile?.social?.youtube} target="_blank" rel="noreferrer">
+							<i
+								className="fa-brands fa-youtube"
+								style={{ color: "#c4302b " }}
+							></i>
+						</a>
+					)}
 				</div>
 				<br />
-				<span className="userFollowers">10,500 Followers</span>
+				<div className="followerDiv">
+					<span className="userFollowers first">
+						{profile?.user.followers.length}
+					</span>
+					<span>
+						{profile.user.followers.length <= 1 ? "Follower" : "Followers"}
+					</span>
+				</div>
+				<div className="followerDiv">
+					<span className="userFollowers first">
+						{profile?.user.followings.length}
+					</span>
+					<span>
+						{profile?.user.followings.length <= 1 ? "Following" : "Followings"}
+					</span>
+				</div>
 				<br />
 				<div className="userLocation">
 					<i className="fa-solid fa-location-dot"></i>
@@ -101,19 +157,11 @@ const ProfileTop = ({ profile }) => {
 				</div>
 			</div>
 			<br />
-			<div className="profileUserFollow">
-				<div className="profileFollowDiv">
-					<i className="fa-solid fa-plus"></i>
-					<span className="profileFollow">Follow</span>
-				</div>
-				<span className="profileMessage">Message</span>
-			</div>
-			<br />
 			<hr className="line" />
 			<div className="skills">
 				<h3>SKILLS</h3>
 				<div className="skillsWrapper">
-					{profile.skills?.map((skill, index) => (
+					{profile?.skills?.map((skill, index) => (
 						<div className="skillItem" key={index}>
 							<i className="fa-solid fa-check"></i>
 							<span>{skill}</span>

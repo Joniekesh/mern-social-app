@@ -12,7 +12,6 @@ export const getUsers = () => async (dispatch, getState) => {
 
 	const config = {
 		headers: {
-			"Content-Type": "application/json",
 			Authorization: `Bearer ${userLogin.token}`,
 		},
 	};
@@ -61,14 +60,14 @@ export const getUserById = (userId) => async (dispatch, getState) => {
 	}
 };
 
-// Follow User
+// Follow a User
 export const followUser =
-	(userId, followData) => async (dispatch, getState) => {
+	(userId, followerData) => async (dispatch, getState) => {
 		const { userLogin } = getState();
 
 		const config = {
 			headers: {
-				// "Content-Type": "application/json",
+				"Content-Type": "application/json",
 				Authorization: `Bearer ${userLogin.token}`,
 			},
 		};
@@ -76,7 +75,7 @@ export const followUser =
 		try {
 			const { data } = await axios.put(
 				`/users/${userId}/follow`,
-				followData,
+				followerData,
 				config
 			);
 			dispatch({
@@ -89,21 +88,18 @@ export const followUser =
 		} catch (err) {
 			dispatch({
 				type: USER_ERROR,
-				// payload: {
-				// 	msg: err.response.statusText,
-				// 	status: err.response.status,
-				// },
 			});
 		}
 	};
-// Follow User
+
+// Unfollow User
 export const unFollowUser =
-	(userId, followData) => async (dispatch, getState) => {
+	(userId, followerData) => async (dispatch, getState) => {
 		const { userLogin } = getState();
 
 		const config = {
 			headers: {
-				// "Content-Type": "application/json",
+				"Content-Type": "application/json",
 				Authorization: `Bearer ${userLogin.token}`,
 			},
 		};
@@ -111,7 +107,7 @@ export const unFollowUser =
 		try {
 			const { data } = await axios.put(
 				`/users/${userId}/unfollow`,
-				followData,
+				followerData,
 				config
 			);
 			dispatch({

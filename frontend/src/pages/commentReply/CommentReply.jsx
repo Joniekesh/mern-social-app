@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getPostById } from "../../redux/actions/postActions";
-import { getProfileById } from "../../redux/actions/prifileActions";
+// import { getProfileById } from "../../redux/actions/prifileActions";
 import CommentItem from "../../components/commentItem/CommentItem";
 import ReplyForm from "../../components/forms/replyForm/ReplyForm";
 
@@ -25,9 +25,9 @@ const CommentReply = () => {
 
 	const dispatch = useDispatch();
 
-	useEffect(() => {
-		dispatch(getProfileById(commentUserId));
-	}, [dispatch, commentUserId]);
+	// useEffect(() => {
+	// 	dispatch(getProfileById(commentUserId));
+	// }, [dispatch, commentUserId]);
 
 	useEffect(() => {
 		dispatch(getPostById(postId));

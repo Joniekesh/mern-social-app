@@ -1,37 +1,29 @@
 import "./profileRightBar.css";
-import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { getProfileById } from "../../../redux/actions/prifileActions";
-import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const ProfileRightBar = ({ follower }) => {
-	const dispatch = useDispatch();
-
-	const profile = useSelector((state) => state.profile);
-	const { profile: currentProfile } = profile;
-
-	useEffect(() => {
-		dispatch(getProfileById(follower));
-	}, [dispatch, follower]);
+	const user = useSelector((state) => state.userLogin.user);
 
 	return (
 		<div className="profileRightBar">
 			<div className="profileRightBarListItem">
 				<div className="left">
-					<Link to={`/profiles/${currentProfile?.user}`}>
-						<img src={currentProfile?.profilePic} alt="" />
+					<Link to={`/profiles/${follower.user}`}>
+						<img src={follower?.profilePic} alt="" />
 					</Link>
 				</div>
-				<Link to={`/profiles/${currentProfile?.user}`}>
+				<Link to={`/profiles/${follower.user}`}>
 					<div className="center">
-						<h4>{currentProfile?.name}</h4>
-						<p>{currentProfile?.headline}</p>
+						<h4>{follower?.name}</h4>
 					</div>
 				</Link>
-				<div className="right">
-					<i className="fa-solid fa-plus"></i>
-					<span>Follow</span>
-				</div>
+				{user._id !== follower.user && (
+					<div className="right">
+						<i className="fa-solid fa-plus"></i>
+						<span>Follow</span>
+					</div>
+				)}
 			</div>
 			<hr className="line" />
 		</div>

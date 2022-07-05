@@ -22,26 +22,38 @@ const UserSchema = new mongoose.Schema(
 		},
 		profilePic: {
 			type: String,
-			default: "",
+			default: "/assets/avatar.jpeg",
 		},
 		coverPhoto: {
 			type: String,
-			default: "",
+			default: "/assets/cover.jpeg",
 		},
-		followers: {
-			type: Array,
-		},
-		followings: {
-			type: Array,
-		},
-		city: {
-			type: String,
-			max: 50,
-		},
-		from: {
-			type: String,
-			max: 50,
-		},
+		followers: [
+			{
+				user: {
+					type: String,
+				},
+				name: {
+					type: String,
+				},
+				profilePic: {
+					type: String,
+				},
+			},
+		],
+		followings: [
+			{
+				user: {
+					type: String,
+				},
+				name: {
+					type: String,
+				},
+				profilePic: {
+					type: String,
+				},
+			},
+		],
 	},
 	{
 		timestamps: true,

@@ -6,8 +6,10 @@ import {
 	USER_LOADED_FAIL,
 	USER_LOGOUT,
 	USER_LOADED_SUCCESS,
+	USER_UPDATE_REQUEST,
 	USER_UPDATE_SUCCESS,
 	USER_UPDATE_FAIL,
+	USER_UPDATE_RESET,
 } from "../constants/authConstants";
 
 const initialState = {
@@ -17,6 +19,7 @@ const initialState = {
 	user: null,
 	users: [],
 };
+
 export const userLoginReducer = (state = initialState, action) => {
 	const { type, payload } = action;
 	switch (type) {
@@ -40,6 +43,7 @@ export const userLoginReducer = (state = initialState, action) => {
 				token: null,
 				loading: false,
 				user: null,
+				users: [],
 			};
 		case USER_LOADED_SUCCESS:
 			return {
@@ -48,13 +52,41 @@ export const userLoginReducer = (state = initialState, action) => {
 				user: payload,
 				loading: false,
 			};
-		case USER_UPDATE_FAIL:
+
+		default:
+			return state;
+	}
+};
+
+export const userUpdateReducer = (
+	state = { loading: false, success: false, error: null, user: {} },
+	action
+) => {
+	const { type, payload } = action;
+
+	switch (type) {
+		case USER_UPDATE_REQUEST:
 			return {
-				...state,
-				loading: false,
-				user: payload,
+				loading: true,
 			};
 
+		case USER_UPDATE_SUCCESS:
+			return {
+				...state,
+				success: true,
+				loading: false,
+				user: action.payload,
+			};
+		case USER_UPDATE_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			};
+		case USER_UPDATE_RESET:
+			return {
+				loading: false,
+				user: {},
+			};
 		default:
 			return state;
 	}

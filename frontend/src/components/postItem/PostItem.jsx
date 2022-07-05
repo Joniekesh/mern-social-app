@@ -3,32 +3,36 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { likePost, deletePost } from "../../redux/actions/postActions";
-import { getProfileById } from "../../redux/actions/prifileActions";
+import { getProfileById } from "../../redux/actions/profilesActions";
 import { format } from "timeago.js";
-import { getUserById } from "../../redux/actions/userActions";
 import { followUser, unFollowUser } from "../../redux/actions/userActions";
+import { toast } from "react-toastify";
 
 const PostItem = ({ post, socket }) => {
+	const id = post?.user?._id;
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
 	const userLogin = useSelector((state) => state.userLogin);
 	const { isAuthenticated, user: currentUser } = userLogin;
 
-	const user = useSelector((state) => state.user);
-	const { user: postUser } = user;
+	const profiles = useSelector((state) => state.profiles);
+	const { profile: currentProfile } = profiles;
+
+	const follower = post?.user?.followers?.find(
+		(follower) => follower.user === currentUser?._id
+	);
 
 	const [toggle, setToggle] = useState(false);
 	const [like, setLike] = useState(post?.likes?.length);
 	const [isLiked, setIsLiked] = useState(false);
 	const [isFollowed, setIsFollowed] = useState(
-		postUser?.followers?.includes(currentUser?._id)
+		post?.user?.followers?.includes(follower)
 	);
 
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
-
-	const id = post?.user;
-
-	const profile = useSelector((state) => state.profile);
-	const { profile: currentProfile } = profile;
+	useEffect(() => {
+		setIsFollowed(post?.user.followers?.includes(follower));
+	}, [post?.user, follower]);
 
 	useEffect(() => {
 		dispatch(getProfileById(id));
@@ -42,14 +46,12 @@ const PostItem = ({ post, socket }) => {
 		setIsLiked(post?.likes?.includes(currentLike));
 	}, [post?.likes, currentLike]);
 
-	useEffect(() => {
-		dispatch(getUserById(id));
-	}, [dispatch, id]);
-
 	const userData = {
-		name: currentUser.name,
-		user,
-		profilePic: currentUser.profilePic,
+		user: currentUser?._id,
+		name: currentUser?.name,
+		profilePic: currentUser?.profilePic,
+		followers: currentUser?.followers,
+		followings: currentUser?.followings,
 	};
 
 	const handleLikes = () => {
@@ -57,23 +59,18 @@ const PostItem = ({ post, socket }) => {
 		setLike(isLiked ? like - 1 : like + 1);
 		setIsLiked(!isLiked);
 
-		socket?.emit("sendNotification", {
-			senderName: user.name,
-			receiverName: postUser.name,
+		socket?.emit("likePost", {
+			senderName: userData.name,
+			receiverName: post.user.name,
 		});
-
-		// window.location.reload();
+		window.location.reload();
 	};
-
-	useEffect(() => {
-		setIsFollowed(postUser?.followers?.includes(currentUser._id));
-	}, [postUser?.followers, currentUser._id]);
 
 	const handleFollow = () => {
 		if (isFollowed) {
-			dispatch(unFollowUser(postUser._id, { user: currentUser._id }));
+			dispatch(unFollowUser(post.user._id, { user: currentUser._id }));
 		} else {
-			dispatch(followUser(postUser._id, { user: currentUser._id }));
+			dispatch(followUser(post.user._id, userData));
 		}
 		setIsFollowed(!isFollowed);
 		window.location.reload();
@@ -88,9 +85,9 @@ const PostItem = ({ post, socket }) => {
 	};
 
 	const handleDelete = () => {
-		if (isAuthenticated && currentUser._id === post.user) {
+		if (isAuthenticated && currentUser._id === post.user._id) {
 			dispatch(deletePost(post._id));
-			navigate("/");
+			toast.success("Post Deleted", { theme: "colored" });
 
 			window.location.reload();
 		}
@@ -102,21 +99,28 @@ const PostItem = ({ post, socket }) => {
 				<div className="topLeft">
 					<div className="userDiv">
 						<Link to={`/profiles/${id}`}>
-							<img className="topLeftImg" src={post?.profilePic} alt="" />
+							<img className="topLeftImg" src={post?.user?.profilePic} alt="" />
 						</Link>
-						<Link to={`/profiles/${post?.user}`}>
+						<Link to={`/profiles/${id}`}>
 							<div className="topLeftUserInfo">
-								<h4 className="username">{post?.name}</h4>
+								<h4 className="username">{post?.user?.name}</h4>
 								<p className="skillsList">{currentProfile?.headline}</p>
-								<span className="followersCount">
-									{postUser?.followers.length} Followers
-								</span>
+								{post?.user?.followers?.length > 0 && (
+									<span className="followersCount">
+										<b>
+											{post?.user?.followers.length}{" "}
+											{post?.user?.followers.length > 1
+												? "Followers"
+												: "Follower"}
+										</b>
+									</span>
+								)}
 								<span className="time">{format(post?.createdAt)}</span>
 							</div>
 						</Link>
 					</div>
 					<div className="topRight">
-						{postUser?._id !== currentUser?._id && (
+						{post?.user._id !== currentUser?._id && (
 							<div className="topRightFollowDiv" onClick={handleFollow}>
 								{isFollowed ? (
 									<>
@@ -131,7 +135,7 @@ const PostItem = ({ post, socket }) => {
 								)}
 							</div>
 						)}
-						{isAuthenticated && currentUser?._id === post?.user && (
+						{isAuthenticated && currentUser?._id === post?.user._id && (
 							<i
 								class="fa-solid fa-ellipsis-vertical"
 								style={{ color: "teal", fontSize: "20px" }}
@@ -201,12 +205,12 @@ const PostItem = ({ post, socket }) => {
 			</div>
 			<Link to={`/posts/${post?._id}`}>
 				<div className="commentInputContainer">
-					<img className="commentImg" src={currentUser.profilePic} alt="" />
+					<img className="commentImg" src={currentUser?.profilePic} alt="" />
 					<div className="commentInput">
 						<input
 							className="commentInputText"
 							type="text"
-							placeholder="Add your comment below."
+							placeholder="Add your comment or reaction."
 							disabled
 						/>
 						<i className="fa-solid fa-face-laugh commentInputIcon"></i>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setAlert } from "./alertActions";
+import { toast } from "react-toastify";
 import {
 	USER_LOADED_FAIL,
 	USER_LOADED_SUCCESS,
@@ -10,6 +10,7 @@ import {
 	USER_LOGOUT,
 	USER_UPDATE_SUCCESS,
 	USER_UPDATE_FAIL,
+	USER_UPDATE_REQUEST,
 } from "../constants/authConstants";
 
 // Get loggedin user
@@ -49,14 +50,13 @@ export const register = (formData) => async (dispatch) => {
 			type: USER_REGISTER_SUCCESS,
 			payload: res.data,
 		});
-
+		toast.success("User Register SUCCESS", { theme: "colored" });
 		dispatch(loadUser());
-		dispatch(setAlert("Registration SUCCESFUL", "success"));
 	} catch (err) {
 		const errors = err.response.data.errors;
 
 		if (errors) {
-			errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+			errors.forEach((error) => toast.error(error.msg, { theme: "colored" }));
 		}
 
 		dispatch({
@@ -80,14 +80,14 @@ export const login = (formData) => async (dispatch) => {
 			type: USER_LOGIN_SUCCESS,
 			payload: res.data,
 		});
+		toast.success("User Login Success", { theme: "colored" });
 
 		dispatch(loadUser());
-		dispatch(setAlert("Login SUCCESSFUL", "success"));
 	} catch (err) {
 		const errors = err.response.data.errors;
 
 		if (errors) {
-			errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+			errors.forEach((error) => toast.error(error.msg, { theme: "colored" }));
 		}
 
 		dispatch({
@@ -107,6 +107,8 @@ export const updateUser = (user) => async (dispatch, getState) => {
 		},
 	};
 
+	dispatch({ type: USER_UPDATE_REQUEST });
+
 	try {
 		const { data } = await axios.put("/users/me", user, config);
 
@@ -114,7 +116,6 @@ export const updateUser = (user) => async (dispatch, getState) => {
 			type: USER_UPDATE_SUCCESS,
 			payload: data,
 		});
-		dispatch(setAlert("User update SUCCESSFUL", "success"));
 	} catch (err) {
 		dispatch({
 			type: USER_UPDATE_FAIL,
@@ -123,11 +124,11 @@ export const updateUser = (user) => async (dispatch, getState) => {
 				status: err.response.status,
 			},
 		});
-		dispatch(setAlert("Error with update", "danger"));
 	}
 };
 
 // Logout User
-export const logout = () => ({
-	type: USER_LOGOUT,
-});
+export const logout = () => async (dispatch) =>
+	dispatch({
+		type: USER_LOGOUT,
+	});

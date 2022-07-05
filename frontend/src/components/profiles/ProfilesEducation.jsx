@@ -11,8 +11,9 @@ const ProfilesEducation = ({ education, profile }) => {
 	const { isAuthenticated, user } = userLogin;
 
 	const handleDelete = () => {
-		if (isAuthenticated && user._id === profile.user) {
+		if (isAuthenticated && user._id === profile.user._id) {
 			dispatch(deleteEducation(education._id));
+			window.location.reload();
 		}
 	};
 
@@ -27,7 +28,11 @@ const ProfilesEducation = ({ education, profile }) => {
 	return (
 		<>
 			<div className="experienceListItem">
-				<img className="companyImg" src="/assets/companyImg.jpeg" alt="" />
+				<img
+					className="companyImg"
+					src="http://res.cloudinary.com/joniekesh/image/upload/v1654870016/upload/kmmfkfxe399wzdsba0np.webp"
+					alt=""
+				/>
 				<div className="experienceDesc">
 					<div>
 						<p>
@@ -61,7 +66,7 @@ const ProfilesEducation = ({ education, profile }) => {
 						</p>
 					</div>
 				</div>
-				{user._id === profile.user && (
+				{user._id === profile.user._id && (
 					<div className="experienceActions">
 						<i
 							className="fa-solid fa-pen experienceEdit"

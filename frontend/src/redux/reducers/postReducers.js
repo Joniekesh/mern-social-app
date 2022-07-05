@@ -14,6 +14,12 @@ import {
 	LIKE_REPLY,
 	UPDATE_COMMENT,
 	UPDATE_REPLY,
+	TIMELINE_POST_REQUEST,
+	TIMELINE_POST_SUCCESS,
+	TIMELINE_POST_FAIL,
+	TIMELINE_POST_REQUEST_BY_USERID,
+	TIMELINE_POST_SUCCESS_BY_USERID,
+	TIMELINE_POST_FAIL_BY_USERID,
 } from "../constants/postConstants";
 
 const initialState = {
@@ -45,8 +51,6 @@ export const postReducers = (state = initialState, action) => {
 				posts: [payload, ...state.posts],
 				loading: false,
 			};
-		// Text is updating but not image yet
-		// To be fixed later
 		case UPDATE_POST:
 			const postToUpdate = state.posts.find((post) => post._id === payload.id);
 			return {
@@ -206,6 +210,58 @@ export const postReducers = (state = initialState, action) => {
 				profile: null,
 			};
 
+		default:
+			return state;
+	}
+};
+
+export const timelinePostsReducer = (
+	state = { posts: [], loading: false, error: null },
+	action
+) => {
+	const { type, payload } = action;
+
+	switch (type) {
+		case TIMELINE_POST_REQUEST:
+			return {
+				loading: true,
+			};
+		case TIMELINE_POST_SUCCESS:
+			return {
+				loading: false,
+				posts: payload,
+			};
+		case TIMELINE_POST_FAIL:
+			return {
+				loading: false,
+				error: payload,
+			};
+		default:
+			return state;
+	}
+};
+
+export const timelinePostsByUserIdReducer = (
+	state = { posts: [], loading: false, error: null },
+	action
+) => {
+	const { type, payload } = action;
+
+	switch (type) {
+		case TIMELINE_POST_REQUEST_BY_USERID:
+			return {
+				loading: true,
+			};
+		case TIMELINE_POST_SUCCESS_BY_USERID:
+			return {
+				loading: false,
+				posts: payload,
+			};
+		case TIMELINE_POST_FAIL_BY_USERID:
+			return {
+				loading: false,
+				error: payload,
+			};
 		default:
 			return state;
 	}

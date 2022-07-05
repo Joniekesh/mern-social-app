@@ -91,6 +91,11 @@
 	cursor: pointer;
 }
 
+.gitReposWrapper {
+	margin-top: -3px;
+	margin-bottom: 10px;
+}
+
 /*PROFILE RIGHT*/
 .profileRight {
 	flex: 1;
@@ -115,26 +120,55 @@
 }
 
 .profileBio {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
 	width: 100%;
 	background-color: teal;
 	color: white;
 	height: 150px;
 	overflow: hidden;
+	padding: 10px;
 }
 
 .profileBio h2 {
 	margin-bottom: 10px;
+	text-align: center;
 }
 
 .profileBio p {
-	width: 70%;
+	text-align: center;
 }
 
 .timeLinePostWrapper h2 {
 	color: teal;
+}
+
+@media only screen and (max-width: 768px) {
+	.dashboard {
+		margin: 0px 0px 5px 0px;
+	}
+
+	.timeLinePostWrapper h2,
+	.gitReposWrapper h2 {
+		margin: 0px;
+		font-size: 20px;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.dashboard {
+		font-size: 24px;
+	}
+
+	.profileRight {
+		display: none;
+	}
+
+	.experienceEduDiv {
+		flex-direction: column;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.experienceEduDiv {
+		gap: 10px;
+	}
 }

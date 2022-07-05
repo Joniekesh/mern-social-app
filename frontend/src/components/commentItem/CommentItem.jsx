@@ -24,8 +24,10 @@ const CommentItem = ({ post, comment }) => {
 	}, [comment?.likes, currentLike]);
 
 	const likeData = {
-		user,
+		user: user._id,
 		name: user.name,
+		followers: user.follower,
+		followings: user.followings,
 		profilePic: user.profilePic,
 	};
 
@@ -72,10 +74,7 @@ const CommentItem = ({ post, comment }) => {
 						<Link to={`/profiles/${comment?.user}`}>
 							<div className="commentTopLeft">
 								<p className="commentUserName">{comment?.name}</p>
-								<span className="commentUserProfileDesc">
-									Full Stack Developer: MERN | Socket.io | Redux | Firebase |
-									Git...
-								</span>
+
 								<span className="commentTime">{format(comment?.date)}</span>
 							</div>
 						</Link>
@@ -92,7 +91,7 @@ const CommentItem = ({ post, comment }) => {
 								</div>
 							</div>
 						)}
-						{post?.user === comment?.user && (
+						{post?.user._id === comment?.user && (
 							<Link to={`/profiles/${comment?.user}`}>
 								<div className="author">Author</div>
 							</Link>
@@ -131,6 +130,7 @@ const CommentItem = ({ post, comment }) => {
 						<Link to={`/posts/${post?._id}/comments/${comment?._id}`}>
 							<span className="replyItem">Reply</span>
 						</Link>
+
 						<span className="replyCount">
 							{comment?.replies.length} Replies
 						</span>

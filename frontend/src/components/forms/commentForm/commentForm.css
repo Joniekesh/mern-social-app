@@ -33,7 +33,6 @@
 .form textarea {
 	width: 100%;
 	border: none;
-	height: 16px;
 }
 
 .form textarea:focus {

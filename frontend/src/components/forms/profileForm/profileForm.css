@@ -4,6 +4,7 @@
 	margin: auto;
 	padding: 16px;
 	border-radius: 10px;
+	border: 2px solid purple;
 }
 
 .createProfileIntro {
@@ -31,14 +32,17 @@
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	margin-bottom: 8px;
+	margin-bottom: 24px;
 	border: none;
+	height: 55px;
 }
 
 .formGroup small {
 	position: absolute;
 	left: 16px;
-	top: 50px;
+	top: 55px;
+	width: 100%;
+	font-size: 13px;
 }
 
 .formGroup .textareaSmall {
@@ -123,4 +127,10 @@
 
 .createProfileGoBackBtn:hover {
 	transform: scale(1.07);
+}
+
+@media only screen and (max-width: 600px) {
+	.createProfileIntro h1 {
+		font-size: 24px;
+	}
 }

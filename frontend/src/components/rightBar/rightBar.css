@@ -23,6 +23,11 @@
 	align-items: center;
 	cursor: pointer;
 }
+
+.followUserDiv {
+	display: flex;
+}
+
 .homeRightImg {
 	width: 40px;
 	height: 40px;
@@ -69,4 +74,23 @@
 	text-align: center;
 	cursor: pointer;
 	font-weight: 500;
+}
+
+@media only screen and (max-width: 768px) {
+	.homeRightBottom {
+		width: 80px;
+		height: 30px;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.homeRight {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.homeRight {
+		display: none;
+	}
 }

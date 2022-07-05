@@ -5,15 +5,17 @@ const ProfilesItem = ({ profile }) => {
 	return (
 		<div className="profilesContainer">
 			<div className="profilesLeft">
-				<img className="profilesLeftImg" src={profile?.profilePic} alt="" />
+				<img className="profilesLeftImg" src={profile.user.profilePic} alt="" />
 			</div>
 			<div className="profilesCenter">
-				<p>{profile.name}</p>
+				<p>{profile.user.name}</p>
 				<span>
 					{profile.status} at {profile.company}
 				</span>
-				<span>{profile.location}</span>
-				<Link to={`/profiles/${profile.user}`}>
+				<span>
+					<b>{profile.location}</b>
+				</span>
+				<Link to={`/profiles/${profile.user._id}`}>
 					<button className="profilesBtn">View Profile</button>
 				</Link>
 			</div>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { updateEducation } from "../../../redux/actions/prifileActions";
+import { toast } from "react-toastify";
 
 const EducationEditForm = () => {
 	const dispatch = useDispatch();
@@ -38,11 +39,11 @@ const EducationEditForm = () => {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		if (isAuthenticated && currentProfile.user === user._id) {
+		if (isAuthenticated && user._id === currentProfile.user._id) {
 			dispatch(updateEducation(education._id, formData));
-			navigate("/dashboard");
-
+			toast.success("Education Updated", { theme: "colored" });
 			window.location.reload();
+			navigate(-1);
 		}
 	};
 

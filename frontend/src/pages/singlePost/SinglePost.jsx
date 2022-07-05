@@ -1,5 +1,5 @@
 import "./singlePost.css";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import CommentItem from "../../components/commentItem/CommentItem";
@@ -14,6 +14,11 @@ const SinglePost = ({ socket }) => {
 
 	const post = useSelector((state) => state.post);
 	const { post: singlePost, loading } = post;
+
+	// const scrollRef = useRef();
+	// useEffect(() => {
+	// 	scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
+	// }, []);
 
 	useEffect(() => {
 		dispatch(getPostById(postId));
@@ -39,7 +44,7 @@ const SinglePost = ({ socket }) => {
 											<div className="reactionListItem">
 												<img
 													className="reactionListItemImg"
-													src={like?.profilePic}
+													src={like.profilePic}
 													alt=""
 												/>
 												<i className="fa-solid fa-thumbs-up reactionListLike"></i>
@@ -66,7 +71,7 @@ const SinglePost = ({ socket }) => {
 								)}
 							</div>
 						</div>
-						<CommentForm post={singlePost} />
+						<CommentForm post={singlePost} socket={socket} />
 					</>
 				)}
 			</div>

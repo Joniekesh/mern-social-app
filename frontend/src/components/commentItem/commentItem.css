@@ -95,6 +95,7 @@
 	padding: 5px;
 	border-radius: 5px;
 	cursor: pointer;
+	margin-right: 12px;
 }
 
 .elipsis {
@@ -149,4 +150,10 @@
 .replyList {
 	margin-left: 8px;
 	width: 94%;
+}
+
+@media only screen and (max-width: 600px) {
+	.commentsDiv {
+		width: 100vw;
+	}
 }

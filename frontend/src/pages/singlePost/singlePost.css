@@ -30,14 +30,6 @@
 	height: 8px;
 }
 
-/* ::-webkit-scrollbar-button {
-	background: #ccc;
-}
-
-::-webkit-scrollbar-track-piece {
-	background: #888;
-}  */
-
 .reactionsLists {
 	display: flex;
 }

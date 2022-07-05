@@ -2,7 +2,7 @@ import "./register.css";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { register } from "../../redux/actions/authActions";
-import { setAlert } from "../../redux/actions/alertActions";
+import { toast } from "react-toastify";
 
 const Register = () => {
 	const [name, setName] = useState("");
@@ -16,7 +16,7 @@ const Register = () => {
 		e.preventDefault();
 
 		if (password !== confirmPassword) {
-			dispatch(setAlert("Passwords do not match", "danger"));
+			toast.error("Passwords do not match", { theme: "colored" });
 		} else {
 			dispatch(register({ name, email, password }));
 		}

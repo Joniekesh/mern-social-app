@@ -49,17 +49,15 @@
 	margin-right: 8px;
 }
 .photo {
-	color: #70b5f9;
+	color: teal;
 }
 
 .video {
 	color: #7fc15e;
 }
-.calendar {
-	color: #e7a33e;
-}
+
 .newspaper {
-	color: #fc9295;
+	color: rgb(7, 35, 46);
 }
 
 .homeCenterPostLists {

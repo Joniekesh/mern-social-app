@@ -1,5 +1,5 @@
 import "./dashboard.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import ProfileTop from "../../components/profile/profileTop/ProfileTop";
@@ -17,13 +17,13 @@ import PostItem from "../../components/postItem/PostItem";
 const Dashboard = () => {
 	const dispatch = useDispatch();
 
+	const user = useSelector((state) => state.userLogin.user);
+
 	const profile = useSelector((state) => state.profile);
 	const { profile: currentProfile, loading } = profile;
 
-	const post = useSelector((state) => state.post);
-	const { post: timeLinePosts, loading: postLoading } = post;
-
-	console.log(timeLinePosts);
+	const timelinePosts = useSelector((state) => state.timelinePosts);
+	const { posts, loading: loadingTimelinePosts } = timelinePosts;
 
 	useEffect(() => {
 		dispatch(getCurrentProfile());
@@ -51,25 +51,67 @@ const Dashboard = () => {
 								<div className="profileWrapper">
 									<div className="profileLeft">
 										<ProfileTop profile={currentProfile} />
-										<div className="profileRight">
-											<h4>{currentProfile.name}'s Followers</h4>
-											<hr className="line" />
-											<div className="profileRightLists">
-												<ProfileRightBar />
-												<ProfileRightBar />
-												<ProfileRightBar />
-												<ProfileRightBar />
-												<ProfileRightBar />
+										{currentProfile.user?.followers.length > 0 && (
+											<div className="profileRight">
+												<h4 style={{ color: "teal" }}>
+													{currentProfile.user?.name}'s Followers
+												</h4>
+												<hr className="line" />
+												<div className="profileRightLists">
+													{currentProfile.user?.followers.map((follower) => (
+														<ProfileRightBar
+															follower={follower}
+															key={follower._id}
+														/>
+													))}
+												</div>
+												<span className="profileFollowersViewMore">
+													View More...
+												</span>
 											</div>
-											<span className="profileFollowersViewMore">
-												View More...
-											</span>
-										</div>
+										)}
 									</div>
 
 									<div className="profileBio">
-										<h2>{currentProfile.name}'s Bio</h2>
-										<p>{currentProfile.bio}</p>
+										<h2>{currentProfile.user?.name}'s Bio</h2>
+										<p>{currentProfile?.bio}</p>
+									</div>
+
+									<div className="friendsList">
+										<div className="friendsListtop">
+											<h3 className="friendsListtitle"> Friends</h3>
+											<p>
+												(
+												<b style={{ color: "teal" }}>
+													{currentProfile.user?.followings.length}{" "}
+												</b>
+												{currentProfile.user?.followings.length <= 1
+													? "friend"
+													: "friends"}
+												)
+											</p>
+										</div>
+										{currentProfile.user?.followings.length > 0 ? (
+											<div className="userFriendsList">
+												{currentProfile?.user.followings.map((friend) => (
+													<Link
+														to={`/profiles/${friend.user}`}
+														key={friend._id}
+													>
+														<div className="userFriendsListItem">
+															<img
+																className="userFriendsListImg"
+																src={friend.profilePic}
+																alt=""
+															/>
+															<p className="friendsName">{friend.name}</p>
+														</div>
+													</Link>
+												))}
+											</div>
+										) : (
+											<h4>No friends yet for this user</h4>
+										)}
 									</div>
 
 									<div className="experienceEduDiv">
@@ -83,7 +125,7 @@ const Dashboard = () => {
 												</div>
 												<hr className="line" />
 												<div className="experienceList">
-													{currentProfile.experience?.length > 0 ? (
+													{currentProfile?.experience?.length > 0 ? (
 														currentProfile.experience.map((exp) => (
 															<ProfileExperience
 																experience={exp}
@@ -111,7 +153,7 @@ const Dashboard = () => {
 												</div>
 												<hr className="line" />
 												<div className="educationList">
-													{currentProfile.education?.length > 0 ? (
+													{currentProfile?.education?.length > 0 ? (
 														currentProfile.education.map((edu) => (
 															<ProfileEducation education={edu} key={edu._id} />
 														))
@@ -130,20 +172,24 @@ const Dashboard = () => {
 
 									<div className="gitReposWrapper">
 										<h2>Github Repos</h2>
-										<GitRepos />
+										<GitRepos userProfile={currentProfile} />
 									</div>
 								</div>
-								<div className="timeLinePostWrapper">
-									<h2>{currentProfile.name}'s Timeline Posts</h2>
+								{loadingTimelinePosts ? (
+									<Spinner />
+								) : (
+									<div className="timeLinePostWrapper">
+										<h2>{currentProfile.user?.name}'s Timeline Posts</h2>
 
-									<HomeTop />
-									<div className="timeLinePostLists">
-										{timeLinePosts &&
-											Object.keys(timeLinePosts)?.map((key, index) => (
-												<PostItem post={timeLinePosts[key]} key={index} />
-											))}
+										<HomeTop />
+										<div className="timeLinePostLists">
+											{posts &&
+												posts.map((post) => (
+													<PostItem post={post} key={post._id} />
+												))}
+										</div>
 									</div>
-								</div>
+								)}
 							</>
 						)}
 					</>

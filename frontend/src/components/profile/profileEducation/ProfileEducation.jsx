@@ -2,6 +2,7 @@ import "./profileEducation.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteEducation } from "../../../redux/actions/prifileActions";
+import { toast } from "react-toastify";
 
 const ProfileEducation = ({ education }) => {
 	const userLogin = useSelector((state) => state.userLogin);
@@ -14,8 +15,9 @@ const ProfileEducation = ({ education }) => {
 	const navigate = useNavigate();
 
 	const handleDelete = () => {
-		if (isAuthenticated && currentProfile.user === user._id) {
+		if (isAuthenticated && currentProfile.user._id === user._id) {
 			dispatch(deleteEducation(education._id));
+			toast.success("Education Deleted", { theme: "colored" });
 		}
 	};
 
@@ -30,7 +32,11 @@ const ProfileEducation = ({ education }) => {
 	return (
 		<>
 			<div className="experienceListItem">
-				<img className="companyImg" src="/assets/companyImg.jpeg" alt="" />
+				<img
+					className="companyImg"
+					src="http://res.cloudinary.com/joniekesh/image/upload/v1654870016/upload/kmmfkfxe399wzdsba0np.webp"
+					alt=""
+				/>
 				<div className="experienceDesc">
 					<div>
 						<p>
@@ -64,7 +70,7 @@ const ProfileEducation = ({ education }) => {
 						</p>
 					</div>
 				</div>
-				{user._id === currentProfile.user && (
+				{user._id === currentProfile.user._id && (
 					<div className="experienceActions">
 						<i
 							className="fa-solid fa-pen experienceEdit"

@@ -23,7 +23,6 @@ const CommentForm = ({ post }) => {
 
 		if (isAuthenticated) {
 			dispatch(addPostComment(post._id, newComment));
-
 			window.location.reload();
 		}
 	};

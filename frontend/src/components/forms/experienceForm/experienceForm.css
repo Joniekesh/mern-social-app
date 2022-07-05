@@ -1,9 +1,10 @@
 .experienceForm {
-	max-width: 600px;
+	width: 100%;
 	background-color: white;
 	margin: auto;
 	padding: 16px;
 	border-radius: 10px;
+	border: 2px solid purple;
 }
 
 .experienceFormIntro {
@@ -32,10 +33,6 @@
 .experienceFormGroup {
 	width: 100%;
 	margin: 14px 0px;
-}
-
-.experienceFormGroup p h4 {
-	margin-top: -18px;
 }
 
 .experienceFormGroup input,
@@ -83,4 +80,10 @@
 
 .experienceBackBtn:hover {
 	transform: scale(1.07);
+}
+
+@media only screen and (max-width: 600px) {
+	.experienceFormIntro {
+		font-size: 12px;
+	}
 }

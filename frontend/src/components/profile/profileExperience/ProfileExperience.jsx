@@ -2,6 +2,7 @@ import "./profileExperience.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteExperience } from "../../../redux/actions/prifileActions";
+import { toast } from "react-toastify";
 
 const ProfileExperience = ({ experience }) => {
 	const userLogin = useSelector((state) => state.userLogin);
@@ -14,8 +15,9 @@ const ProfileExperience = ({ experience }) => {
 	const navigate = useNavigate();
 
 	const handleDelete = () => {
-		if (isAuthenticated && currentProfile.user === user._id) {
+		if (isAuthenticated && currentProfile.user._id === user._id) {
 			dispatch(deleteExperience(experience._id));
+			toast.success("Experience Deleted", { theme: "colored" });
 		}
 	};
 
@@ -30,7 +32,11 @@ const ProfileExperience = ({ experience }) => {
 	return (
 		<>
 			<div className="experienceListItem">
-				<img className="companyImg" src="/assets/companyImg.jpeg" alt="" />
+				<img
+					className="companyImg"
+					src="http://res.cloudinary.com/joniekesh/image/upload/v1654870094/upload/gvxn9sbsi70vg01su7zc.webp"
+					alt=""
+				/>
 				<div className="experienceDesc">
 					<div>
 						<p>

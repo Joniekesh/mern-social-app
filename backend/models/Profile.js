@@ -4,14 +4,7 @@ const ProfileSchema = new mongoose.Schema(
 	{
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
-		},
-		name: {
-			type: String,
-			required: true,
-		},
-		profilePic: {
-			type: String,
-			default: "",
+			ref: "User",
 		},
 		company: {
 			type: String,

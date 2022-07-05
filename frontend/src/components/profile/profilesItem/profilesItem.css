@@ -14,6 +14,7 @@
 .profilesLeftImg {
 	width: 150px;
 	height: 150px;
+	border: 1px solid white;
 	border-radius: 50%;
 	object-fit: cover;
 	border: 2px solid white;
@@ -28,6 +29,8 @@
 .profilesCenter p {
 	font-weight: 500;
 	margin-bottom: 8px;
+	color: teal;
+	font-weight: bold;
 }
 
 .profilesCenter span {
@@ -65,4 +68,15 @@
 
 .profilesListItem i {
 	margin-right: 8px;
+}
+
+@media only screen and (max-width: 600px) {
+	.profilesLeftImg {
+		width: 100px;
+		height: 100px;
+	}
+	.profilesBtn {
+		width: 110px;
+		font-size: 15px;
+	}
 }

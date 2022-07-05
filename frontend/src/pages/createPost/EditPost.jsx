@@ -1,15 +1,10 @@
+import "./editPost.css";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { updatePost } from "../../redux/actions/postActions";
-import app from "../../firebase";
-
-import {
-	getStorage,
-	ref,
-	uploadBytesResumable,
-	getDownloadURL,
-} from "firebase/storage";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const EditPost = () => {
 	const {
@@ -29,50 +24,41 @@ const EditPost = () => {
 	const handleClose = () => {
 		setClose(true);
 
-		navigate("/");
+		navigate(-1);
 	};
 
-	const handleUpdate = (e) => {
+	const handleCancel = () => {
+		navigate(-1);
+	};
+
+	const handleUpdate = async (e) => {
 		e.preventDefault();
-		const fileName = new Date().getTime() + file.name;
-		const storage = getStorage(app);
-		const storageRef = ref(storage, fileName);
-		const uploadTask = uploadBytesResumable(storageRef, file);
 
-		uploadTask.on(
-			"state_changed",
-			(snapshot) => {
-				const progress =
-					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				console.log("Upload is " + progress + "% done");
-				switch (snapshot.state) {
-					case "paused":
-						console.log("Upload is paused");
-						break;
-					case "running":
-						console.log("Upload is running");
-						break;
-				}
-			},
-			(error) => {},
-			() => {
-				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					const postData = {
-						user: user._id,
-						name: user.name,
-						profilePic: user.profilePic,
-						desc,
-						photo: downloadURL,
-					};
-					if (isAuthenticated && user._id === post.user) {
-						dispatch(updatePost(post._id, postData));
-						navigate(`/posts/${post._id}`);
+		const data = new FormData();
+		data.append("file", file);
+		data.append("upload_preset", "upload");
 
-						window.location.reload();
-					}
-				});
+		try {
+			const uploadRes = await axios.post(
+				"https://api.cloudinary.com/v1_1/joniekesh/image/upload",
+				data
+			);
+
+			const { url } = uploadRes.data;
+
+			const postData = {
+				user: user._id,
+				desc,
+				photo: url,
+			};
+
+			if (isAuthenticated && user._id === post.user._id) {
+				dispatch(updatePost(post._id, postData));
+				navigate(`/posts/${post._id}`);
+				window.location.reload();
+				toast.success("Post Updated", { theme: "colored" });
 			}
-		);
+		} catch (error) {}
 	};
 
 	return (
@@ -132,9 +118,18 @@ const EditPost = () => {
 									<i className="fa-solid fa-video"></i>
 									<span>Add Vidoe</span>
 								</div>
-								<button type="submit" className="postCreateButton">
-									Update
-								</button>
+								<div className="editPostBtnGroup">
+									<button
+										type="submit"
+										className="postCreateButton cancel"
+										onClick={handleCancel}
+									>
+										Cancel
+									</button>
+									<button type="submit" className="postCreateButton">
+										Update
+									</button>
+								</div>
 							</div>
 						</form>
 					</div>

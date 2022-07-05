@@ -1,0 +1,45 @@
+.message {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+}
+
+.all {
+	display: "flex";
+	flex-direction: "column";
+}
+
+.message.own {
+	align-items: flex-end;
+}
+
+.messageInfoTop {
+	display: flex;
+}
+
+.messageImg {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	object-fit: cover;
+	cursor: pointer;
+}
+
+.messageText {
+	max-width: 450px;
+	background-color: #0e76a8;
+	color: white;
+	padding: 10px;
+	border-radius: 20px 0px 20px 0px;
+	margin-bottom: 5px;
+}
+
+.message.own .messageText {
+	background-color: rgb(209, 207, 207);
+	color: black;
+}
+
+.messageTime {
+	font-size: 14px;
+	color: black;
+}

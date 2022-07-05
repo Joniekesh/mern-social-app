@@ -1,29 +1,65 @@
 import "./leftBar.css";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsers } from "../../redux/actions/userActions";
 
-const LeftBar = () => {
+const LeftBar = ({ profile }) => {
+	const [search, setSearch] = useState("");
+
+	const dispatch = useDispatch();
+
+	const user = useSelector((state) => state.user);
+	const { users } = user;
+
 	const userLogin = useSelector((state) => state.userLogin);
-	const { user } = userLogin;
+	const { user: currentUser } = userLogin;
 
-	const profile = useSelector((state) => state.profile);
-	const { profile: currentProfile } = profile;
+	useEffect(() => {
+		dispatch(getUsers());
+	}, []);
 
 	return (
 		<div className="homeLeft">
 			<div className="homeLeftSearchDiv">
 				<i className="fa-solid fa-magnifying-glass"></i>
-				<input type="text" placeholder="Search for users, posts or articles" />
+				<input
+					type="text"
+					placeholder="Search..."
+					onChange={(e) => setSearch(e.target.value)}
+					style={{ color: "teal" }}
+				/>
 			</div>
+			{search.length > 0 && (
+				<div className="search">
+					<ul className="searchList">
+						{users
+							.filter((user) => user.name.toLowerCase().includes(search))
+							.map((user) => (
+								<li className="searchListItem" key={user._id}>
+									<Link to={`/profiles/${user._id}`}>
+										<div className="searchContainer">
+											<img className="searchImg" src={user.profilePic} />
+											<div className="searchDetails">
+												<span className="searchUserName">{user.name}</span>
+												<span className="searchUserProfile"></span>
+											</div>
+										</div>
+									</Link>
+								</li>
+							))}
+					</ul>
+				</div>
+			)}
 			<Link to="/dashboard">
 				<div className="leftBarUserInfoDiv">
 					<div className="lefBarUserInfo">
 						<div>
-							<img src={user?.profilePic} alt="" />
+							<img src={currentUser?.profilePic} alt="" />
 						</div>
 						<div className="lefBarUserInfoUsername">
-							<h4>{user?.name}</h4>
-							<p>{currentProfile?.headline.substring(0, 45)}...</p>
+							<h4 style={{ color: "teal" }}>{currentUser?.name}</h4>
+							<p>{profile?.headline.substring(0, 30)}...</p>
 						</div>
 					</div>
 				</div>

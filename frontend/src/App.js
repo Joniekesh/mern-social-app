@@ -1,12 +1,12 @@
-import "./App.css";
 import {
 	BrowserRouter as Router,
 	Routes,
 	Route,
 	Navigate,
 } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/navbar/Navbar";
-import Alert from "./components/alert/Alert";
 import PrivateRoute from "./routing/PrivateRoute";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
@@ -33,23 +33,19 @@ import EditPost from "./pages/createPost/EditPost";
 import CommentReply from "./pages/commentReply/CommentReply";
 import EditComment from "./components/commentItem/EditComment";
 import EditCommentReply from "./pages/commentReply/EditCommentReply";
-import { io } from "socket.io-client";
+import SideMenu from "./components/sideMenu/SideMenu";
+import OverLay from "./components/overLay/OverLay";
+import Messenger from "./pages/messenger/Messenger";
 
 const App = () => {
-	// Socket
-	const [socket, setSocket] = useState(null);
+	const [overLay, setOverLay] = useState(false);
+	const [openSideMenu, setOpenSideMenu] = useState(false);
+
 	const userLogin = useSelector((state) => state.userLogin);
+	const dispatch = useDispatch();
+
 	const { isAuthenticated, user } = userLogin;
 
-	useEffect(() => {
-		setSocket(io("http://localhost:8800"));
-	}, []);
-
-	useEffect(() => {
-		socket?.emit("newUser", user);
-	}, [socket, user]);
-
-	const dispatch = useDispatch();
 	const token = `Bearer ${localStorage.getItem("token")}`;
 
 	useEffect(() => {
@@ -57,16 +53,37 @@ const App = () => {
 			dispatch(loadUser());
 		}
 	}, [token, dispatch]);
+
 	return (
 		<Router>
-			<Navbar socket={socket} />
-			<Alert />
+			<div>
+				<ToastContainer />
+			</div>
+			<SideMenu
+				setOverLay={setOverLay}
+				openSideMenu={openSideMenu}
+				setOpenSideMenu={setOpenSideMenu}
+			/>
+			<OverLay
+				overLay={overLay}
+				setOverLay={setOverLay}
+				setOpenSideMenu={setOpenSideMenu}
+			/>
+			<Navbar
+				openSideMenu={openSideMenu}
+				setOverLay={setOverLay}
+				setOpenSideMenu={setOpenSideMenu}
+			/>
 
 			<Routes>
 				<Route
 					exact
 					path="/"
-					element={<PrivateRoute component={Home} />}
+					element={
+						<PrivateRoute>
+							<Home />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/register"
@@ -78,79 +95,164 @@ const App = () => {
 				></Route>
 				<Route
 					path="/createPost"
-					element={<PrivateRoute component={CreatePost} />}
+					element={
+						<PrivateRoute>
+							<CreatePost />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/editPost"
-					element={<PrivateRoute component={EditPost} />}
+					element={
+						<PrivateRoute>
+							<EditPost />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/editComment/:postId"
-					element={<PrivateRoute component={EditComment} />}
+					element={
+						<PrivateRoute>
+							<EditComment />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/editCommentReply/:postId/:commentId"
-					element={<PrivateRoute component={EditCommentReply} />}
+					element={
+						<PrivateRoute>
+							<EditCommentReply />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/posts/:postId"
-					element={<PrivateRoute component={SinglePost} socket={socket} />}
+					element={
+						<PrivateRoute>
+							<SinglePost />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/posts/:postId/postReactedUsers"
-					element={<PrivateRoute component={PostReactedUsers} />}
+					element={
+						<PrivateRoute>
+							<PostReactedUsers />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/posts/:postId/comments/:commentid"
-					element={<PrivateRoute component={CommentReply} />}
+					element={
+						<PrivateRoute>
+							<CommentReply />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/posts/:postId/comments/:commentId/commentReactedUsers"
-					element={<PrivateRoute component={CommentReactedUser} />}
+					element={
+						<PrivateRoute>
+							<CommentReactedUser />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/posts/:postId/comments/:commentId/replies/:replyId/replyReactedUsers"
-					element={<PrivateRoute component={ReplyReactedUser} />}
+					element={
+						<PrivateRoute>
+							<ReplyReactedUser />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/dashboard"
-					element={<PrivateRoute component={Dashboard} />}
-				></Route>
-				<Route
-					path="/profiles"
-					element={<PrivateRoute component={Profiles} />}
+					element={
+						<PrivateRoute>
+							<Dashboard />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/profiles/:id"
-					element={<PrivateRoute component={Profile} />}
+					element={
+						<PrivateRoute>
+							<Profile />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
+					path="/profiles"
+					element={
+						<PrivateRoute>
+							<Profiles />
+						</PrivateRoute>
+					}
+				></Route>
+
+				<Route
 					path="/createProfile"
-					element={<PrivateRoute component={CreateProfile} />}
+					element={
+						<PrivateRoute>
+							<CreateProfile />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/editProfile"
-					element={<PrivateRoute component={EditProfile} />}
+					element={
+						<PrivateRoute>
+							<EditProfile />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/experience"
-					element={<PrivateRoute component={Experience} />}
+					element={
+						<PrivateRoute>
+							<Experience />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/editExperience"
-					element={<PrivateRoute component={ExperienceEdit} />}
+					element={
+						<PrivateRoute>
+							<ExperienceEdit />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/education"
-					element={<PrivateRoute component={Education} />}
+					element={
+						<PrivateRoute>
+							<Education />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/editEducation"
-					element={<PrivateRoute component={EducationEdit} />}
+					element={
+						<PrivateRoute>
+							<EducationEdit />
+						</PrivateRoute>
+					}
 				></Route>
 				<Route
 					path="/settings"
-					element={<PrivateRoute component={Settings} />}
+					element={
+						<PrivateRoute>
+							<Settings />
+						</PrivateRoute>
+					}
+				></Route>
+				<Route
+					path="/messenger"
+					element={
+						<PrivateRoute>
+							<Messenger />
+						</PrivateRoute>
+					}
 				></Route>
 			</Routes>
 		</Router>

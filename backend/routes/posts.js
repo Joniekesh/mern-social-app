@@ -21,12 +21,8 @@ router.post(
 
 		const { desc, photo } = req.body;
 
-		const user = await User.findById(req.user.id);
-
 		const newPost = new Post({
 			user: req.user.id,
-			name: user.name,
-			profilePic: user.profilePic,
 			desc,
 			photo,
 		});
@@ -42,7 +38,10 @@ router.post(
 // @access Private
 router.get("/", protect, async (req, res) => {
 	try {
-		const posts = await Post.find();
+		const posts = await Post.find().populate(
+			"user",
+			"name email profilePic followers followings"
+		);
 
 		if (!posts) {
 			return res.status(404).json({ msg: "Posts not found" });
@@ -60,7 +59,10 @@ router.get("/", protect, async (req, res) => {
 // @access Private
 router.get("/:postId", protect, async (req, res) => {
 	try {
-		const post = await Post.findById(req.params.postId);
+		const post = await Post.findById(req.params.postId).populate(
+			"user",
+			"name email profilePic followers followings"
+		);
 
 		if (!post) {
 			return res.status(404).json({ msg: "Post not found" });
@@ -94,6 +96,7 @@ router.put("/:postId", protect, async (req, res) => {
 		}
 
 		post.desc = req.body.desc || post.desc;
+		post.photo = req.body.photo || post.photo;
 
 		updatedPost = await post.save();
 
@@ -108,7 +111,7 @@ router.put("/:postId", protect, async (req, res) => {
 });
 
 // @desc   Like/Unlike a post
-// @route  PUT /api/posts/like/:postId
+// @route  PUT /api/posts/likes/:postId
 // @access Private
 router.put("/likes/:postId", protect, async (req, res) => {
 	try {
@@ -122,7 +125,13 @@ router.put("/likes/:postId", protect, async (req, res) => {
 		if (!post.likes.some((like) => like.user.toString() === req.user.id)) {
 			await post.updateOne({
 				$push: {
-					likes: { user, name: user.name, profilePic: user.profilePic },
+					likes: {
+						user: user._id,
+						name: user.name,
+						profilePic: user.profilePic,
+						followers: user.followers,
+						followings: user.followings,
+					},
 				},
 			});
 			res.json(post.likes);
@@ -154,7 +163,7 @@ router.delete("/:postId", protect, async (req, res) => {
 			return res.status(404).json({ msg: "Post not found" });
 		}
 
-		if (post.user.toString() !== req.user.id) {
+		if (post.user._id.toString() !== req.user.id) {
 			return res
 				.status(401)
 				.json({ msg: "You are not authorized to delete this post" });
@@ -171,17 +180,23 @@ router.delete("/:postId", protect, async (req, res) => {
 		res.status(500).send("Server Error");
 	}
 });
-// @desc   Get Timeline posts
+// @desc   Get Timeline posts of loggedin user
 // @route  GET /api/posts/me/timeline
 // @access Private
 router.get("/me/timeline", protect, async (req, res) => {
 	try {
 		const currentUser = await User.findById(req.user.id);
-		const currentUserPosts = await Post.find({ user: req.user.id });
+		const currentUserPosts = await Post.find({ user: req.user.id }).populate(
+			"user",
+			"name email profilePic followers followings"
+		);
 
 		const friendsPosts = await Promise.all(
 			currentUser.followings.map((friendId) => {
-				return Post.find({ user: friendId });
+				return Post.find({ user: friendId.user }).populate(
+					"user",
+					"name email profilePic followers followings"
+				);
 			})
 		);
 
@@ -192,51 +207,57 @@ router.get("/me/timeline", protect, async (req, res) => {
 	}
 });
 
-// @desc   Get TimelinePosts by user ID,
-// @route  GET /api/posts/timeline/:userId
-// @acess  Private
-router.get("/timeline/:userId", protect, async (req, res) => {
-	try {
-		const user = await User.findById(req.params.userId);
-		const userPosts = await Post.find({ user: req.params.userId });
+// // @desc   Get TimelinePosts by user ID,
+// // @route  GET /api/posts/timeline/:userId
+// // @acess  Private
+// router.get("/timeline/:userId", protect, async (req, res) => {
+// 	try {
+// 		const user = await User.findById(req.params.userId);
+// 		const currentUserPosts = await Post.find({ user: req.user.id });
 
-		if (!userPosts) {
-			return res.status(404).json({ msg: "User not found" });
-		}
+// 		if (!currentUserPosts) {
+// 			return res.status(404).json({ msg: "User posts not found" });
+// 		}
 
-		const friendsPosts = await Promise.all(
-			user.followings.map((friendId) => {
-				return Post.find({ user: friendId });
-			})
-		);
+// 		const friendsPosts = await Promise.all(
+// 			user.followings.map((friendId) => {
+// 				return Post.find({ user: friendId.user }).populate(
+// 					"user",
+// 					"name email profilePic followers followings"
+// 				);
+// 			})
+// 		);
 
-		res.json(userPosts.concat(...friendsPosts));
-	} catch (err) {
-		console.error(err.message);
-		if (err.kind == "ObjectId") {
-			return res.status(404).json({ msg: "Posts not found" });
-		}
-		return res.send("Server Error");
-	}
-});
+// 		res.json(currentUserPosts.concat(...friendsPosts));
+// 	} catch (err) {
+// 		console.error(err.message);
+// 		if (err.kind == "ObjectId") {
+// 			return res.status(404).json({ msg: "Posts not found" });
+// 		}
+// 		return res.send("Server Error");
+// 	}
+// });
 
-// @desc   Get users all posts
-// @route  GET /api/posts/profile/me
-// @access Private
-router.get("/profile/me", protect, async (req, res) => {
-	try {
-		const posts = await Post.find({ user: req.user.id });
+// // @desc   Get users all posts
+// // @route  GET /api/posts/profile/me
+// // @access Private
+// router.get("/profile/me", protect, async (req, res) => {
+// 	try {
+// 		const posts = await Post.find({ user: req.user.id }).populate(
+// 			"user",
+// 			"name email profilePic followers followings"
+// 		);
 
-		if (!posts) {
-			return res.status(404).json({ msg: "Post not found" });
-		}
+// 		if (!posts) {
+// 			return res.status(404).json({ msg: "Post not found" });
+// 		}
 
-		res.json(posts);
-	} catch (err) {
-		console.error(err.message);
-		res.status(500).send("Server Error");
-	}
-});
+// 		res.json(posts);
+// 	} catch (err) {
+// 		console.error(err.message);
+// 		res.status(500).send("Server Error");
+// 	}
+// });
 
 // @desc   Create Post Comment
 // @route  POST /api/posts/comments/:postId
@@ -262,6 +283,8 @@ router.post(
 			const newComment = {
 				user: req.user.id,
 				name: user.name,
+				followers: user.followers,
+				followings: user.followings,
 				profilePic: user.profilePic,
 				desc: req.body.desc,
 			};
@@ -343,7 +366,13 @@ router.put("/comments/likes/:postId/:commentId", protect, async (req, res) => {
 		}
 
 		if (!comment.likes.some((like) => like.user.toString() === req.user.id)) {
-			comment.likes.unshift({ user: req.user.id });
+			comment.likes.unshift({
+				user: req.user.id,
+				name: user.name,
+				profilePic: user.profilePic,
+				followers: user.followers,
+				followings: user.followings,
+			});
 
 			await post.save();
 
@@ -389,7 +418,7 @@ router.delete("/comments/:postId/:commentId", protect, async (req, res) => {
 		if (comment.user.toString() !== req.user.id) {
 			return res
 				.status(401)
-				.json({ msg: "You are not authorized to delete this post" });
+				.json({ msg: "You are not authorized to delete this comment" });
 		}
 		await comment.remove();
 
@@ -439,6 +468,8 @@ router.post(
 				user: req.user.id,
 				name: user.name,
 				profilePic: user.profilePic,
+				followers: user.followers,
+				followings: user.followings,
 				desc: req.body.desc,
 			};
 			comment.replies.unshift(newReply);
@@ -537,7 +568,13 @@ router.put(
 			}
 
 			if (!reply.likes.some((like) => like.user.toString() === req.user.id)) {
-				reply.likes.unshift({ user: req.user.id });
+				reply.likes.unshift({
+					user: req.user.id,
+					name: user.name,
+					profilePic: user.profilePic,
+					followers: user.followers,
+					followings: user.followings,
+				});
 				await post.save();
 
 				res.json(reply.likes);

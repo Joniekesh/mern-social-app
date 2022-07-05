@@ -32,7 +32,7 @@ const ReplyForm = ({ postId, commentId }) => {
 		<div className="commentForm">
 			<div className="commentFormWrapper">
 				<form className="form">
-					<div className="formGroup">
+					<div className="formGroupC">
 						<div className="inputDiv">
 							<img className="commentFormImg" src={user.profilePic} />
 							<textarea

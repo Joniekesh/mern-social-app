@@ -39,7 +39,6 @@
 .settingsImgWrapper label i {
 	font-size: 20px;
 	cursor: pointer;
-	margin-left: -3px;
 	color: teal;
 }
 
@@ -87,6 +86,17 @@
 	transition: all 0.4s ease;
 }
 
+.settingsBtn:disabled {
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
 .settingsBtn:hover {
-	opacity: 0.8;
+	opacity: 0.9;
+}
+
+@media only screen and (max-width: 600px) {
+	.settingsWrapper {
+		width: 100%;
+	}
 }

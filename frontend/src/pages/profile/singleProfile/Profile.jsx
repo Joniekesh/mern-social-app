@@ -1,8 +1,8 @@
 import "./profile.css";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, Link } from "react-router-dom";
-import { getProfileById } from "../../../redux/actions/prifileActions";
+import { Link, useLocation } from "react-router-dom";
+import { getProfileById } from "../../../redux/actions/profilesActions";
 import ProfileActions from "../../../components/profile/profileActions/ProfileActions";
 import ProfileRightBar from "../../../components/profile/profileRightBar/ProfileRightBar";
 import ProfilesTop from "../../../components/profiles/ProfilesTop";
@@ -11,43 +11,48 @@ import ProfilesEducation from "../../../components/profiles/ProfilesEducation";
 import Spinner from "../../../components/spinner/Spinner";
 import GitRepos from "../../../components/profile/gitRepos/GitRepos";
 import HomeTop from "../../../components/homeTop/HomeTop";
-import { getUserTimeLinePosts } from "../../../redux/actions/postActions";
-import { getUserById } from "../../../redux/actions/userActions";
+// import { getUserTimeLinePostsByUserId } from "../../../redux/actions/postActions";
 
 import PostItem from "../../../components/postItem/PostItem";
+import { getPosts } from "../../../redux/actions/postActions";
 
 const Profile = () => {
-	const { id } = useParams();
 	const dispatch = useDispatch();
-
-	const userLogin = useSelector((state) => state.userLogin);
-	const { isAuthenticated, currentUser } = userLogin;
-
-	const user = useSelector((state) => state.user);
-	const { user: guestUser } = user;
-
-	const profile = useSelector((state) => state.profile);
-	const { profile: userProfile, loading } = profile;
+	const location = useLocation();
+	const id = location.pathname.split("/")[2];
 
 	const post = useSelector((state) => state.post);
-	const { post: userTimelinePosts, loading: loadingPost } = post;
+	const { posts } = post;
+
+	const timeLinePosts = posts.filter((post) => post.user._id === id);
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { isAuthenticated, user: currentUser } = userLogin;
+
+	const profileById = useSelector((state) => state.profileById);
+	const { profile: userProfile, loading } = profileById;
+
+	// const timelinePostsByUserId = useSelector(
+	// 	(state) => state.timelinePostsByUserId
+	// );
+	// const { posts, loading: loadingTimelinePosts } = timelinePostsByUserId;
 
 	useEffect(() => {
-		dispatch(getUserById(id));
+		id && dispatch(getProfileById(id));
 	}, [dispatch, id]);
 
 	useEffect(() => {
-		dispatch(getProfileById(id));
-	}, [dispatch, id]);
+		dispatch(getPosts());
+	}, [dispatch]);
 
-	useEffect(() => {
-		dispatch(getUserTimeLinePosts(id));
-	}, [dispatch, id]);
+	// useEffect(() => {
+	// 	dispatch(getUserTimeLinePostsByUserId(id));
+	// }, [dispatch, id]);
 
 	return (
 		<div className="profile">
 			<div className="container">
-				{loading && userProfile === null ? (
+				{loading ? (
 					<Spinner />
 				) : (
 					<>
@@ -57,36 +62,70 @@ const Profile = () => {
 						</div>
 						{!loading &&
 							userProfile === null &&
-							userProfile?.user === currentUser?._id && <ProfileActions />}
+							userProfile?.user._id === currentUser?._id && <ProfileActions />}
 						<div className="profileWrapper">
 							<div className="profilesTopDiv">
-								<ProfilesTop
-									profile={userProfile}
-									guestUser={guestUser}
-									currentUser={currentUser}
-								/>
-								<div className="profileLeft profilesTopRightDiv">
-									<div className="profileRight editThis">
-										<h4>{userProfile?.name}'s Followers</h4>
-										<hr className="line" />
-										<div className="profileRightLists">
-											{guestUser?.followers?.map((follower) => (
-												<ProfileRightBar
-													follower={follower}
-													key={follower._id}
-												/>
-											))}
+								<ProfilesTop profile={userProfile} />
+								{userProfile?.user?.followers.length > 0 && (
+									<div className="profileLeft profilesTopRightDiv">
+										<div className="profileRight editThis">
+											<h4 style={{ color: "teal" }}>
+												{userProfile?.user?.name}'s Followers
+											</h4>
+											<hr className="line" />
+											<div className="profileRightLists">
+												{userProfile?.user?.followers.map((follower) => (
+													<ProfileRightBar
+														follower={follower}
+														key={follower._id}
+													/>
+												))}
+											</div>
+											<span className="profileFollowersViewMore">
+												View More...
+											</span>
 										</div>
-										<span className="profileFollowersViewMore">
-											View More...
-										</span>
 									</div>
-								</div>
+								)}
 							</div>
 
 							<div className="profileBio">
-								<h2>{userProfile?.name}'s Bio</h2>
+								<h2>{userProfile?.user?.name}'s Bio</h2>
 								<p>{userProfile?.bio}</p>
+							</div>
+
+							<div className="friendsList">
+								<div className="friendsListtop">
+									<h3 className="friendsListtitle"> Friends</h3>
+									<p>
+										(
+										<b style={{ color: "teal" }}>
+											{userProfile.user?.followings.length}{" "}
+										</b>
+										{userProfile?.user?.followings.length <= 1
+											? "friend"
+											: "friends"}
+										)
+									</p>
+								</div>
+								{userProfile.user?.followings.length > 0 ? (
+									<div className="userFriendsList">
+										{userProfile?.user.followings.map((friend) => (
+											<Link to={`/profiles/${friend.user}`} key={friend._id}>
+												<div className="userFriendsListItem">
+													<img
+														className="userFriendsListImg"
+														src={friend.profilePic}
+														alt=""
+													/>
+													<p className="friendsName">{friend.name}</p>
+												</div>
+											</Link>
+										))}
+									</div>
+								) : (
+									<h4>No friends yet for this user</h4>
+								)}
 							</div>
 
 							<div className="experienceEduDiv">
@@ -109,17 +148,18 @@ const Profile = () => {
 													/>
 												))
 											) : (
-												<h4>No Profile experience</h4>
+												<h4>No Profile experience yet</h4>
 											)}
 										</div>
 									</div>
-									{isAuthenticated && currentUser?._id === userProfile?.user && (
-										<Link to="/experience">
-											<div className="experienceAdd">
-												<i className="fa-solid fa-plus"></i>
-											</div>
-										</Link>
-									)}
+									{isAuthenticated &&
+										currentUser?._id === userProfile?.user?._id && (
+											<Link to="/experience">
+												<div className="experienceAdd">
+													<i className="fa-solid fa-plus"></i>
+												</div>
+											</Link>
+										)}
 								</div>
 								<div className="eduContainer">
 									<div className="educationDiv">
@@ -140,17 +180,18 @@ const Profile = () => {
 													/>
 												))
 											) : (
-												<h4>No Profile Education</h4>
+												<h4>No Profile Education yet</h4>
 											)}
 										</div>
 									</div>
-									{isAuthenticated && currentUser?._id === userProfile?.user && (
-										<Link to="/education">
-											<div className="experienceAdd">
-												<i className="fa-solid fa-plus"></i>
-											</div>
-										</Link>
-									)}
+									{isAuthenticated &&
+										currentUser?._id === userProfile?.user?._id && (
+											<Link to="/education">
+												<div className="experienceAdd">
+													<i className="fa-solid fa-plus"></i>
+												</div>
+											</Link>
+										)}
 								</div>
 							</div>
 							<div className="gitReposWrapper">
@@ -160,20 +201,24 @@ const Profile = () => {
 								</div>
 							</div>
 
-							<div className="timeLinePostWrapper">
-								<h2>{userProfile?.name}'s Timeline Posts</h2>
-								{isAuthenticated && currentUser?._id === userProfile?.user && (
-									<HomeTop />
+							{/* <div className="timeLinePostWrapper">
+								<h2>{userProfile?.user?.name}'s Timeline Posts</h2>
+								{isAuthenticated &&
+									currentUser?._id === userProfile?.user?._id && <HomeTop />}
+								{loadingTimelinePosts ? (
+									<Spinner />
+								) : (
+									<div className="timeLinePostLists">
+										{posts && posts.length > 0 ? (
+											posts?.map((post) => (
+												<PostItem post={post} key={post._id} />
+											))
+										) : (
+											<h4>No timeline posts yet</h4>
+										)}
+									</div>
 								)}
-
-								<div className="timeLinePostLists">
-									{!loading &&
-										userTimelinePosts &&
-										Object.keys(userTimelinePosts)?.map((key, index) => (
-											<PostItem post={userTimelinePosts[key]} key={index} />
-										))}
-								</div>
-							</div>
+							</div> */}
 						</div>
 					</>
 				)}

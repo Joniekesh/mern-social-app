@@ -1,7 +1,6 @@
 import axios from "axios";
 import {
 	GET_PROFILE,
-	GET_PROFILES,
 	PROFILE_ERROR,
 	UPDATE_PROFILE,
 	REMOVE_EDUCATION,
@@ -20,7 +19,6 @@ export const getCurrentProfile = () => async (dispatch, getState) => {
 
 	const config = {
 		headers: {
-			// "Content-Type": "application/json",
 			Authorization: `Bearer ${userLogin.token}`,
 		},
 	};
@@ -34,62 +32,6 @@ export const getCurrentProfile = () => async (dispatch, getState) => {
 	} catch (err) {
 		dispatch({
 			type: PROFILE_ERROR,
-			payload: {
-				msg: err.response.statusText,
-				status: err.response.status,
-			},
-		});
-	}
-};
-
-// Get all profiles
-export const getProfiles = () => async (dispatch, getState) => {
-	dispatch({ type: CLEAR_PROFILE });
-	const { userLogin } = getState();
-
-	try {
-		const config = {
-			headers: {
-				Authorization: `Bearer ${userLogin.token}`,
-			},
-		};
-		const { data } = await axios.get("/profiles", config);
-
-		dispatch({
-			type: GET_PROFILES,
-			payload: data,
-		});
-	} catch (err) {
-		dispatch({
-			type: PROFILE_ERROR,
-			payload: { msg: err.response.statusText, status: err.response.status },
-		});
-	}
-};
-
-// Get profile by user ID
-export const getProfileById = (userId) => async (dispatch, getState) => {
-	const { userLogin } = getState();
-	try {
-		const config = {
-			headers: {
-				Authorization: `Bearer ${userLogin.token}`,
-			},
-		};
-
-		const { data } = await axios.get(`/profiles/user/${userId}`, config);
-
-		dispatch({
-			type: GET_PROFILE,
-			payload: data,
-		});
-	} catch (err) {
-		dispatch({
-			type: PROFILE_ERROR,
-			// payload: {
-			// 	msg: err.response.statusText,
-			// 	status: err.response.status,
-			// },
 		});
 	}
 };
@@ -300,10 +242,6 @@ export const deleteExperience = (id) => async (dispatch, getState) => {
 	} catch (err) {
 		dispatch({
 			type: PROFILE_ERROR,
-			payload: {
-				msg: err.response.statusText,
-				status: err.response.statusText,
-			},
 		});
 	}
 };
@@ -344,7 +282,11 @@ export const deleteAccount = () => async (dispatch, getState) => {
 	};
 
 	try {
-		if (window.confirm("Are You SURE? This can NOT be UNDONE!")) {
+		if (
+			window.confirm(
+				"Are You SURE? Your posts and profile will be PERMANENTLY deleted as well.This can NOT be UNDONE!"
+			)
+		) {
 			await axios.delete("/profiles", config);
 
 			dispatch({ type: DELETE_ACCOUNT });

@@ -1,7 +1,11 @@
 import "./postReactedUserItem.css";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const PostReactedUserItem = ({ like }) => {
+	const profiles = useSelector((state) => state.profiles);
+	const { profile } = profiles;
+
 	return (
 		<div className="postReactedUserItem">
 			<div className="postReactedUserInfo">
@@ -15,7 +19,7 @@ const PostReactedUserItem = ({ like }) => {
 					<div className="postReactedUserDesc">
 						<p className="postReactedUsername">{like.name}</p>
 						<span className="postReactedUserProfileInfo">
-							Full Stack Developer: MERN | Socket.io | Redux | Firebase | Git...
+							{profile?.headline}
 						</span>
 					</div>
 				</Link>
