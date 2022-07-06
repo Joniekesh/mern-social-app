@@ -15,6 +15,7 @@ import HomeTop from "../../../components/homeTop/HomeTop";
 
 import PostItem from "../../../components/postItem/PostItem";
 import { getPosts } from "../../../redux/actions/postActions";
+import { getUserById } from "../../../redux/actions/userActions";
 
 const Profile = () => {
 	const dispatch = useDispatch();

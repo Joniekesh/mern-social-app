@@ -16,16 +16,12 @@ const ProfilesTop = ({ profile }) => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const { id } = useParams();
-	const id2 = useParams();
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { user: currentUser, loading } = userLogin;
 
 	const user = useSelector((state) => state.user);
 	const { user: guestUser } = user;
-
-	const conversation = useSelector((state) => state.conversation);
-	const { conversations } = conversation;
 
 	const follower = guestUser?.followers?.find(
 		(follower) => follower.user === currentUser._id
@@ -101,20 +97,26 @@ const ProfilesTop = ({ profile }) => {
 						onClick={handleProfileEdit}
 					></i>
 				)}
-				<p className="profileDesc">{profile?.headline}</p> <br />
+				<p className="profileDesc" style={{ fontWeight: "400" }}>
+					{profile?.headline}
+				</p>{" "}
+				<br />
 				{profile?.status && (
 					<div className="placeofWork">
 						<span
-							style={{ color: "teal", fontWeight: "bold", marginRight: "5px" }}
+							style={{
+								color: "teal",
+								fontWeight: "bold",
+								marginRight: "5px",
+								fontSize: "19px",
+							}}
 						>
 							{profile?.status}
 						</span>
 						<span>at</span>
-						<a href={profile?.company} target="_blank" rel="noreferrer">
-							<span>
-								<b style={{ marginLeft: "5px" }}>{profile?.company}</b>
-							</span>
-						</a>
+						<span>
+							<b style={{ marginLeft: "5px" }}>{profile?.company}</b>
+						</span>
 					</div>
 				)}
 				<br />

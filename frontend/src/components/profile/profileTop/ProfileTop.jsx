@@ -2,7 +2,6 @@ import "./profileTop.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import UpdateCoverPic from "../../updateCoverPic/UpdateCoverPic";
-import { useSelector } from "react-redux";
 
 const ProfileTop = ({ profile }) => {
 	const navigate = useNavigate();
@@ -48,7 +47,10 @@ const ProfileTop = ({ profile }) => {
 					className="fa-solid fa-pen profileInfoEdit"
 					onClick={handleProfileEdit}
 				></i>{" "}
-				<p className="profileDesc">{profile?.headline}</p> <br />
+				<p className="profileDesc" style={{ fontWeight: "400" }}>
+					{profile?.headline}
+				</p>{" "}
+				<br />
 				<div className="placeofWork">
 					<span
 						style={{ color: "teal", fontWeight: "bold", marginRight: "5px" }}
@@ -56,11 +58,9 @@ const ProfileTop = ({ profile }) => {
 						{profile?.status}
 					</span>
 					<span>at</span>
-					<a href={profile?.company} target="_blank" rel="noreferrer">
-						<span>
-							<b style={{ marginLeft: "5px" }}>{profile?.company}</b>
-						</span>
-					</a>
+					<span>
+						<b style={{ marginLeft: "5px" }}>{profile?.company}</b>
+					</span>
 				</div>
 				<br />
 				{profile.education && <p>{profile.education[0]?.school}</p>}

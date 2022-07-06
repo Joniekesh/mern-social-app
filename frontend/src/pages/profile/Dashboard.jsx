@@ -1,5 +1,5 @@
 import "./dashboard.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import ProfileTop from "../../components/profile/profileTop/ProfileTop";
@@ -16,8 +16,6 @@ import PostItem from "../../components/postItem/PostItem";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
-
-	const user = useSelector((state) => state.userLogin.user);
 
 	const profile = useSelector((state) => state.profile);
 	const { profile: currentProfile, loading } = profile;
@@ -137,11 +135,11 @@ const Dashboard = () => {
 													)}
 												</div>
 											</div>
-											<Link to="/experience">
-												<div className="experienceAdd">
+											<div className="experienceAdd">
+												<Link to="/experience">
 													<i className="fa-solid fa-plus"></i>
-												</div>
-											</Link>
+												</Link>
+											</div>
 										</div>
 										<div className="eduContainer">
 											<div className="educationDiv">
@@ -162,11 +160,11 @@ const Dashboard = () => {
 													)}
 												</div>
 											</div>
-											<Link to="/education">
-												<div className="experienceAdd">
+											<div className="experienceAdd">
+												<Link to="/education">
 													<i className="fa-solid fa-plus"></i>
-												</div>
-											</Link>
+												</Link>
+											</div>
 										</div>
 									</div>
 

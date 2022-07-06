@@ -59,9 +59,9 @@ const UpdateCoverPic = ({ profile, setUpdateModal }) => {
 				)}
 			</div>
 			{file ? (
-				<img src={URL.createObjectURL(file)} />
+				<img src={URL.createObjectURL(file)} alt="" />
 			) : (
-				<img src={user.coverPhoto} />
+				<img src={user.coverPhoto} alt="" />
 			)}
 			<div className="updateBottom">
 				<label htmlFor="inputFile" className="updateLabel">

@@ -8,7 +8,7 @@ import {
 	timelinePostsReducer,
 	timelinePostsByUserIdReducer,
 } from "./redux/reducers/postReducers";
-import { userReducer } from "./redux/reducers/userReducers";
+import { userReducer, randomUsersReducer } from "./redux/reducers/userReducers";
 import { userUpdateReducer } from "./redux/reducers/authReducers";
 import {
 	profilesReducer,
@@ -19,6 +19,7 @@ const reducers = combineReducers({
 	userLogin: userLoginReducer,
 	user: userReducer,
 	userUpdate: userUpdateReducer,
+	randomUsers: randomUsersReducer,
 	profile: profileReducer,
 	profiles: profilesReducer,
 	profileById: profileByIdReducer,

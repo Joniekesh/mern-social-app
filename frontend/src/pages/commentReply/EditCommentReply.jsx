@@ -19,7 +19,7 @@ const EditCommentReply = () => {
 	const commentId = location.pathname.split("/")[3];
 
 	const userLogin = useSelector((state) => state.userLogin);
-	const { isAuthenticated, user, loading } = userLogin;
+	const { isAuthenticated, user } = userLogin;
 
 	const replyData = {
 		user: user._id,

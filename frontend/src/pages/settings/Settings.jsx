@@ -7,7 +7,6 @@ import { updateUser } from "../../redux/actions/authActions";
 import { deleteAccount } from "../../redux/actions/prifileActions";
 import axios from "axios";
 import { USER_UPDATE_RESET } from "../../redux/constants/authConstants";
-import { toast } from "react-toastify";
 
 const Settings = () => {
 	const [file, setFile] = useState("");

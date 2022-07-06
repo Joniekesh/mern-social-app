@@ -153,6 +153,19 @@ router.put("/:id/unfollow", protect, async (req, res) => {
 	}
 });
 
+// @desc   Get random user
+// @route  GET /api/users/random
+// @access Private
+router.get("/find/random", protect, async (req, res) => {
+	try {
+		const users = await User.aggregate([{ $sample: { size: 3 } }]);
+		res.status(200).json(users);
+	} catch (err) {
+		console.log(err);
+		res.status(500).send("Server Error");
+	}
+});
+
 // @desc   Get all friends
 // @route  GET /api/users/:id/friends/all
 // @acess  Private

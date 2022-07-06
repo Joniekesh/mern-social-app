@@ -7,34 +7,30 @@ const RightBar = ({ users }) => {
 	const userLogin = useSelector((state) => state.userLogin);
 	const { user: currentUser } = userLogin;
 
-	const unfollowedUsers = users.filter(
+	const unfollowedUsers = users?.filter(
 		(user) => user?._id !== currentUser?._id
 	);
 
 	return (
 		<div className="homeRight">
-			<h4 className="homeRigthText">Follow users for wider connections</h4>
+			<h4 className="homeRigthText">Suggested users to connect with</h4>
 			<hr className="line" />
 			<div className="homerightLists">
-				{unfollowedUsers.map((user) => (
+				{unfollowedUsers?.map((user) => (
 					<div className="homeRightListitem" key={user._id}>
-						<div className="homeRightTop">
-							<Link to={`/profiles/${user._id}`}>
+						<Link to={`/profiles/${user._id}`}>
+							<div className="homeRightTop">
 								<div className="followUserDiv">
 									<img className="homeRightImg" src={user.profilePic} alt="" />
 									<div>
 										<p className="userName">{user.name}</p>
-										{/* <span className="userDesc">
-											Instructor and content Creator at Traversy Media
-										</span> */}
 									</div>
 								</div>
-							</Link>
-						</div>
-						<div className="homeRightBottom">
-							<span className="plusSign">+</span>
-							<span>Follow</span>
-						</div>
+							</div>
+							<div className="homeRightBottom">
+								<span>View</span>
+							</div>
+						</Link>
 
 						<hr className="line" />
 					</div>

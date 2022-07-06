@@ -19,15 +19,10 @@ const CommentReply = () => {
 		(comment) => comment._id === commentId
 	);
 
-	const commentUserId = comment?.user;
 	const profile = useSelector((state) => state.profile);
-	const { profile: userProfile, loading } = profile;
+	const { profile: userProfile } = profile;
 
 	const dispatch = useDispatch();
-
-	// useEffect(() => {
-	// 	dispatch(getProfileById(commentUserId));
-	// }, [dispatch, commentUserId]);
 
 	useEffect(() => {
 		dispatch(getPostById(postId));

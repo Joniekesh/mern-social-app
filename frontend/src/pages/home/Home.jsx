@@ -8,12 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../../redux/actions/postActions";
 import Spinner from "../../components/spinner/Spinner";
 import { getCurrentProfile } from "../../redux/actions/prifileActions";
+import { getRandomUsers } from "../../redux/actions/userActions";
 
 const Home = () => {
 	const dispatch = useDispatch();
 
-	const user = useSelector((state) => state.user);
-	const { users } = user;
+	const randomUsers = useSelector((state) => state.randomUsers);
+	const { users } = randomUsers;
 
 	const post = useSelector((state) => state.post);
 	const { posts, loading } = post;
@@ -27,7 +28,11 @@ const Home = () => {
 
 	useEffect(() => {
 		dispatch(getCurrentProfile());
-	}, []);
+	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(getRandomUsers());
+	}, [dispatch]);
 
 	return (
 		<div className="home">

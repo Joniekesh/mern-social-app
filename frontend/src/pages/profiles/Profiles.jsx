@@ -7,14 +7,8 @@ import ProfilesItem from "../../components/profile/profilesItem/ProfilesItem";
 const Profiles = () => {
 	const dispatch = useDispatch();
 
-	const userLogin = useSelector((state) => state.userLogin);
-	const { user } = userLogin;
-
 	const profiles = useSelector((state) => state.profiles);
 	const { profiles: allProfiles, loading } = profiles;
-	// const guestsProfiles = allProfiles?.filter(
-	// 	(profile) => profile.user._id !== user._id
-	// );
 
 	useEffect(() => {
 		dispatch(getProfiles());

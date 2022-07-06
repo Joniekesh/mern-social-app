@@ -1,5 +1,8 @@
 import axios from "axios";
 import {
+	GET_RANDOM_USER_FAIL,
+	GET_RANDOM_USER_REQUEST,
+	GET_RANDOM_USER_SUCCESS,
 	GET_USER,
 	GET_USERS,
 	USER_ERROR,
@@ -30,6 +33,26 @@ export const getUsers = () => async (dispatch, getState) => {
 				status: err.response.status,
 			},
 		});
+	}
+};
+
+// Get random users
+export const getRandomUsers = () => async (dispatch, getState) => {
+	const { userLogin } = getState();
+
+	const config = {
+		headers: {
+			Authorization: `Bearer ${userLogin.token}`,
+		},
+	};
+
+	dispatch({ type: GET_RANDOM_USER_REQUEST });
+
+	try {
+		const { data } = await axios.get("/users/find/random", config);
+		dispatch({ type: GET_RANDOM_USER_SUCCESS, payload: data });
+	} catch (error) {
+		dispatch({ type: GET_RANDOM_USER_FAIL });
 	}
 };
 

@@ -75,12 +75,12 @@ export const userUpdateReducer = (
 				...state,
 				success: true,
 				loading: false,
-				user: action.payload,
+				user: payload,
 			};
 		case USER_UPDATE_FAIL:
 			return {
 				loading: false,
-				error: action.payload,
+				error: payload,
 			};
 		case USER_UPDATE_RESET:
 			return {

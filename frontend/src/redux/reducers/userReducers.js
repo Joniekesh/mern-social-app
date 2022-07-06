@@ -1,4 +1,7 @@
 import {
+	GET_RANDOM_USER_FAIL,
+	GET_RANDOM_USER_REQUEST,
+	GET_RANDOM_USER_SUCCESS,
 	// GET_FRIENDS_REQUEST,
 	// GET_FRIENDS_FAIL,
 	// GET_FRIENDS_SUCCESS,
@@ -33,6 +36,32 @@ export const userReducer = (state = initialState, action) => {
 				loading: false,
 			};
 
+		default:
+			return state;
+	}
+};
+
+export const randomUsersReducer = (
+	state = { users: [], loading: false, error: null },
+	action
+) => {
+	const { type, payload } = action;
+
+	switch (type) {
+		case GET_RANDOM_USER_REQUEST:
+			return {
+				loading: true,
+			};
+		case GET_RANDOM_USER_SUCCESS:
+			return {
+				loading: false,
+				users: payload,
+			};
+		case GET_RANDOM_USER_FAIL:
+			return {
+				loading: false,
+				error: payload,
+			};
 		default:
 			return state;
 	}

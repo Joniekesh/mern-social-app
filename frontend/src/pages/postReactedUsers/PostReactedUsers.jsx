@@ -8,7 +8,6 @@ import { getPostById } from "../../redux/actions/postActions";
 const PostReactedUsers = () => {
 	const location = useLocation();
 	const postId = location.pathname.split("/")[2];
-	const commentId = location.pathname.split("/")[4];
 
 	const dispatch = useDispatch();
 

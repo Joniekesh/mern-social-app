@@ -31,7 +31,7 @@
 .experienceEduDiv {
 	display: flex;
 	width: 100%;
-	gap: 16px;
+	gap: 6px;
 }
 
 .expContainer {
@@ -92,8 +92,8 @@
 }
 
 .gitReposWrapper {
-	margin-top: -3px;
-	margin-bottom: 10px;
+	margin-top: -6px;
+	margin-bottom: 8px;
 }
 
 /*PROFILE RIGHT*/
