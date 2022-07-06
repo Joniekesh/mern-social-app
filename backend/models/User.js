@@ -22,11 +22,13 @@ const UserSchema = new mongoose.Schema(
 		},
 		profilePic: {
 			type: String,
-			default: "/assets/avatar.jpeg",
+			default:
+				"http://res.cloudinary.com/joniekesh/image/upload/v1657122047/upload/qw8fkm9pirbdlmyeeefp.jpg",
 		},
 		coverPhoto: {
 			type: String,
-			default: "/assets/cover.jpeg",
+			default:
+				"http://res.cloudinary.com/joniekesh/image/upload/v1657122319/upload/ee3daenqi9pxkglho8se.webp",
 		},
 		followers: [
 			{
