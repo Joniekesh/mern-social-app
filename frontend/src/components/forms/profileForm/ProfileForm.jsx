@@ -53,10 +53,16 @@ const ProfileForm = () => {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		dispatch(createProfile(formData));
-		toast.success("Profile Created", { theme: "colored" });
-		navigate("/dashboard");
-		window.location.reload();
+		if (!status) {
+			toast.error("Status is required", { theme: "colored" });
+		} else if (!skills) {
+			toast.error("Skills is required", { theme: "colored" });
+		} else {
+			dispatch(createProfile(formData));
+			toast.success("Profile Created", { theme: "colored" });
+			navigate("/dashboard");
+			window.location.reload();
+		}
 	};
 
 	return (

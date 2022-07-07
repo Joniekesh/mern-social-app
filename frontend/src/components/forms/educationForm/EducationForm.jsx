@@ -32,10 +32,24 @@ const EducationForm = () => {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		dispatch(addEducation(formData));
-		toast.success("Education Added", { theme: "colored" });
-		navigate("/dashboard");
-		window.location.reload();
+		if (!school) {
+			toast.error("Name of school/bootcamp attended is required", {
+				theme: "colored",
+			});
+		} else if (!degree) {
+			toast.error("Degree/Certificate obtained is required", {
+				theme: "colored",
+			});
+		} else if (!fieldofstudy) {
+			toast.error("Field of study is required", { theme: "colored" });
+		} else if (!from) {
+			toast.error("Year you started school is required", { theme: "colored" });
+		} else {
+			dispatch(addEducation(formData));
+			toast.success("Education Added", { theme: "colored" });
+			navigate("/dashboard");
+			window.location.reload();
+		}
 	};
 
 	return (
@@ -55,7 +69,6 @@ const EducationForm = () => {
 						name="school"
 						value={school}
 						onChange={onChange}
-						required
 					/>
 				</div>
 				<div className="experienceFormGroup">
@@ -65,7 +78,6 @@ const EducationForm = () => {
 						name="degree"
 						value={degree}
 						onChange={onChange}
-						required
 					/>
 				</div>
 				<div className="experienceFormGroup">

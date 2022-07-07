@@ -27,6 +27,7 @@ const Settings = () => {
 	const handleDelete = () => {
 		if (isAuthenticated) {
 			dispatch(deleteAccount());
+			window.location.reload();
 			navigate("/register");
 		}
 	};

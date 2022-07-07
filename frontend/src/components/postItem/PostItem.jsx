@@ -8,7 +8,7 @@ import { format } from "timeago.js";
 import { followUser, unFollowUser } from "../../redux/actions/userActions";
 import { toast } from "react-toastify";
 
-const PostItem = ({ post, socket }) => {
+const PostItem = ({ post }) => {
 	const id = post?.user?._id;
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -59,10 +59,6 @@ const PostItem = ({ post, socket }) => {
 		setLike(isLiked ? like - 1 : like + 1);
 		setIsLiked(!isLiked);
 
-		socket?.emit("likePost", {
-			senderName: userData.name,
-			receiverName: post.user.name,
-		});
 		window.location.reload();
 	};
 

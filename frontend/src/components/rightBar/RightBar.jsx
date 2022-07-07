@@ -1,7 +1,6 @@
 import "./rightBar.css";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { followUser } from "../../redux/actions/userActions";
 
 const RightBar = ({ users }) => {
 	const userLogin = useSelector((state) => state.userLogin);

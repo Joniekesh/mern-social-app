@@ -35,7 +35,6 @@ import EditComment from "./components/commentItem/EditComment";
 import EditCommentReply from "./pages/commentReply/EditCommentReply";
 import SideMenu from "./components/sideMenu/SideMenu";
 import OverLay from "./components/overLay/OverLay";
-import Messenger from "./pages/messenger/Messenger";
 
 const App = () => {
 	const [overLay, setOverLay] = useState(false);
@@ -44,7 +43,7 @@ const App = () => {
 	const userLogin = useSelector((state) => state.userLogin);
 	const dispatch = useDispatch();
 
-	const { isAuthenticated, user } = userLogin;
+	const { isAuthenticated } = userLogin;
 
 	const token = `Bearer ${localStorage.getItem("token")}`;
 
@@ -243,14 +242,6 @@ const App = () => {
 					element={
 						<PrivateRoute>
 							<Settings />
-						</PrivateRoute>
-					}
-				></Route>
-				<Route
-					path="/messenger"
-					element={
-						<PrivateRoute>
-							<Messenger />
 						</PrivateRoute>
 					}
 				></Route>

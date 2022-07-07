@@ -28,11 +28,20 @@ const ExperienceForm = () => {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-
-		dispatch(addExperience(formData));
-		toast.success("Experience Added", { theme: "colored" });
-		navigate("/dashboard");
-		window.location.reload();
+		if (!title) {
+			toast.error("Title is required", { theme: "colored" });
+		} else if (!company) {
+			toast.error("Company name where you worked/working is required", {
+				theme: "colored",
+			});
+		} else if (!from) {
+			toast.error("Year you started work is required", { theme: "colored" });
+		} else {
+			dispatch(addExperience(formData));
+			toast.success("Experience Added", { theme: "colored" });
+			navigate("/dashboard");
+			window.location.reload();
+		}
 	};
 
 	return (
