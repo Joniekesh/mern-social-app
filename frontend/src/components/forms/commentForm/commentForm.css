@@ -1,0 +1,64 @@
+.comF {
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: rgb(216, 213, 213);
+	height: 70px;
+	padding: 16px 0;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+}
+
+.comFWrapper {
+	width: 100%;
+	height: 100%;
+	padding: 4px;
+}
+
+.comFform {
+	width: 100%;
+}
+
+.comFformGroup {
+	width: 100%;
+	display: flex;
+	gap: 5px;
+}
+
+.comFInputDiv {
+	display: flex;
+	flex: 10;
+}
+
+.comFImg {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-right: 8px;
+}
+
+.comFInputDiv textarea {
+	width: 100%;
+	background-color: inherit;
+	border: none;
+	font-size: 16px;
+	border: 1px solid gray;
+	border-radius: 20px;
+	padding: 3px;
+}
+
+.comFInputDiv textarea:focus {
+	outline: none;
+}
+
+.comFButtom {
+	flex: 1;
+	background-color: teal;
+	color: white;
+	border: none;
+	padding: 3px;
+	cursor: pointer;
+	border-radius: 6px;
+	height: 30px;
+}

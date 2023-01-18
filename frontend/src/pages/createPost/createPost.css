@@ -1,0 +1,111 @@
+.createPost {
+	position: fixed;
+	width: 100%;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.7);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 20;
+}
+
+.cPostWrapper {
+	width: 600px;
+	height: 90vh;
+	background-color: white;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	overflow: hidden;
+}
+
+.cPostwrapperTop {
+	background-color: teal;
+	color: white;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.cPostTop {
+	display: flex;
+	align-items: center;
+}
+
+.cPCancelBtn {
+	font-size: 18px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.cPostUserImg {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-right: 6px;
+}
+
+.cPostUsername {
+	font-weight: 500;
+}
+
+.cPForm {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+}
+
+.cPForm textarea {
+	height: 150px;
+	width: 100%;
+	font-size: 16px;
+	padding: 5px;
+	margin-top: 10px;
+}
+
+.cPImgDiv {
+	height: 300px;
+}
+
+.cPostBodyImg {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 10px;
+}
+
+.postCBottom {
+	display: flex;
+	justify-content: space-between;
+}
+
+.postCPhoto {
+	cursor: pointer;
+}
+
+.postCPhoto i {
+	margin-right: 8px;
+}
+
+.postCButton {
+	color: white;
+	background-color: teal;
+	cursor: pointer;
+	border: none;
+	padding: 8px 12px;
+	font-size: 16px;
+	width: 80px;
+	border-radius: 4px;
+	transition: all 0.4s ease;
+}
+
+.postCButton:hover {
+	transform: scale(1.07);
+}

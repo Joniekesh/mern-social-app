@@ -1,0 +1,218 @@
+.profileTopDivs {
+	display: flex;
+	flex-direction: column;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: white;
+	padding: 10px;
+	height: 100%;
+	flex: 3;
+	border-radius: 8px;
+}
+
+.profileTop {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+.coverPicCont {
+	position: relative;
+}
+
+.profileCoverPhotofoEdit12 {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	font-size: 16px;
+	color: teal;
+	background-color: white;
+	padding: 5px;
+	border-radius: 5px;
+	cursor: pointer;
+	z-index: 999;
+}
+
+.profileCoverImg {
+	width: 100%;
+	height: 300px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-bottom: 2px solid teal;
+}
+
+.coverImgEdit {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+}
+
+.coverImgEdit i {
+	color: teal;
+	cursor: pointer;
+}
+
+.profilePic {
+	position: absolute;
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	border: 2px solid #0e76a8;
+	object-fit: cover;
+	top: 180px;
+	right: 0;
+	left: 0;
+	margin: auto;
+}
+
+.profileUserInfo {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	padding-top: 350px;
+	position: relative;
+}
+
+.profileUsername {
+	color: teal;
+}
+
+.profileInfoEdit {
+	position: absolute;
+	top: 320px;
+	right: 20px;
+	color: teal;
+	cursor: pointer;
+}
+
+.justP {
+	top: 100px;
+	cursor: pointer;
+}
+
+.profileDesc {
+	font-weight: 500;
+}
+
+.socialHandles {
+	display: flex;
+	gap: 12px;
+	font-size: 24px;
+}
+
+.userLocation i {
+	margin-right: 8px;
+	color: teal;
+	font-size: 18px;
+}
+
+.profileUserFollow {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.profileFollowDiv {
+	display: flex;
+	align-items: center;
+	text-align: center;
+	background-color: #0e76a8;
+	color: white;
+	padding: 6px 12px;
+	border-radius: 20px;
+	cursor: pointer;
+	transition: all 0.5s ease;
+}
+
+.profileFollowDiv i {
+	margin-right: 5px;
+}
+
+.profileMessage {
+	background-color: teal;
+	color: white;
+	padding: 6px 12px;
+	border-radius: 20px;
+	cursor: pointer;
+	transition: all 0.5s ease;
+}
+
+.profileFollowDiv:hover,
+.profileMessage:hover {
+	transform: scale(1.07);
+}
+
+.skills {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
+	width: 100%;
+}
+
+.skills h3 {
+	margin-bottom: 16px;
+	color: #27176d;
+	align-items: left;
+}
+
+.skillsWrapper {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.skillItem {
+	display: flex;
+	align-items: center;
+	font-size: 18px;
+	width: 30%;
+}
+
+.skillItem i {
+	color: lime;
+	font-size: 18px;
+}
+
+@media only screen and (max-width: 768px) {
+	.profileCoverImg {
+		height: 260px;
+	}
+
+	.profilePic {
+		height: 120px;
+		width: 120px;
+	}
+
+	.profileUserInfo {
+		padding-top: 300px;
+	}
+
+	.socialHandles {
+		font-size: 20px;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.profileTopDivs {
+		width: 100%;
+		margin: auto;
+	}
+
+	.profileCoverImg {
+		height: 180px;
+	}
+
+	.profilePic {
+		top: 100px;
+	}
+
+	.profileUserInfo {
+		padding-top: 230px;
+	}
+}

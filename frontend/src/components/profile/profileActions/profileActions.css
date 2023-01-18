@@ -1,0 +1,16 @@
+.profileActionsList {
+	display: flex;
+}
+
+.profileActionsListItem {
+	margin-right: 10px;
+	background-color: teal;
+	padding: 6px;
+	border-radius: 12px;
+	color: white;
+	transition: all 0.4s ease;
+}
+
+.profileActionsListItem:hover {
+	opacity: 0.8;
+}

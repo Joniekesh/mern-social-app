@@ -1,0 +1,59 @@
+.commentReply {
+	height: 100%;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: white;
+}
+
+.cRWrapper {
+	height: 100%;
+	width: 100vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	background-color: white;
+}
+
+.cRTop {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	overflow-y: scroll;
+}
+
+.cReplyList {
+	display: flex;
+	flex-direction: column;
+	margin-left: 26px;
+}
+
+.cRNull {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	height: 50vh;
+	font-size: 30px;
+	opacity: 0.4;
+}
+
+.cRbottom {
+	background-color: rgb(244, 242, 247);
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	/* height: 60px;
+	padding: 10px; */
+}
+
+@media only screen and (max-width: 600px) {
+	.commentReply {
+		width: 100%;
+		padding: 4px;
+	}
+
+	.cRItems {
+		margin-left: 0px;
+	}
+}

@@ -1,0 +1,120 @@
+.settingsWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin: auto;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: white;
+	padding: 10px;
+	border-radius: 8px;
+	width: 60%;
+}
+
+.settingsTop {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.update {
+	font-size: 24px;
+	color: teal;
+	margin-right: 10px;
+}
+
+.delete {
+	color: crimson;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+.settingsImgWrapper {
+	display: flex;
+	align-items: center;
+	margin: 10px 0px;
+}
+
+.settingsImgWrapper label i {
+	font-size: 20px;
+	cursor: pointer;
+	color: teal;
+}
+
+.settingsImg {
+	width: 90px;
+	height: 90px;
+	border-radius: 10px;
+}
+
+.settingsInputGroup {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	margin: 24px 0px;
+}
+
+.settingsInputGroup i {
+	color: #0e76a8;
+	margin-right: 10px;
+	font-size: 18px;
+}
+
+.settingsInputGroup input {
+	width: 100%;
+	border: none;
+	border-bottom: 1px solid #0e76a8;
+	padding: 8px;
+	font-size: 16px;
+}
+
+.settingsInputGroup input:focus {
+	outline: none;
+	border-bottom: 2px solid #0e76a8;
+}
+
+.settingsBtn {
+	width: 100%;
+	margin: 18px 0px;
+	padding: 8px;
+	border: none;
+	font-size: 16px;
+	color: white;
+	background-color: #0e76a8;
+	cursor: pointer;
+	transition: all 0.4s ease;
+	border-radius: 8px;
+}
+
+.settingsBtn:disabled {
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
+.settingsBtn:hover {
+	opacity: 0.9;
+}
+
+.goBkBtn {
+	width: 100px;
+	margin: auto;
+	padding: 8px;
+	border: none;
+	color: white;
+	background-color: teal;
+	cursor: pointer;
+	transition: all 0.4s ease;
+	text-align: center;
+	border-radius: 8px;
+}
+
+.goBkBtn:hover {
+	opacity: 0.9;
+}
+
+@media only screen and (max-width: 600px) {
+	.settingsWrapper {
+		width: 100%;
+	}
+}

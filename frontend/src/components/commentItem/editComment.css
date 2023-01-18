@@ -1,0 +1,105 @@
+.edComment {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.8);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 999;
+}
+
+.edCWrapper {
+	min-width: 300px;
+	height: 60vh;
+	background-color: white;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.edCTitle {
+	text-align: center;
+	color: #0e76a8;
+}
+
+.edCTop {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.edCUserInfo {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.edCImg {
+	width: 32px;
+	height: 32px;
+	object-fit: cover;
+	border-radius: 50%;
+	border: 2px solid #0e76a8;
+}
+
+.edCUserName {
+	font-weight: bold;
+	color: teal;
+}
+
+.edCTime {
+	font-size: 13px;
+	font-weight: 500;
+}
+
+.edCForm {
+	width: 100%;
+	height: 83%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.edCDesc {
+	width: 100%;
+	height: 100%;
+	padding: 6px;
+	font-size: 16px;
+}
+
+.edCBtnGroup {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 6px;
+}
+
+.edCCancelBtn {
+	padding: 6px;
+	background-color: crimson;
+	color: white;
+	border: none;
+	cursor: pointer;
+	border-radius: 5px;
+	transition: all 0.5s ease-in-out;
+}
+
+.edCCancelBtn:hover {
+	opacity: 0.8;
+}
+
+.edCUpdatelBtn {
+	padding: 6px;
+	background-color: teal;
+	color: white;
+	border: none;
+	cursor: pointer;
+	border-radius: 5px;
+	transition: all 0.5s ease-in-out;
+}
+
+.edCUpdatelBtn:hover {
+	opacity: 0.8;
+}

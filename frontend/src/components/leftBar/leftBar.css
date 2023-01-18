@@ -1,0 +1,98 @@
+.homeLeft {
+	flex: 2.5;
+	z-index: 3;
+}
+
+.hLDiv {
+	position: fixed;
+	top: 65px;
+	left: 0;
+	width: 20%;
+	margin-left: 20px;
+}
+
+.homeLeftSearchDiv {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	background-color: white;
+	padding: 5px;
+	margin-bottom: 16px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+
+.homeLeftSearchDiv input {
+	border: none;
+	width: 100%;
+	font-size: 14px;
+	padding: 3px;
+	background-color: white;
+}
+
+.homeLeftSearchDiv input:focus {
+	outline: none;
+}
+
+.search {
+	background-color: rgb(228, 231, 231);
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	padding: 10px;
+	border-radius: 8px;
+	position: absolute;
+	left: 0;
+	top: 36px;
+	width: 100%;
+
+	z-index: 33;
+}
+
+.searchList {
+	display: flex;
+	flex-direction: column;
+	overflow: scroll;
+	height: 50vh;
+	font-size: 13px;
+}
+
+.homeLeftSearchDiv i {
+	opacity: 0.7;
+}
+
+.leftBarUserInfoDiv {
+	display: flex;
+	flex-direction: column;
+	height: fit-content;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: white;
+	padding: 10px;
+	border-radius: 8px;
+}
+
+.lefBarUserInfo {
+	display: flex;
+}
+
+.lefBarUserInfo img {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-right: 8px;
+}
+
+.lefBarUserInfo h4 {
+	font-weight: 500;
+}
+
+.lefBarUserInfo p {
+	font-size: 13.5px;
+}
+
+@media only screen and (max-width: 768px) {
+	.homeLeft {
+		display: none;
+	}
+}

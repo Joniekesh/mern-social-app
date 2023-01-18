@@ -1,0 +1,181 @@
+.profile {
+	width: 100%;
+	height: calc(100vh - 60px);
+}
+
+.dashboard {
+	display: flex;
+	margin: 20px 0px;
+	align-items: center;
+	color: teal;
+	font-size: 30px;
+}
+
+.dashboard i {
+	margin-right: 10px;
+}
+
+.profileWrapper {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.profileLeft {
+	display: flex;
+	width: 100%;
+	gap: 16px;
+}
+
+.experienceEduDiv {
+	display: flex;
+	width: 100%;
+	margin: -10px 0px 4px 0px;
+	gap: 4px;
+}
+
+.expContainer {
+	flex: 1;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.eduContainer {
+	flex: 1;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.expreienceDiv {
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: white;
+	padding: 10px;
+	height: fit-content;
+}
+
+.experienceTop {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.experienceTop i {
+	color: teal;
+	padding: 10px;
+}
+
+.experienceTopDiv {
+	display: flex;
+	align-items: center;
+}
+
+.experienceList {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.experienceTopDiv i {
+	margin-right: 13px;
+	color: #0e76a8;
+	font-size: 24px;
+}
+
+.experienceAdd {
+	font-size: 20px;
+	color: teal;
+	text-align: center;
+	transition: all 1s ease;
+	margin-bottom: 16px;
+}
+
+.experienceAdd i:hover {
+	transform: scale(1.1);
+	cursor: pointer;
+}
+
+.gitReposWrapper {
+	margin-top: -8px;
+	border-radius: 8px;
+}
+
+/*PROFILE RIGHT*/
+.profileRight {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: white;
+	padding: 10px;
+	margin-top: 16px;
+	height: fit-content;
+	border-radius: 8px;
+}
+
+.profileRight h4 {
+	margin-bottom: 8px;
+}
+
+.profileFollowersViewMore {
+	text-align: center;
+	cursor: pointer;
+	font-weight: 500;
+}
+
+.profileBio {
+	width: 100%;
+	background-color: teal;
+	color: white;
+	min-height: 150px;
+	padding: 10px;
+	border-radius: 8px;
+	margin: -10px 0px;
+}
+
+.profileBio h2 {
+	margin-bottom: 10px;
+	text-align: center;
+}
+
+.profileBio p {
+	text-align: center;
+}
+
+.timeLinePostWrapper h2 {
+	color: teal;
+}
+
+@media only screen and (max-width: 768px) {
+	.dashboard {
+		margin: 0px 0px 5px 0px;
+	}
+
+	.timeLinePostWrapper h2,
+	.gitReposWrapper h2 {
+		margin: 0px;
+		font-size: 20px;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.dashboard {
+		font-size: 24px;
+	}
+
+	.profileRight {
+		display: none;
+	}
+
+	.experienceEduDiv {
+		flex-direction: column;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.experienceEduDiv {
+		gap: 10px;
+	}
+}

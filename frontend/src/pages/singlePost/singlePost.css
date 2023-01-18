@@ -1,0 +1,68 @@
+.singlePost {
+	height: calc(100vh - 92px);
+}
+
+.singlePostWrapper {
+	height: calc(100% - 92px);
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+	background-color: white;
+	border: 1px solid #ddd;
+	padding: 16px;
+	border-radius: 5px;
+	overflow-y: scroll;
+}
+
+.singlePostReaction {
+	color: teal;
+	font-weight: bold;
+}
+
+.commentsLists {
+	margin-bottom: 60px;
+	width: 100%;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+.reactionsLists {
+	display: flex;
+}
+
+.reactionListItem {
+	display: flex;
+	margin: 5px 0 16px 0;
+}
+
+.reactionListItemImg {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 2px solid #0e76a8;
+}
+
+.reactionListLike {
+	background-color: teal;
+	color: white;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	font-size: 10px;
+	margin-top: 18px;
+	margin-left: -5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+	.singlePostWrapper {
+		padding: 8px;
+	}
+}

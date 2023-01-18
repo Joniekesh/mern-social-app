@@ -1,0 +1,8 @@
+.editPostBtnGroup {
+	display: flex;
+}
+
+.cancel {
+	background-color: crimson;
+	margin-right: 8px;
+}

@@ -1,0 +1,89 @@
+.experienceForm {
+	width: 100%;
+	background-color: white;
+	margin: auto;
+	padding: 16px;
+	border-radius: 10px;
+	border: 2px solid purple;
+}
+
+.experienceFormIntro {
+	display: flex;
+	align-items: center;
+}
+
+.experienceForm p {
+	margin: 8px 0px;
+}
+
+.experienceFormIntro i {
+	font-size: 30px;
+	color: purple;
+	margin-right: 10px;
+}
+
+.experienceForm p i {
+	margin: 8px 8px 8px 0px;
+}
+
+.experienceForm small {
+	font-weight: 500;
+}
+
+.experienceFormGroup {
+	width: 100%;
+	margin: 14px 0px;
+}
+
+.experienceFormGroup input,
+.experienceFormGroup textarea {
+	width: 100%;
+	padding: 6px;
+	border: none;
+	border-bottom: 1px solid teal;
+	font-size: 16px;
+	color: #0e76a8;
+}
+
+.experienceFormGroup input:focus,
+.experienceFormGroup textarea:focus {
+	outline: none;
+	border-bottom: 2px solid #0e76a8;
+}
+
+.experienceFormGroupBtn {
+	width: 100%;
+	border: none;
+	padding: 8px;
+	cursor: pointer;
+	color: white;
+	background-color: purple;
+	font-size: 18px;
+	border-radius: 5px;
+	transition: all 0.4s ease;
+}
+
+.experienceFormGroupBtn:hover {
+	opacity: 0.8;
+}
+
+.experienceBackBtn {
+	border: none;
+	cursor: pointer;
+	border: none;
+	padding: 10px;
+	margin: 10px 0px;
+	border-radius: 3px;
+	font-weight: bold;
+	transition: all 0.4s ease;
+}
+
+.experienceBackBtn:hover {
+	transform: scale(1.07);
+}
+
+@media only screen and (max-width: 600px) {
+	.experienceFormIntro {
+		font-size: 12px;
+	}
+}

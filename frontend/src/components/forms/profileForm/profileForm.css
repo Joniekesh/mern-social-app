@@ -1,0 +1,136 @@
+.profileForm {
+	max-width: 600px;
+	background-color: white;
+	margin: auto;
+	padding: 16px;
+	border-radius: 10px;
+	border: 2px solid purple;
+}
+
+.createProfileIntro {
+	display: flex;
+	align-items: center;
+}
+
+.profileForm small {
+	font-weight: 500;
+}
+
+.createProfileIntro i {
+	font-size: 30px;
+	margin-right: 10px;
+	color: purple;
+}
+
+.createProfileFormDiv {
+	display: flex;
+	flex-direction: column;
+	border-radius: 5px;
+}
+
+.formGroup {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	margin-bottom: 24px;
+	border: none;
+	height: 55px;
+}
+
+.formGroup small {
+	position: absolute;
+	left: 16px;
+	top: 55px;
+	width: 100%;
+	font-size: 13px;
+}
+
+.formGroup .textareaSmall {
+	position: absolute;
+	top: 72px;
+}
+
+.formGroup select,
+.formGroup input,
+.formGroup textarea {
+	width: 100%;
+	padding: 8px;
+	border: none;
+	border-bottom: 1px solid teal;
+	font-size: 18px;
+	font-weight: 500;
+	color: #0e76a8;
+}
+
+.formGroup select:focus,
+.formGroup input:focus,
+.formGroup textarea:focus {
+	outline: none;
+	border-bottom: 2px solid #0e76a8;
+}
+
+.socialLinkBtn {
+	display: flex;
+	flex-direction: column;
+	align-items: baseline;
+	margin: 24px 0px;
+}
+
+.socialLinkBtn button {
+	width: 120px;
+	padding: 8px;
+	font-size: 14px;
+	border: none;
+	background-color: gray;
+	cursor: pointer;
+	border-radius: 3px;
+	transition: all 0.4s ease;
+	color: black;
+}
+
+.socialLinkBtn button:hover {
+	opacity: 0.8;
+}
+
+.social {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.createprofileSubmitBtn {
+	padding: 8px;
+	margin: none;
+	color: white;
+	background-color: purple;
+	border: none;
+	cursor: pointer;
+	font-size: 18px;
+	border-radius: 5px;
+	transition: all 0.4s ease;
+}
+
+.createprofileSubmitBtn:hover {
+	opacity: 0.8;
+}
+
+.createProfileGoBackBtn {
+	border: none;
+	cursor: pointer;
+	border: none;
+	padding: 10px;
+	margin: 10px 0px;
+	border-radius: 3px;
+	font-weight: bold;
+	transition: all 0.4s ease;
+}
+
+.createProfileGoBackBtn:hover {
+	transform: scale(1.07);
+}
+
+@media only screen and (max-width: 600px) {
+	.createProfileIntro h1 {
+		font-size: 24px;
+	}
+}

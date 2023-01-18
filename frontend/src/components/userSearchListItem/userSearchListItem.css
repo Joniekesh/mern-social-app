@@ -1,0 +1,33 @@
+.searchListItem {
+	display: flex;
+	align-items: center;
+	padding: 5px;
+	cursor: pointer;
+	border-bottom: 1px solid #b9b9b9;
+}
+
+.searchContainer {
+	display: flex;
+}
+
+.searchImg {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-right: 8px;
+}
+
+.searchDetails {
+	display: flex;
+	flex-direction: column;
+}
+
+.searchUserName {
+	font-weight: 500;
+	color: teal;
+}
+
+.searchUserProfile {
+	font-size: 14px;
+}

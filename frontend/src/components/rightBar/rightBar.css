@@ -1,0 +1,99 @@
+.homeRight {
+	flex: 3;
+}
+
+.hRDiv {
+	display: flex;
+	flex-direction: column;
+	background-color: #fff;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	padding: 10px;
+	border-radius: 8px;
+	position: fixed;
+	top: 65px;
+	right: 20px;
+	width: 20%;
+	margin-left: 40px;
+}
+
+.homeRightListitem {
+	margin-bottom: 8px;
+}
+
+.homeRigthText {
+	margin: 10px 0px;
+}
+
+.homeRightTop {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+
+.followUserDiv {
+	display: flex;
+}
+
+.homeRightImg {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-right: 8px;
+}
+
+.userName {
+	font-weight: 500;
+}
+
+.homeRightBottom {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	width: 90px;
+	height: 35px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	margin-left: 50px;
+	background-color: #0e76a8;
+	color: white;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.4s ease;
+}
+
+.homeRightBottom:hover {
+	transform: scale(1.06);
+}
+
+.plusSign {
+	margin-right: 8px;
+	font-size: 24px;
+}
+
+.rightBarViewMore {
+	text-align: center;
+	cursor: pointer;
+	font-weight: 500;
+}
+
+@media only screen and (max-width: 768px) {
+	.homeRightBottom {
+		width: 80px;
+		height: 30px;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.homeRight {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.homeRight {
+		display: none;
+	}
+}

@@ -1,0 +1,24 @@
+.home {
+	height: calc(100vh - 60px);
+}
+.homeWrapper {
+	display: flex;
+	gap: 6px;
+}
+
+.homeCenter {
+	flex: 6;
+	width: 100%;
+}
+
+.homeCenterPostLists {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+@media only screen and (max-width: 768px) {
+	.homeCenter {
+		flex: 7;
+	}
+}

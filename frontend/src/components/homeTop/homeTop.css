@@ -1,0 +1,67 @@
+.homeCenterPostCreate {
+	background-color: #fff;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	padding: 10px;
+	border-radius: 8px;
+	z-index: 10;
+}
+
+.homeCenterTopDiv {
+	display: flex;
+	border: 1px solid #ddd;
+	border-radius: 24px;
+	cursor: pointer;
+	padding: 4px;
+}
+
+.homeCenterTopDiv img {
+	width: 32px;
+	height: 32px;
+	border-radius: 24px;
+	object-fit: cover;
+	margin-right: 10px;
+	border: 2px solid #0e76a8;
+}
+
+.homeCenterTopDiv input {
+	width: 100%;
+	border-radius: 24px;
+	border: none;
+	cursor: pointer;
+}
+
+.homeCenterTopDiv input:focus {
+	outline: none;
+}
+
+.homeCenterBottom {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	margin: 14px 0px;
+}
+
+.bottomImg {
+	cursor: pointer;
+	margin: 8px 0px;
+}
+
+.bottomImg i {
+	margin-right: 8px;
+}
+.photo {
+	color: teal;
+}
+
+.video {
+	color: #7fc15e;
+}
+
+.newspaper {
+	color: rgb(7, 35, 46);
+}
+
+.homeCenterPostLists {
+	margin: 10px 0px;
+}

@@ -1,0 +1,90 @@
+.profilesContainer {
+	display: flex;
+	align-items: center;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: white;
+	width: 100%;
+	height: 200px;
+	padding: 10px;
+}
+
+.profilesLeft {
+	flex: 1;
+	margin-right: 6px;
+}
+
+.profilesLeftImg {
+	width: 150px;
+	height: 150px;
+	border: 1px solid white;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 2px solid white;
+}
+
+.profilesCenter {
+	flex: 3;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.profilesCenter p {
+	font-weight: 500;
+	margin-bottom: 8px;
+	color: teal;
+	font-weight: bold;
+}
+
+.profilesCenter span {
+	font-size: 13.5px;
+	margin-bottom: 8px;
+}
+
+.profilesBtn {
+	border: none;
+	color: white;
+	background-color: teal;
+	width: 120px;
+	padding: 7px 14px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all 0.4s ease;
+	margin-top: 8px;
+	font-size: 16px;
+}
+
+.profilesBtn:hover {
+	transform: scale(1.07);
+}
+
+.profilesRight {
+	flex: 1;
+}
+
+.profilesList {
+	display: flex;
+	flex-direction: column;
+}
+
+.profilesListItem {
+	display: flex;
+	align-items: center;
+	color: teal;
+}
+
+.profilesListItem i {
+	margin-right: 8px;
+}
+
+@media only screen and (max-width: 600px) {
+	.profilesLeftImg {
+		width: 100px;
+		height: 100px;
+	}
+	.profilesBtn {
+		width: 110px;
+		font-size: 15px;
+	}
+}

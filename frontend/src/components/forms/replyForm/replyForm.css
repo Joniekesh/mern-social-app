@@ -1,0 +1,44 @@
+.replyForm {
+	width: 100%;
+	background-color: rgb(244, 242, 247);
+
+	height: 60px;
+}
+
+.rForm {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.rInputDiv {
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+
+.rImg {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-right: 8px;
+	border: 2px solid #0e76a8;
+}
+
+.rInputDiv textarea {
+	width: 100%;
+	padding: 6px;
+	font-size: 16px;
+}
+
+.rFormButtom {
+	display: flex;
+	background-color: #0e76a8;
+	color: white;
+	margin-left: 4px;
+	padding: 10px;
+	cursor: pointer;
+	border: none;
+	border-radius: 8px;
+}
