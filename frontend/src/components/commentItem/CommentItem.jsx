@@ -117,7 +117,9 @@ const CommentItem = ({ post, comment }) => {
 								</div>
 							</div>
 						)}
-						<div className="author">Author</div>
+						{post.user._id === comment.user && (
+							<div className="author">Author</div>
+						)}
 						{!isLoading && isAuthenticated && user._id === comment?.user && (
 							<i
 								className="fa-solid fa-ellipsis-vertical elipsis"

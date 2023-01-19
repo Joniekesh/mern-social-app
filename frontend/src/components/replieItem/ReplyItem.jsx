@@ -101,9 +101,11 @@ const ReplyItem = ({ post, comment, reply }) => {
 							</p>
 							<span className="userRegDate">{format(reply.date)}</span>
 						</div>
-						<div className="rAuthor">
-							<div className="author">Author</div>
-						</div>
+						{/* {post.user._id === reply.user && (
+							<div className="rAuthor">
+								<div className="author">Author</div>
+							</div>
+						)} */}
 						<div className="rEllip">
 							{!isLoading && isAuthenticated && user._id === reply.user && (
 								<i
