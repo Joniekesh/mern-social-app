@@ -74,7 +74,11 @@ const CommentItem = ({ post, comment }) => {
 
 	const handleNavigate = () => {
 		if (profileExist) {
-			navigate(`/profiles/${comment.user}`);
+			if (comment.user === user._id) {
+				navigate("/dashboard");
+			} else {
+				navigate(`/profiles/${comment.user}`);
+			}
 		} else {
 			toast.error("This user has no profile yet!", { theme: "colored" });
 		}
@@ -82,26 +86,21 @@ const CommentItem = ({ post, comment }) => {
 
 	return (
 		<div className="commentsListItem">
-			<div
-				className="singleLeftDiv"
-				onClick={handleNavigate}
-				style={{ cursor: "pointer" }}
-			>
+			<div className="singleLeftDiv" onClick={handleNavigate}>
 				<img
 					className="singlePostcommentImg"
 					src={comment?.profilePic}
 					alt=""
+					style={{ cursor: "pointer" }}
 				/>
 			</div>
 			<div className="commentDivWrapper">
 				<div className="commentsDiv">
 					<div className="commentTop">
-						<div
-							className="commentTopLeft"
-							onClick={handleNavigate}
-							style={{ cursor: "pointer" }}
-						>
-							<p className="commentUserName">{comment?.name}</p>
+						<div className="commentTopLeft" onClick={handleNavigate}>
+							<p className="commentUserName" style={{ cursor: "pointer" }}>
+								{comment?.name}
+							</p>
 
 							<span className="commentTime">{format(comment?.date)}</span>
 						</div>
@@ -118,11 +117,7 @@ const CommentItem = ({ post, comment }) => {
 								</div>
 							</div>
 						)}
-						{post?.user._id === comment?.user && (
-							<Link to={`/profiles/${comment?.user}`}>
-								<div className="author">Author</div>
-							</Link>
-						)}
+						<div className="author">Author</div>
 						{!isLoading && isAuthenticated && user._id === comment?.user && (
 							<i
 								className="fa-solid fa-ellipsis-vertical elipsis"

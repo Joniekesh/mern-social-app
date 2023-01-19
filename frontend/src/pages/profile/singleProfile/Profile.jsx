@@ -1,7 +1,7 @@
 import "./profile.css";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
 	getProfileById,
 	getUserGitRepos,
@@ -35,7 +35,7 @@ const Profile = () => {
 	const { userInfo: currentUser } = auth;
 
 	useEffect(() => {
-		userProfile.githubusername &&
+		userProfile?.githubusername &&
 			dispatch(getUserGitRepos(userProfile.githubusername));
 	}, [dispatch, userProfile]);
 
@@ -58,10 +58,6 @@ const Profile = () => {
 					<Spinner />
 				) : (
 					<>
-						<div className="dashboard">
-							<i className="fa-solid fa-user"></i>
-							<span>Dashboard</span>
-						</div>
 						{!isLoading &&
 							userProfile === null &&
 							userProfile?.user._id === currentUser?._id && <ProfileActions />}
@@ -102,7 +98,7 @@ const Profile = () => {
 									<p>
 										(
 										<b style={{ color: "teal" }}>
-											{userProfile.user?.followings.length}{" "}
+											{userProfile?.user?.followings.length}{" "}
 										</b>
 										{userProfile?.user?.followings.length <= 1
 											? "friend"
@@ -110,9 +106,9 @@ const Profile = () => {
 										)
 									</p>
 								</div>
-								{userProfile.user?.followings.length > 0 ? (
+								{userProfile?.user?.followings.length > 0 ? (
 									<div className="userFriendsList">
-										{userProfile?.user.followings.map((friend) => (
+										{userProfile?.user?.followings.map((friend) => (
 											<Link to={`/profiles/${friend.user}`} key={friend._id}>
 												<div className="userFriendsListItem">
 													<img
@@ -202,7 +198,7 @@ const Profile = () => {
 									{repos && (
 										<GitRepos
 											repos={repos}
-											username={userProfile.githubusername}
+											username={userProfile?.githubusername}
 											isLoading={isLoading}
 										/>
 									)}

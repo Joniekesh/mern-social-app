@@ -22,3 +22,8 @@
 		flex: 7;
 	}
 }
+@media only screen and (max-width: 600px) {
+	.homeCenterPostLists {
+		gap: 0px;
+	}
+}

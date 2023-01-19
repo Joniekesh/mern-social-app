@@ -1,5 +1,5 @@
 import "./postReactedUserItem.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfiles } from "../../redux/actions/profilesActions";
 import { useEffect } from "react";
@@ -12,8 +12,11 @@ const PostReactedUserItem = ({ like }) => {
 	const profiles = useSelector((state) => state.profiles);
 	const { profiles: userProfiles } = profiles;
 
+	const auth = useSelector((state) => state.auth);
+	const { userInfo } = auth;
+
 	const profileExist = userProfiles.some(
-		(userProfile) => userProfile.user?._id === like?._id
+		(userProfile) => userProfile.user?._id === like.user
 	);
 
 	useEffect(() => {
@@ -22,7 +25,11 @@ const PostReactedUserItem = ({ like }) => {
 
 	const handleNavigate = () => {
 		if (profileExist) {
-			navigate(`/profiles/${like.user}`);
+			if (userInfo._id === like.user) {
+				navigate("/dashboard");
+			} else {
+				navigate(`/profiles/${like.user}`);
+			}
 		} else {
 			toast.error("This user has no profile yet!", { theme: "colored" });
 		}
@@ -39,9 +46,6 @@ const PostReactedUserItem = ({ like }) => {
 					<p className="postReactedUsername" style={{ cursor: "pointer" }}>
 						{like?.name}
 					</p>
-					<span className="postReactedUserProfileInfo">
-						{/* {currentProfile?.headline} */}
-					</span>
 				</div>
 			</div>
 			<hr className="line" />

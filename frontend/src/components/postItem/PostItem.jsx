@@ -95,7 +95,7 @@ const PostItem = ({ type, post, setIsUpdate }) => {
 						<Link to={`/profiles/${id}`}>
 							<div className="topLeftUserInfo">
 								<h4 className="username">{post?.user?.name}</h4>
-								{/* <p className="skillsList">{currentProfile?.headline}</p> */}
+
 								{post?.user?.followers?.length > 0 && (
 									<span className="followersCount">
 										<b>

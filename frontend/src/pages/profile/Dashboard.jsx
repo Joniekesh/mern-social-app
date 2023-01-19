@@ -45,10 +45,6 @@ const Dashboard = () => {
 					<Spinner />
 				) : (
 					<>
-						<div className="dashboard">
-							<i className="fa-solid fa-user"></i>
-							<span>Dashboard</span>
-						</div>
 						{!isLoading && currentProfile === null ? (
 							<ProfileActions />
 						) : (

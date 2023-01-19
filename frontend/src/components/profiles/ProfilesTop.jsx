@@ -24,7 +24,7 @@ const ProfilesTop = ({ profile }) => {
 	const { user: guestUser } = user;
 
 	const follower = guestUser?.followers?.find(
-		(follower) => follower.user === currentUser._id
+		(follower) => follower.user === currentUser?._id
 	);
 
 	const [isFollowed, setIsFollowed] = useState(

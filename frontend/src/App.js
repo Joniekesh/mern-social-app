@@ -57,8 +57,6 @@ const App = () => {
 		}
 	}, [token, dispatch]);
 
-	console.log(token);
-
 	return (
 		<Router>
 			<div>
@@ -82,7 +80,7 @@ const App = () => {
 
 			<Routes>
 				<Route
-					// exact
+					exact
 					path="/"
 					element={
 						<PrivateRoute>
@@ -103,135 +101,135 @@ const App = () => {
 					path="/login"
 					element={token ? <Navigate to="/" /> : <Login />}
 				></Route>
-				{/* {token && ( */}
-				<>
-					<Route
-						path="/posts/:postId"
-						element={
-							<PrivateRoute>
-								<SinglePost
-									setOpenCreatePost={setOpenCreatePost}
-									isUpdate={isUpdate}
-									setIsUpdate={setIsUpdate}
-								/>
-							</PrivateRoute>
-						}
-					></Route>
-					<Route
-						path="/posts/:postId/postReactedUsers"
-						element={
-							<PrivateRoute>
-								<PostReactedUsers />
-							</PrivateRoute>
-						}
-					></Route>
-					<Route
-						path="/posts/:postId/comments/:commentid"
-						element={
-							<PrivateRoute>
-								<CommentReply />
-							</PrivateRoute>
-						}
-					></Route>
-					<Route
-						path="/posts/:postId/comments/:commentId/commentReactedUsers"
-						element={
-							<PrivateRoute>
-								<CommentReactedUser />
-							</PrivateRoute>
-						}
-					></Route>
-					<Route
-						path="/posts/:postId/comments/:commentId/replies/:replyId/replyReactedUsers"
-						element={
-							<PrivateRoute>
-								<ReplyReactedUser />
-							</PrivateRoute>
-						}
-					></Route>
-					<Route
-						path="/dashboard"
-						element={
-							<PrivateRoute>
-								<Dashboard />
-							</PrivateRoute>
-						}
-					></Route>
-					<Route
-						path="/profiles/:id"
-						element={
-							<PrivateRoute>
-								<Profile />
-							</PrivateRoute>
-						}
-					></Route>
-					<Route
-						path="/profiles"
-						element={
-							<PrivateRoute>
-								<Profiles />
-							</PrivateRoute>
-						}
-					></Route>
+				{token && (
+					<>
+						<Route
+							path="/posts/:postId"
+							element={
+								<PrivateRoute>
+									<SinglePost
+										setOpenCreatePost={setOpenCreatePost}
+										isUpdate={isUpdate}
+										setIsUpdate={setIsUpdate}
+									/>
+								</PrivateRoute>
+							}
+						></Route>
+						<Route
+							path="/posts/:postId/postReactedUsers"
+							element={
+								<PrivateRoute>
+									<PostReactedUsers />
+								</PrivateRoute>
+							}
+						></Route>
+						<Route
+							path="/posts/:postId/comments/:commentid"
+							element={
+								<PrivateRoute>
+									<CommentReply />
+								</PrivateRoute>
+							}
+						></Route>
+						<Route
+							path="/posts/:postId/comments/:commentId/commentReactedUsers"
+							element={
+								<PrivateRoute>
+									<CommentReactedUser />
+								</PrivateRoute>
+							}
+						></Route>
+						<Route
+							path="/posts/:postId/comments/:commentId/replies/:replyId/replyReactedUsers"
+							element={
+								<PrivateRoute>
+									<ReplyReactedUser />
+								</PrivateRoute>
+							}
+						></Route>
+						<Route
+							path="/dashboard"
+							element={
+								<PrivateRoute>
+									<Dashboard />
+								</PrivateRoute>
+							}
+						></Route>
+						<Route
+							path="/profiles/:id"
+							element={
+								<PrivateRoute>
+									<Profile />
+								</PrivateRoute>
+							}
+						></Route>
+						<Route
+							path="/profiles"
+							element={
+								<PrivateRoute>
+									<Profiles />
+								</PrivateRoute>
+							}
+						></Route>
 
-					<Route
-						path="/createProfile"
-						element={
-							<PrivateRoute>
-								<CreateProfile />
-							</PrivateRoute>
-						}
-					></Route>
-					<Route
-						path="/editProfile"
-						element={
-							<PrivateRoute>
-								<EditProfile />
-							</PrivateRoute>
-						}
-					></Route>
-					<Route
-						path="/experience"
-						element={
-							<PrivateRoute>
-								<Experience />
-							</PrivateRoute>
-						}
-					></Route>
-					<Route
-						path="/editExperience"
-						element={
-							<PrivateRoute>
-								<ExperienceEdit />
-							</PrivateRoute>
-						}
-					></Route>
-					<Route
-						path="/education"
-						element={
-							<PrivateRoute>
-								<Education />
-							</PrivateRoute>
-						}
-					></Route>
-					<Route
-						path="/editEducation"
-						element={
-							<PrivateRoute>
-								<EducationEdit />
-							</PrivateRoute>
-						}
-					></Route>
-					<Route
-						path="/settings"
-						element={
-							<PrivateRoute>
-								<Settings />
-							</PrivateRoute>
-						}
-					></Route>
-				</>
-				{/* )} */}
+						<Route
+							path="/createProfile"
+							element={
+								<PrivateRoute>
+									<CreateProfile />
+								</PrivateRoute>
+							}
+						></Route>
+						<Route
+							path="/editProfile"
+							element={
+								<PrivateRoute>
+									<EditProfile />
+								</PrivateRoute>
+							}
+						></Route>
+						<Route
+							path="/experience"
+							element={
+								<PrivateRoute>
+									<Experience />
+								</PrivateRoute>
+							}
+						></Route>
+						<Route
+							path="/editExperience"
+							element={
+								<PrivateRoute>
+									<ExperienceEdit />
+								</PrivateRoute>
+							}
+						></Route>
+						<Route
+							path="/education"
+							element={
+								<PrivateRoute>
+									<Education />
+								</PrivateRoute>
+							}
+						></Route>
+						<Route
+							path="/editEducation"
+							element={
+								<PrivateRoute>
+									<EducationEdit />
+								</PrivateRoute>
+							}
+						></Route>
+						<Route
+							path="/settings"
+							element={
+								<PrivateRoute>
+									<Settings />
+								</PrivateRoute>
+							}
+						></Route>
+					</>
+				)}
 			</Routes>
 		</Router>
 	);

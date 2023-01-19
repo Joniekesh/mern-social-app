@@ -6,6 +6,7 @@
 	border-radius: 8px;
 	display: flex;
 	flex-direction: column;
+	margin-top: 5px;
 }
 
 .homeCenterTop {
@@ -262,9 +263,5 @@
 
 	.likes i {
 		margin-right: 4px;
-	}
-
-	.homeCenterPostItem {
-		margin: 10px 0px;
 	}
 }

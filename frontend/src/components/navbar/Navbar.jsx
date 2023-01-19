@@ -35,6 +35,7 @@ const Navbar = ({ setOpenSideMenu, setOverLay }) => {
 	};
 
 	const handleLogout = () => {
+		dispatch(logout());
 		window.location.replace("/login");
 	};
 

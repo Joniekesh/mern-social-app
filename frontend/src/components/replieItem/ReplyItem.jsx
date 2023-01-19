@@ -6,6 +6,8 @@ import { format } from "timeago.js";
 import { deleteReply } from "../../redux/actions/postActions";
 import { likeReply } from "../../redux/actions/postActions";
 import EditCommentReply from "../../pages/commentReply/EditCommentReply";
+import { toast } from "react-toastify";
+import { getProfiles } from "../../redux/actions/profilesActions";
 
 const ReplyItem = ({ post, comment, reply }) => {
 	const [openModal, setOpenModal] = useState(false);
@@ -22,6 +24,13 @@ const ReplyItem = ({ post, comment, reply }) => {
 	const auth = useSelector((state) => state.auth);
 	const { userInfo: user, isLoading } = auth;
 
+	const profiles = useSelector((state) => state.profiles);
+	const { profiles: userProfiles } = profiles;
+
+	const profileExist = userProfiles.some(
+		(userProfile) => userProfile?.user._id === reply?.user
+	);
+
 	const currentLikedUser = reply?.likes?.find((like) => like.user === user._id);
 
 	const newLike = {
@@ -31,6 +40,10 @@ const ReplyItem = ({ post, comment, reply }) => {
 		followings: user.followings,
 		profilePic: user.profilePic,
 	};
+
+	useEffect(() => {
+		dispatch(getProfiles());
+	}, [dispatch]);
 
 	useEffect(() => {
 		setIsLiked(reply?.likes?.includes(currentLikedUser));
@@ -47,11 +60,18 @@ const ReplyItem = ({ post, comment, reply }) => {
 	const handleReplyEdit = () => {
 		setIsEdit(true);
 		setOpenModal(false);
-		// navigate(`/editCommentReply/${post._id}/${comment._id}`, {
-		// 	state: {
-		// 		reply,
-		// 	},
-		// });
+	};
+
+	const handleNavigate = () => {
+		if (profileExist) {
+			if (reply.user === user._id) {
+				navigate("/dashboard");
+			} else {
+				navigate(`/profiles/${reply.user}`);
+			}
+		} else {
+			toast.error("This user has no profile yet!", { theme: "colored" });
+		}
 	};
 
 	const handleReplyDelete = () => {
@@ -62,23 +82,27 @@ const ReplyItem = ({ post, comment, reply }) => {
 	return (
 		<div className="replyListItem">
 			<div className="replyTop">
-				{/* <div className="replyTopImg">
-					<Link to={`/profiles/${reply?.user}`}>
-						<img className="replyImg" src={reply?.profilePic} alt="" />
-					</Link>
-				</div> */}
+				<div
+					className="replyTopImg"
+					style={{ cursor: "pointer" }}
+					onClick={handleNavigate}
+				>
+					<img className="replyImg" src={reply?.profilePic} alt="" />
+				</div>
 				<div className="replyWrapperDiv">
 					<div className="replyWrapperTopDiv">
 						<div className="replyTopMiddleUserInfoDiv">
-							<p className="replyUserName">{reply?.name}</p>
+							<p
+								className="replyUserName"
+								style={{ cursor: "pointer" }}
+								onClick={handleNavigate}
+							>
+								{reply?.name}
+							</p>
 							<span className="userRegDate">{format(reply.date)}</span>
 						</div>
 						<div className="rAuthor">
-							{post?.user?._id === reply.user && (
-								<Link to={`/profiles/${reply.user}`}>
-									<div className="author">Author</div>
-								</Link>
-							)}
+							<div className="author">Author</div>
 						</div>
 						<div className="rEllip">
 							{!isLoading && isAuthenticated && user._id === reply.user && (
@@ -124,14 +148,7 @@ const ReplyItem = ({ post, comment, reply }) => {
 						</div>
 					</Link>
 				</div>
-				<div className="replyItemDiv">
-					{/* <Link
-						to={`/posts/${post._id}/comments/${comment._id}/replies/${reply._id}}}`}
-					>
-						<span className="replyItemTitle">Reply</span>
-					</Link> */}
-					<span className="replyItemCount">{reply.length} Replies</span>
-				</div>
+
 				<span className="replytimeCount">{format(reply.date)}</span>
 			</div>
 			{isEdit && (

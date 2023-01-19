@@ -8,6 +8,7 @@
 .postReactedUserInfo {
 	display: flex;
 	align-items: center;
+	font-size: 14px;
 }
 
 .userReactionImg {
@@ -15,11 +16,11 @@
 	height: 32px;
 	border-radius: 50%;
 	object-fit: cover;
-	margin: 10px 0px;
+	border: 2px solid #0e76a8;
 }
 
 .postReactedUsername {
-	font-weight: 500;
+	font-weight: bold;
 }
 
 .singlePostThumb {

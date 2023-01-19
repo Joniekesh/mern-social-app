@@ -3,18 +3,6 @@
 	height: calc(100vh - 60px);
 }
 
-.dashboard {
-	display: flex;
-	margin: 20px 0px;
-	align-items: center;
-	color: teal;
-	font-size: 30px;
-}
-
-.dashboard i {
-	margin-right: 10px;
-}
-
 .profileWrapper {
 	width: 100%;
 	display: flex;
@@ -97,7 +85,8 @@
 }
 
 .gitReposWrapper {
-	margin-top: -8px;
+	margin: -38px 0px 6px 0px;
+
 	border-radius: 8px;
 }
 
@@ -171,6 +160,10 @@
 
 	.experienceEduDiv {
 		flex-direction: column;
+	}
+
+	.eduContainer {
+		margin-top: -24px;
 	}
 }
 
