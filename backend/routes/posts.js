@@ -142,7 +142,7 @@ router.put("/likes/:postId", protect, async (req, res) => {
 					},
 				},
 			});
-			return res.status(200).json(post);
+			return res.status(200).json(userInfo);
 		} else {
 			await post.updateOne({
 				$pull: {
@@ -155,7 +155,7 @@ router.put("/likes/:postId", protect, async (req, res) => {
 					},
 				},
 			});
-			return res.status(200).json(post);
+			return res.status(200).json(userInfo);
 		}
 	} catch (err) {
 		console.error(err.message);
@@ -390,7 +390,7 @@ router.put("/comments/likes/:postId/:commentId", protect, async (req, res) => {
 
 			await post.save();
 
-			res.status(200).json(comment.likes);
+			res.status(200).json(post);
 		} else {
 			comment.likes = comment.likes.filter(
 				({ user }) => user.toString() !== req.user.id
@@ -591,7 +591,7 @@ router.put(
 				});
 				await post.save();
 
-				res.json(reply.likes);
+				res.status(200).json(post);
 			} else {
 				reply.likes = reply.likes.filter(
 					({ user }) => user.toString() !== req.user.id
@@ -599,7 +599,7 @@ router.put(
 
 				await post.save();
 
-				res.json(reply.likes);
+				res.status(200).json(post);
 			}
 		} catch (err) {
 			console.error(err.message);

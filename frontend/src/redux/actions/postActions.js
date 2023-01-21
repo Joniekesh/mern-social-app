@@ -32,6 +32,7 @@ import {
 	removeCommentReply,
 	commentUpdate,
 	replyUpdate,
+	likeUnlikeReply,
 } from "../reducers/postRedux";
 
 // Get all posts
@@ -106,7 +107,9 @@ export const likePost = (id, userData) => async (dispatch) => {
 	};
 	try {
 		const res = await axiosInstance.put(`/posts/likes/${id}`, userData, config);
-		dispatch(likeDislikePost(res.data));
+		if (res.status === 200) {
+			dispatch(likeDislikePost({ payload: { userData: res.data } }));
+		}
 	} catch (err) {
 		console.log(err);
 	}
@@ -291,7 +294,7 @@ export const likeComment =
 			);
 			if (res.status === 200) {
 				dispatch(addRemoveCommentLike(res.data));
-				// dispatch(getPostById(postId));
+				dispatch(getPostById(postId));
 			}
 		} catch (err) {
 			console.log(err);
@@ -366,23 +369,20 @@ export const likeReply =
 		};
 
 		try {
-			const { data } = await axiosInstance.put(
+			const res = await axiosInstance.put(
 				`/posts/comments/replies/likes/${postId}/${commentId}/${replyId}`,
 				likeUserData,
 				config
 			);
-
-			// dispatch({
-			// 	type: LIKE_REPLY,
-			// 	payload: {
-			// 		postId,
-			// 		commentId,
-			// 		replyId,
-			// 		data,
-			// 	},
-			// });
+			if (res.status === 200) {
+				dispatch(getPostById(postId));
+				dispatch(
+					likeUnlikeReply({ payload: { commentId, replyId, likeUserData } })
+				);
+				toast.success("Like added.", { theme: "colored" });
+			}
 		} catch (err) {
-			dispatch();
+			console.log(err);
 		}
 	};
 

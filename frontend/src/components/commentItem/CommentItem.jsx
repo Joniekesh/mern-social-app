@@ -15,8 +15,6 @@ const CommentItem = ({ post, comment }) => {
 	const [isLiked, setIsLiked] = useState(false);
 	const [isEdit, setIsEdit] = useState(false);
 
-	// console.log(like);
-
 	const userInfo = JSON.parse(localStorage.getItem("token"));
 	const isAuthenticated = userInfo?.token;
 
@@ -30,7 +28,7 @@ const CommentItem = ({ post, comment }) => {
 	const { profiles: userProfiles } = profiles;
 
 	const profileExist = userProfiles.some(
-		(userProfile) => userProfile?.user._id === comment?.user
+		(userProfile) => userProfile?.user?._id === comment?.user
 	);
 
 	useEffect(() => {
@@ -40,11 +38,11 @@ const CommentItem = ({ post, comment }) => {
 	const currentLike = comment?.likes?.find((like) => like?.user === user._id);
 
 	useEffect(() => {
-		setIsLiked(comment?.likes?.some((like) => like.user === user._id));
-	}, [comment?.likes, user._id]);
+		setIsLiked(comment?.likes?.some((like) => like.user === user?._id));
+	}, [comment?.likes, user?._id]);
 
 	const likeData = {
-		user: user._id,
+		user: user?._id,
 		name: user.name,
 		followers: user.follower,
 		followings: user.followings,
@@ -53,17 +51,17 @@ const CommentItem = ({ post, comment }) => {
 
 	const handleLike = () => {
 		if (isAuthenticated) {
-			dispatch(likeComment(post._id, comment._id, likeData));
+			dispatch(likeComment(post?._id, comment?._id, likeData));
 			setLike(isLiked ? like - 1 : like + 1);
 			setIsLiked(!isLiked);
 		}
 	};
 
 	const deleteHandler = () => {
-		if (isAuthenticated && user._id === comment?.user) {
+		if (isAuthenticated && user?._id === comment?.user) {
 			dispatch(deleteComment(post?._id, comment?._id));
 			setOpenModal(false);
-			navigate(`/posts/${post._id}`);
+			navigate(`/posts/${post?._id}`);
 		}
 	};
 
@@ -74,7 +72,7 @@ const CommentItem = ({ post, comment }) => {
 
 	const handleNavigate = () => {
 		if (profileExist) {
-			if (comment.user === user._id) {
+			if (comment.user === user?._id) {
 				navigate("/dashboard");
 			} else {
 				navigate(`/profiles/${comment.user}`);
@@ -120,7 +118,7 @@ const CommentItem = ({ post, comment }) => {
 						{post.user._id === comment.user && (
 							<div className="author">Author</div>
 						)}
-						{!isLoading && isAuthenticated && user._id === comment?.user && (
+						{!isLoading && isAuthenticated && user?._id === comment?.user && (
 							<i
 								className="fa-solid fa-ellipsis-vertical elipsis"
 								style={{ color: "teal" }}
@@ -163,32 +161,6 @@ const CommentItem = ({ post, comment }) => {
 					</div>
 					<span className="timeCount">{format(comment?.date)}</span>
 				</div>
-				{comment?.replies?.length > 3 ? (
-					<div className="replyList">
-						<Link to={`/posts/${post?._id}/comments/${comment?._id}`}>
-							<span>Show previous replies...</span>
-						</Link>
-						{comment.replies.slice(0, 2).map((reply) => (
-							<ReplyItem
-								key={reply._id}
-								reply={reply}
-								post={post}
-								comment={comment}
-							/>
-						))}
-					</div>
-				) : (
-					<div className="replyList">
-						{comment?.replies?.map((reply) => (
-							<ReplyItem
-								reply={reply}
-								key={reply._id}
-								post={post}
-								comment={comment}
-							/>
-						))}
-					</div>
-				)}
 			</div>
 			{isEdit && (
 				<EditComment

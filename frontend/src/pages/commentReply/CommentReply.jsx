@@ -18,7 +18,7 @@ const CommentReply = () => {
 	const post = useSelector((state) => state.post);
 	const { post: currentPost } = post;
 
-	const comment = currentPost?.comments.find(
+	const comment = currentPost?.comments?.find(
 		(comment) => comment._id === commentId
 	);
 
@@ -33,7 +33,7 @@ const CommentReply = () => {
 
 	useEffect(() => {
 		scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-	}, [comment.replies]);
+	}, [comment?.replies]);
 
 	return (
 		<div className="commentReply">
@@ -58,7 +58,7 @@ const CommentReply = () => {
 							{comment?.replies.length > 0 ? (
 								comment?.replies.map((reply) => (
 									<ReplyItem
-										post={currentPost}
+										postId={currentPost._id}
 										comment={comment}
 										reply={reply}
 										key={reply._id}

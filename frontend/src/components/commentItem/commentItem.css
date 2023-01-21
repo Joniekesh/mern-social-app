@@ -147,6 +147,13 @@
 	margin-right: 12px;
 }
 
+.replyItem {
+	background-color: teal;
+	padding: 2px;
+	color: white;
+	border-radius: 3px;
+}
+
 .liked {
 	color: #0e76a8;
 	font-weight: bold;

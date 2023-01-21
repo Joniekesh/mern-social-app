@@ -3,13 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { format } from "timeago.js";
-import { deleteReply } from "../../redux/actions/postActions";
+import { deleteReply, getPostById } from "../../redux/actions/postActions";
 import { likeReply } from "../../redux/actions/postActions";
 import EditCommentReply from "../../pages/commentReply/EditCommentReply";
 import { toast } from "react-toastify";
 import { getProfiles } from "../../redux/actions/profilesActions";
 
-const ReplyItem = ({ post, comment, reply }) => {
+const ReplyItem = ({ postId, comment, reply }) => {
 	const [openModal, setOpenModal] = useState(false);
 	const [like, setLike] = useState(reply?.likes?.length);
 	const [isLiked, setIsLiked] = useState(false);
@@ -31,7 +31,8 @@ const ReplyItem = ({ post, comment, reply }) => {
 		(userProfile) => userProfile?.user._id === reply?.user
 	);
 
-	const currentLikedUser = reply?.likes?.find((like) => like.user === user._id);
+	const post = useSelector((state) => state.post);
+	const { post: currentPost } = post;
 
 	const newLike = {
 		user: user._id,
@@ -39,6 +40,7 @@ const ReplyItem = ({ post, comment, reply }) => {
 		followers: user.followers,
 		followings: user.followings,
 		profilePic: user.profilePic,
+		_id: comment._id,
 	};
 
 	useEffect(() => {
@@ -46,15 +48,18 @@ const ReplyItem = ({ post, comment, reply }) => {
 	}, [dispatch]);
 
 	useEffect(() => {
-		setIsLiked(reply?.likes?.includes(currentLikedUser));
-	}, [reply.likes, currentLikedUser]);
+		dispatch(getPostById(postId));
+	}, [dispatch, postId]);
+
+	useEffect(() => {
+		setIsLiked(reply?.likes?.some((like) => like.user === user._id));
+	}, [reply.likes, user._id]);
 
 	const handleReplyLike = () => {
-		dispatch(likeReply(post._id, comment._id, reply._id, newLike));
+		dispatch(likeReply(currentPost._id, comment._id, reply._id, newLike));
 		setLike(isLiked ? like - 1 : like + 1);
 		setIsLiked(!isLiked);
-
-		window.location.reload();
+		// window.location.reload();
 	};
 
 	const handleReplyEdit = () => {
@@ -75,7 +80,7 @@ const ReplyItem = ({ post, comment, reply }) => {
 	};
 
 	const handleReplyDelete = () => {
-		dispatch(deleteReply(post._id, comment._id, reply._id));
+		dispatch(deleteReply(currentPost._id, comment._id, reply._id));
 		setOpenModal(false);
 	};
 
@@ -101,11 +106,7 @@ const ReplyItem = ({ post, comment, reply }) => {
 							</p>
 							<span className="userRegDate">{format(reply.date)}</span>
 						</div>
-						{/* {post.user._id === reply.user && (
-							<div className="rAuthor">
-								<div className="author">Author</div>
-							</div>
-						)} */}
+
 						<div className="rEllip">
 							{!isLoading && isAuthenticated && user._id === reply.user && (
 								<i
@@ -142,7 +143,7 @@ const ReplyItem = ({ post, comment, reply }) => {
 						Like
 					</span>
 					<Link
-						to={`/posts/${post?._id}/comments/${comment?._id}/replies/${reply?._id}/replyReactedUsers`}
+						to={`/posts/${currentPost?._id}/comments/${comment?._id}/replies/${reply?._id}/replyReactedUsers`}
 					>
 						<div className="replylikeCountThumb">
 							<span className="replylikesCount">{reply?.likes?.length}</span>
@@ -155,7 +156,7 @@ const ReplyItem = ({ post, comment, reply }) => {
 			</div>
 			{isEdit && (
 				<EditCommentReply
-					postId={post._id}
+					postId={currentPost._id}
 					commentId={comment._id}
 					reply={reply}
 					setIsEdit={setIsEdit}

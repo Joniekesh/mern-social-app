@@ -2,9 +2,15 @@ import "./postItem.css";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { likePost, deletePost } from "../../redux/actions/postActions";
+import {
+	likePost,
+	deletePost,
+	getPostById,
+} from "../../redux/actions/postActions";
 import { format } from "timeago.js";
 import { followUser, unFollowUser } from "../../redux/actions/userActions";
+import { getProfiles } from "../../redux/actions/profilesActions";
+import { toast } from "react-toastify";
 
 const PostItem = ({ type, post, setIsUpdate }) => {
 	const id = post?.user?._id;
@@ -28,6 +34,17 @@ const PostItem = ({ type, post, setIsUpdate }) => {
 		post?.user?.followers?.includes(follower)
 	);
 
+	const profiles = useSelector((state) => state.profiles);
+	const { profiles: userProfiles } = profiles;
+
+	const profileExist = userProfiles.some(
+		(userProfile) => userProfile?.user?._id === post?.user?._id
+	);
+
+	useEffect(() => {
+		dispatch(getProfiles());
+	}, [dispatch]);
+
 	useEffect(() => {
 		setIsFollowed(post?.user?.followers?.includes(follower));
 	}, [post?.user, follower]);
@@ -37,16 +54,8 @@ const PostItem = ({ type, post, setIsUpdate }) => {
 	);
 
 	useEffect(() => {
-		setIsLiked(
-			post?.likes?.includes({
-				user: currentUser?._id,
-				name: currentUser?.name,
-				profilePic: currentUser?.profilePic,
-				followers: currentUser?.followers,
-				followings: currentUser?.followings,
-			})
-		);
-	}, [currentUser]);
+		setIsLiked(post?.likes?.some((like) => like.user === currentUser._id));
+	}, [currentUser._id]);
 
 	const userData = {
 		user: currentUser?._id,
@@ -84,31 +93,46 @@ const PostItem = ({ type, post, setIsUpdate }) => {
 		}
 	};
 
+	const handleNavigate = () => {
+		if (profileExist) {
+			if (post.user._id === currentUser._id) {
+				navigate("/dashboard");
+			} else {
+				navigate(`/profiles/${post.user._id}`);
+			}
+		} else {
+			toast.error("This user has no profile yet!", { theme: "colored" });
+		}
+	};
+
 	return (
 		<div className="homeCenterPostItem">
 			<div className="homeCenterTop">
 				<div className="topLeft">
 					<div className="userDiv">
-						<Link to={`/profiles/${id}`}>
-							<img className="topLeftImg" src={post?.user?.profilePic} alt="" />
-						</Link>
-						<Link to={`/profiles/${id}`}>
-							<div className="topLeftUserInfo">
-								<h4 className="username">{post?.user?.name}</h4>
+						<img
+							className="topLeftImg"
+							src={post?.user?.profilePic}
+							alt=""
+							onClick={handleNavigate}
+						/>
+						<div className="topLeftUserInfo">
+							<h4 className="username" onClick={handleNavigate}>
+								{post?.user?.name}
+							</h4>
 
-								{post?.user?.followers?.length > 0 && (
-									<span className="followersCount">
-										<b>
-											{post?.user?.followers.length}{" "}
-											{post?.user?.followers.length > 1
-												? "Followers"
-												: "Follower"}
-										</b>
-									</span>
-								)}
-								<span className="time">{format(post?.createdAt)}</span>
-							</div>
-						</Link>
+							{post?.user?.followers?.length > 0 && (
+								<span className="followersCount">
+									<b>
+										{post?.user?.followers.length}{" "}
+										{post?.user?.followers.length > 1
+											? "Followers"
+											: "Follower"}
+									</b>
+								</span>
+							)}
+							<span className="time">{format(post?.createdAt)}</span>
+						</div>
 					</div>
 					<div className="topRight">
 						{post?.user?._id !== currentUser?._id && (

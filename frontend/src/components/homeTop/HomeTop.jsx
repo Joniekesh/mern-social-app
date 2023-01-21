@@ -11,7 +11,9 @@ const HomeTop = ({ setOpenCreatePost }) => {
 			onClick={() => setOpenCreatePost(true)}
 		>
 			<div className="homeCenterTopDiv">
-				<img src={userInfo?.profilePic} alt="" />
+				<div>
+					<img src={userInfo?.profilePic} alt="" />
+				</div>
 				<input type="text" placeholder="Write a post..." />
 			</div>
 			<div className="homeCenterBottom">
