@@ -19,7 +19,7 @@
 .experienceEduDiv {
 	display: flex;
 	width: 100%;
-	margin: -10px 0px 4px 0px;
+	margin: -10px 0px 26px 0px;
 	gap: 4px;
 }
 
@@ -72,7 +72,6 @@
 }
 
 .experienceAdd {
-	font-size: 20px;
 	color: teal;
 	text-align: center;
 	transition: all 1s ease;
@@ -161,14 +160,14 @@
 	.experienceEduDiv {
 		flex-direction: column;
 	}
-
-	.eduContainer {
-		margin-top: -24px;
-	}
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 600px) {
 	.experienceEduDiv {
 		gap: 10px;
+	}
+
+	.profileEDv {
+		margin-top: -26px;
 	}
 }

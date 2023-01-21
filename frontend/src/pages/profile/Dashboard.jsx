@@ -115,7 +115,10 @@ const Dashboard = () => {
 										)}
 									</div>
 
-									<div className="experienceEduDiv">
+									<div
+										className="experienceEduDiv "
+										style={{ marginBottom: "5px" }}
+									>
 										<div className="expContainer">
 											<div className="expreienceDiv">
 												<div className="experienceTop">
@@ -142,10 +145,11 @@ const Dashboard = () => {
 											<div className="experienceAdd">
 												<Link to="/experience">
 													<i className="fa-solid fa-plus"></i>
+													<span>Add</span>
 												</Link>
 											</div>
 										</div>
-										<div className="eduContainer">
+										<div className="eduContainer profileEDv">
 											<div className="educationDiv">
 												<div className="experienceTop">
 													<div className="experienceTopDiv">
@@ -167,6 +171,7 @@ const Dashboard = () => {
 											<div className="experienceAdd">
 												<Link to="/education">
 													<i className="fa-solid fa-plus"></i>
+													<span>Add</span>
 												</Link>
 											</div>
 										</div>
@@ -174,11 +179,13 @@ const Dashboard = () => {
 
 									<div className="gitReposWrapper">
 										<h2>Github Repos</h2>
-										<GitRepos
-											repos={repos}
-											isLoading={isLoading}
-											username={username}
-										/>
+										<div className="gitReposList">
+											<GitRepos
+												repos={repos}
+												isLoading={isLoading}
+												username={username}
+											/>
+										</div>
 									</div>
 								</div>
 								{loadingTimelinePosts ? (
