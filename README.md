@@ -1,4 +1,4 @@
-# mern-social-app1
+# mern-social-app
 This is a social app developed to connect users especially developers.
 # URL: https://joniedev-socialapp.netlify.app/
 
