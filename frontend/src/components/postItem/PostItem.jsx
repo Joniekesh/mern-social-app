@@ -2,18 +2,13 @@ import "./postItem.css";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import {
-	likePost,
-	deletePost,
-	getPostById,
-} from "../../redux/actions/postActions";
+import { likePost, deletePost } from "../../redux/actions/postActions";
 import { format } from "timeago.js";
 import { followUser, unFollowUser } from "../../redux/actions/userActions";
 import { getProfiles } from "../../redux/actions/profilesActions";
 import { toast } from "react-toastify";
 
 const PostItem = ({ type, post, setIsUpdate }) => {
-	const id = post?.user?._id;
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -49,12 +44,8 @@ const PostItem = ({ type, post, setIsUpdate }) => {
 		setIsFollowed(post?.user?.followers?.includes(follower));
 	}, [post?.user, follower]);
 
-	const currentLike = post?.likes?.find(
-		(like) => like?.user === currentUser?._id
-	);
-
 	useEffect(() => {
-		setIsLiked(post?.likes?.some((like) => like.user === currentUser._id));
+		setIsLiked(post?.likes?.some((like) => like?.user === currentUser._id));
 	}, [currentUser._id]);
 
 	const userData = {

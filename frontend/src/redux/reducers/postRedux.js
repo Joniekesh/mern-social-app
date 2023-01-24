@@ -81,13 +81,13 @@ const postSlice = createSlice({
 			// state.post = action.payload;
 			if (
 				!state.post.likes.some(
-					(like) => like.user === action.payload.userData?._id
+					(like) => like?.user === action.payload.userData?._id
 				)
 			) {
 				state.post.likes.push(action.payload.userData);
 			} else {
 				state.post.likes.filter(
-					(like) => like.user !== action.payload.userData?._id
+					(like) => like?.user !== action.payload.userData?._id
 				);
 			}
 		},

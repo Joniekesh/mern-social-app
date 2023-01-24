@@ -109,6 +109,7 @@ export const likePost = (id, userData) => async (dispatch) => {
 		const res = await axiosInstance.put(`/posts/likes/${id}`, userData, config);
 		if (res.status === 200) {
 			dispatch(likeDislikePost({ payload: { userData: res.data } }));
+			dispatch(getPostById(id));
 		}
 	} catch (err) {
 		console.log(err);
