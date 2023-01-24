@@ -380,7 +380,6 @@ export const likeReply =
 				dispatch(
 					likeUnlikeReply({ payload: { commentId, replyId, likeUserData } })
 				);
-				toast.success("Like added.", { theme: "colored" });
 			}
 		} catch (err) {
 			console.log(err);

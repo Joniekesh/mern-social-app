@@ -59,7 +59,9 @@ const ReplyItem = ({ postId, comment, reply }) => {
 		dispatch(likeReply(currentPost._id, comment._id, reply._id, newLike));
 		setLike(isLiked ? like - 1 : like + 1);
 		setIsLiked(!isLiked);
-		// window.location.reload();
+		toast.success(isLiked ? "Like removed." : "Like added.", {
+			theme: "colored",
+		});
 	};
 
 	const handleReplyEdit = () => {
